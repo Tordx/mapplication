@@ -18,3 +18,23 @@ export const SyncAccounts = () => {
     console.error(err);
   });
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const dblocalEstablishment = new PouchDB('Establishment', {adapter: 'asyncstorage'});
+export const dbremoteEstablishment = new PouchDB('http://admin:admin@192.168.0.192:5984/m_establishments');
+
+
+export const SyncEstablishment = () => {
+  dblocalEstablishment.sync(dbremoteEstablishment, {
+    live: true, 
+    retry: true
+  }).on('change', () => {
+    dblocalEstablishment.allDocs({include_docs:true}).then((doc) => {
+      console.log(doc)
+      console.log('done syc')
+    });
+  }).on('error', (err) => {
+    console.error(err);
+  });
+}
