@@ -2,11 +2,12 @@ import { View, StatusBar } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import Map from '../maps/maps'
+import Map from '../maps/FullViewMap'
 import AccountTab from './Tabs/AccountTab'
 import CommentTab from './Tabs/CommentTab'
 import MyLocation from './Tabs/MyLocation'
 import DirectionsTab from './Tabs/DirectionsTab'
+import { Black, LightYellow, White } from '../Assets/Colors/Colors'
 
 
 const BottomTabs = () => {
@@ -15,11 +16,8 @@ const BottomTabs = () => {
 
   return (
     <>
-    <StatusBar
-        hidden = {false}
-    />
     <Tab.Navigator
-    initialRouteName='Map'
+    initialRouteName='Comment'
     screenOptions={({route}) => ({
 
         tabBarShowLabel: false,
@@ -31,12 +29,13 @@ const BottomTabs = () => {
         },
         tabBarStyle: { 
             
-            borderRadius: 15,
+            borderRadius: 20,
             position: 'absolute',
             bottom: 30,
             height: 70,
             marginHorizontal: 15,
-            backgroundColor: '#9ad9fd',
+            backgroundColor: Black,
+            shadowColor: '#404040'
 
         },
     })}>
@@ -48,7 +47,7 @@ const BottomTabs = () => {
             <Icon
                 name = 'star'
                 size = {focused? 45: 40}
-                color = {focused? '#fff7ab' : 'grey'}
+                color = {focused? LightYellow : '#9999'}
 
             />
         )
@@ -62,26 +61,10 @@ const BottomTabs = () => {
             <Icon
                 name = 'language'
                 size = {focused? 45: 40}
-                color = {focused? '#fff7ab' : 'grey'}
+                color = {focused? LightYellow : '#9999'}
 
             />
         )
-        }} />
-        <Tab.Screen 
-
-        name = 'DirectionTab' 
-        component= {DirectionsTab}
-        options =  {{headerShown: false,
-        tabBarIcon: ({focused}) => (
-            <View style = {{top: -20}}>
-            <Icon
-                name = 'near-me'
-                size = {focused? 70: 65}
-                color = {focused? '#9b282b' : 'grey'}
-
-            />
-            </View>
-        ),
         }} />
         <Tab.Screen 
 
@@ -92,9 +75,9 @@ const BottomTabs = () => {
         options =  {{headerShown: false,
         tabBarIcon: ({focused}) => (
             <Icon
-                name = 'location-on'
+                name = 'history'
                 size = {focused? 45: 40}
-                color = {focused? '#fff7ab' : 'grey'}
+                color = {focused? LightYellow : '#9999'}
 
             />
         )
@@ -108,7 +91,7 @@ const BottomTabs = () => {
             <Icon
                 name = 'person'
                 size = {focused? 45: 40}
-                color = {focused? '#fff7ab' : 'grey'}
+                color = {focused? LightYellow :  '#9999'}
 
             />
         )
