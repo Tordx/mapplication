@@ -1,7 +1,6 @@
 import { View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import Map from '../../maps/maps'
-import { dbremoteAccounts } from '../../../database/database';
+import Map from '../../maps/FullViewMap'
 import Geolocation from '@react-native-community/geolocation';
 import MapboxGL from '@rnmapbox/maps';
  

@@ -1,6 +1,6 @@
 import { View, Text, StatusBar } from 'react-native'
 import React from 'react'
-import Map from '../../maps/maps'
+import Map from '../../maps/FullViewMap'
 import { dbremoteAccounts } from '../../../database/database';
 
 type Props = {
