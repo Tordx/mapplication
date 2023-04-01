@@ -41,7 +41,7 @@ const Signup = () => {
   return (
     <KeyboardAvoidingView style  ={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#dadada'}} behavior='padding'>
       <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%'}}>
-        <Image source = {require('../images/sample_logo.png')} style = {{width: 200, height: 200}} resizeMode = 'contain' />
+        <Image source = {require('../Assets/images/sample_logo.png')} style = {{width: 200, height: 200}} resizeMode = 'contain' />
         <Loginbox 
           placeholder = 'username' 
           secureTextEntry = {false} name = '' 
