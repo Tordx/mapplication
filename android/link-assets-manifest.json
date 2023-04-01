@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "code/Assets/Fonts/cocogooese_semibold.ttf",
+      "sha1": "81c0a23f5744005d7f4af8d6b0a9438066c33f6c"
+    },
+    {
+      "path": "code/Assets/Fonts/cocogoose_bold.ttf",
+      "sha1": "f7e16b305567ad728967b7795b7a8c93c94bd898"
+    },
+    {
+      "path": "code/Assets/Fonts/Nexa-ExtraLight.ttf",
+      "sha1": "ba5df050218d9c8da883d5553353388d402956f8"
+    },
+    {
+      "path": "code/Assets/Fonts/Nexa-Heavy.ttf",
+      "sha1": "fcc84c63a8d378d80a4389b55b7a960e7b91fb57"
+    }
+  ]
+}
