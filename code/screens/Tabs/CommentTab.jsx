@@ -1,26 +1,31 @@
-import { View, Text } from 'react-native'
+import { View, Text, Pressable, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import Map from '../../maps/FullViewMap'
 import MapboxGL from '@rnmapbox/maps'
 import ItemViewMap from '../../maps/ItemViewMap'
-import { Black } from '../../Assets/Colors/Colors'
+import { Black, LightBlue, LightYellow, White } from '../../Assets/Colors/Colors'
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import ItemView from '../../components/ItemView'
 import { FlatList } from 'react-native'
 import PouchDB from 'pouchdb-react-native' ; 'pouchdb-core';
+import { useDispatch} from 'react-redux'
+import { setItem } from '../../config/ItemSlice'
+import { useNavigation } from '@react-navigation/native'
 
 const CommentTab = () => {
 
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [government, setGovernment] = useState('');
   const [corporate, setCorporate] = useState([]);
   const [local, setLocal] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('Government');
 
 
   const getdata = async () => {
 
     const dbremoteEstablishment = new PouchDB('http://admin:admin@192.168.0.192:5984/m_establishments');
 
-    console.log('Hello')
     try {
       console.log('Runs')
       let result = await dbremoteEstablishment.allDocs({
@@ -45,7 +50,6 @@ const CommentTab = () => {
               return item.PropertyType === 'Local'
             })
             setGovernment(Government);
-            console.log(Government);
             setCorporate(Corporate);
             setLocal(Local);
         }
@@ -57,29 +61,65 @@ const CommentTab = () => {
   
   useEffect(() => {
     
-    console.log('this runs1')
     getdata()
-    console.log('this runs')
-  },[])
+  },[selectedCategory])
 
   const renderItem = ({item}) => {
     return (
-    <View>
-      <Text>{item.Establishment}</Text>
-    </View>
-    )
+      <Pressable style = {{width: 402, height: 125, borderColor: LightBlue, borderWidth: 2, justifyContent: 'center', alignItems: 'flex-start', margin: 10., borderRadius: 20}}
+        onPress={() => {
+          dispatch(setItem(item));
+          navigation.navigate('ItemViewPage')
+        }}
+      >
+        <View style = {{padding: 15, flexDirection: 'row',justifyContent: 'center', alignItems: 'center'}}>
+          <Image style = {{width: 100, height: 100, marginRight: 15, borderRadius: 20}} resizeMode='cover' source={{uri: item.Image}} />
+          <View style = {{width: '45%'}}>
+              <Text style={{ fontSize: 22, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left'}}>{item.Establishment}</Text>
+              <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-ExtraLight'}}>Reviews: {item.CommentsCount}</Text>
+          </View>
+        </View>
+        <Text style={{position: 'absolute',right: 20, fontSize: 35, color: LightYellow}}>{Math.min(item.Rating / item.RatingCount, 5)} ★</Text>
+      </Pressable>
+    );
+   
   } 
   return (
     
-    <View style = {{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, backgroundColor: '#f2f2f2'}}>
+    <View style = {{alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', backgroundColor: Black}}>
+      <View style = {{ position: 'absolute', top: 10}}>
+     
+      <Text style = {{paddingLeft: 20, color: White, fontSize: 25, fontFamily: 'Nexa-Heavy'}}>Establishments</Text>
+      
+      <ScrollView horizontal showsHorizontalScrollIndicator = {false} style = {{flexDirection: 'row'}}>
+      <Pressable  style = {selectedCategory === 'Government' ? styles.selectedCategory : styles.nonselectedCategory} onPress={() => setSelectedCategory('Government')}>
+        <Text style = {selectedCategory === 'Government' ? styles.selectedText : styles.nonselectedText}>Government</Text>
+      </Pressable>
+      <Pressable  style = {selectedCategory === 'Corporate' ? styles.selectedCategory : styles.nonselectedCategory} onPress={() => setSelectedCategory('Corporate')}>
+      <Text style = {selectedCategory === 'Corporate' ? styles.selectedText : styles.nonselectedText}>Corporate</Text>
+      </Pressable>
+      <Pressable  style = {selectedCategory === 'Local' ? styles.selectedCategory : styles.nonselectedCategory} onPress={() => setSelectedCategory('Local')}>
+      <Text style = {selectedCategory === 'Local' ? styles.selectedText : styles.nonselectedText}>Local</Text>
+      </Pressable>
+    </ScrollView>
+    </View>
+      <View style = {{marginTop: 100}}>
       <FlatList
-        data={government}
+        data={selectedCategory === 'Government' ? government : selectedCategory === 'Corporate' ? corporate : local}
         renderItem = {renderItem}
-        keyExtractor = {item => item.id}
+        keyExtractor = {item => item._id}
       />
+      </View>
     </View>
    
   )
 }
+
+const styles = StyleSheet.create({
+  selectedText: {fontSize: 17, color: Black, fontFamily: 'cocogooese_semibold'},
+  nonselectedText: {fontSize: 17, color: White, fontFamily: 'cocogooese_semibold'},
+  selectedCategory: {backgroundColor: LightYellow, width: 150, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10, marginTop: 20},
+  nonselectedCategory: {borderColor: LightYellow, borderWidth: 2, width: 150, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10, marginTop: 20}
+})
 
 export default CommentTab
