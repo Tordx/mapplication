@@ -6,6 +6,7 @@ import Welcome from '../screens/welcome'
 import Login from '../screens/loginPage'
 import Signup from '../screens/signup'
 import BottomTabs from '../screens/bottomtabs'
+import ItemViewPage from '../screens/ItemViewPage'
 import { Provider } from 'react-redux'
 import store from '../config/store'
 
@@ -13,6 +14,7 @@ export type AppStackParamList = {
   Welcome: undefined;
   Signup: undefined;
   Login: undefined;
+  ItemViewPage: undefined;
   BottomTabs: {
     name: string,
   }
@@ -50,6 +52,11 @@ const PageNavigation = () => {
           <Page.Screen
             name="BottomTabs"
             component={BottomTabs}
+            options={{ headerShown: false }}
+          />
+          <Page.Screen
+            name="ItemViewPage"
+            component={ItemViewPage}
             options={{ headerShown: false }}
           />
         </Page.Navigator>

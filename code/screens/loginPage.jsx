@@ -10,7 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
  
 
-const Loginbox = (props) => {
+export const Loginbox = (props) => {
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -26,7 +26,7 @@ const Loginbox = (props) => {
       onChangeText = {props.onChangeText}
 
       />
-      <Pressable onPress = {props.onPress} style = {{position: 'absolute', right: 10}}>
+      <Pressable onPress = {props.onPress} disabled = {props.disabled} style = {{position: 'absolute', right: 10}}>
         <Icon
           name = {props.name}
           color = '#fff'

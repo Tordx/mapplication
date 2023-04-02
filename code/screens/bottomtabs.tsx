@@ -35,7 +35,6 @@ const BottomTabs = () => {
             height: 70,
             marginHorizontal: 15,
             backgroundColor: Black,
-            shadowColor: '#404040'
 
         },
     })}>
