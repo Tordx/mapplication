@@ -35,91 +35,38 @@
 
     useEffect(() => {
 
-      getEventData(usercoordinates)
-
-    },[usercoordinates])
-      
+    },[])
+    
+    const {ItemList} = useSelector((action) => action.items)
     const [selectedMarker, setSelectedMarker] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const {email} = useSelector((store) => store.login)
     const [usercoordinates, setUserCoordinates] = useState([119.97919707716136, 16.155291199328147]);
     const [selectedCoordinate, setSelectedCoordinate] = useState(null);
 
-    const getEventData = async() => {
-
-      const remoteAccounts = new PouchDB('http://admin:admin@192.168.0.192:5984/m_account');
-
-      var result = await remoteAccounts.allDocs({
-        include_docs: true,
-        attachments: true
-      });
-      if(result.rows){
-          let modifiedArr = result.rows.map(function(item){
-          return item.doc
-      });
-      let filteredData = modifiedArr.filter(item => {
-          return item
-        });
-        if(filteredData) {
-            let newFilterData = filteredData.map(item => {
-                return item
-                
-            })
-            setUserCoordinates(newFilterData[0].coordinates)
-            console.log(newFilterData[0].coordinates)
-            
-        }
-    }  
-    };
-
-    const [markers] = useState([
-      {
-          title: "People's Park",
-          coordinates: [119.97919707716136, 16.155291199328147]
-      },
-      {
-          title: 'Municipal Hall',
-          coordinates: [119.97967189841017, 16.155688111027104]
-      },
-      {
-          title: 'St. Joseph Cathedral',
-          coordinates: [119.97852568801113, 16.155319396284753]
-      },
-      {
-          title: 'City Health Center',
-          coordinates: [119.97852568801113, 16.15648541146365]
-      },
-      {
-          title: 'NBI Building',
-          coordinates: [119.9801147770741, 16.15587464113419]
-      },
-      {
-          title: 'Post Office',
-          coordinates: [119.97990763368551, 16.156217042168677]
-      }
-  ]);
+    
     
 
     return (
-      <View style = {{width: '100%', height: '41%', position: 'absolute', top: 0}}>
-      <MapboxGL.MapView style={{flex: 1}}>
+      <View style = {{width: '100%', height: '36%', position: 'absolute', top: 0}}>
+      <MapboxGL.MapView style={{flex: 1}}
+        logoEnabled = {false}
+        attributionEnabled = {false}
+      >
         <MapboxGL.Camera
-          zoomLevel={14}
-          centerCoordinate={usercoordinates}
+          zoomLevel={15}
+          centerCoordinate={ItemList.Coordinates}
         />
-
-        {markers.map((marker) => (
           <MapboxGL.PointAnnotation
-            id={marker.title}
+            id={ItemList.Establishment}
             children={true}
-            coordinate={marker.coordinates}
-            title={marker.title}
+            coordinate={ItemList.Coordinates}
+            title={ItemList.Establishment}
             onSelected={() => {
               setSelectedMarker(marker);
               setShowModal(true);
             }}
           />
-        ))}
         
       
       </MapboxGL.MapView>
@@ -129,7 +76,7 @@
         info={selectedMarker && selectedMarker.title}
         onPress = {() => setShowModal(false)}
       />
-      <View style = {{ width: 75, height: 75, backgroundColor: 'red', position: 'absolute', bottom: 10, left: 10,  borderRadius: 20}}></View>
+      <View style = {{ width: 75, height: 75, backgroundColor: 'red', position: 'absolute', bottom: 20, left: 15,  borderRadius: 20}}></View>
     </View>
     );
   };

@@ -1,15 +1,13 @@
-import { View, Text } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import React from 'react'
-import Map from '../../maps/FullViewMap'
 import MapboxGL from '@rnmapbox/maps'
-import ItemViewMap from '../../maps/ItemViewMap'
-import { Black } from '../../Assets/Colors/Colors'
-import { Rating } from 'react-native-ratings'
+import ItemViewMap from '../maps/ItemViewMap'
+import ItemView from '../components/ItemView'
 
-const ItemView = () => {
+const ItemViewPage = () => {
   return (
     
-    <View style = {{}}>
+    <View style = {{flex: 1, justifyContent: 'center', alignContent: 'center',}}>
       <ItemViewMap/>
       <ItemView/>
     </View>
@@ -30,4 +28,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default ItemView
+export default ItemViewPage
