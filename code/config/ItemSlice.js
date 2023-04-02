@@ -3,11 +3,11 @@ import { createSlice } from '@reduxjs/toolkit'
  export const Item = createSlice({
    name: 'Item',
    initialState: {
-    item: [],
+    ItemList: [],
    },
    reducers: {
       setItem: (state , action ) => {
-        state.item = action.payload
+        state.ItemList = action.payload
         console.log(action)
         console.log('action')
       },
@@ -16,6 +16,6 @@ import { createSlice } from '@reduxjs/toolkit'
  })
  
  // Action creators are generated for each case reducer function
- export const {setItem } = Item.actions
+ export const {setItem} = Item.actions
  
  export default Item.reducer
