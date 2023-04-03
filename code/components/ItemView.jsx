@@ -23,7 +23,7 @@ export default function ItemView() {
         tintColor = {Black}
         jumpValue = {0.5}
         />
-      <Text  style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight', width: '100%', marginBottom: 10}}>Current Rating: {Number(rating.toFixed(2))}</Text>
+      <Text  style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight', width: '100%', marginVertical: 10}}>Current Rating: {Number(rating.toFixed(2))}</Text>
       </View>
       <Comments/>
       </View>
