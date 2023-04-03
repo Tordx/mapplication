@@ -11,6 +11,7 @@ import { Rating } from 'react-native-ratings';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
 
  export const Ratings = (props) => (
     <View style = {{justifyContent: 'flex-start', alignItems: 'flex-start', alignSelf: 'flex-start', flexDirection: 'column', marginLeft: 20, marginVertical: 15}} >
@@ -18,10 +19,12 @@ import { Alert } from 'react-native';
           <View style = {{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
             <Rating
             onFinishRating={props.onFinishRating}
+            startingValue = {props.startingValue}
             tintColor = {Black}
             jumpValue = {0.5}
             imageSize={45}
             ratingColor= {LightYellow}
+            readonly = {props.readonly}
             />
             <Text style = {{color: LightYellow, fontFamily: 'Nexa-Heavy', fontSize: 25, marginLeft: 10, textAlign: 'center'}}>{props.result}</Text>
             </View>
@@ -130,13 +133,14 @@ export default function Comments() {
 
     const renderItem = ({item}) => {
         return (
-          <View style = {{width: 402, height: 125, borderColor: LightBlue, borderBottomWidth: 2, justifyContent: 'center', alignItems: 'flex-start', margin: 10., borderRadius: 10}}
+          <View style = {{width: 402, height: 100, borderColor: LightBlue, borderBottomWidth: 2, justifyContent: 'center', alignItems: 'flex-start', margin: 10., borderRadius: 10}}
           >
             <View style = {{padding: 15, flexDirection: 'row',justifyContent: 'center', alignItems: 'center'}}>
               <Image style = {{width: 75, height: 75, marginRight: 15, borderRadius: 50}} resizeMode='cover' source={{uri: item?.Image}} />
-              <View style = {{width: '45%'}}>
-                  <Text style={{ fontSize: 22, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left'}}>{item.FullName}</Text>
-                  <Text style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight'}}>{item.Text}</Text>
+              <View style = {{width: '50%'}}>
+                  <Text style={{ fontSize: 18, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 5}}>{item.FullName}</Text>
+                  <Text style={{ fontSize: 16, color: '#fff',fontFamily: 'Nexa-ExtraLight', marginBottom: 5}}>{item.Text}</Text>
+                  <Text style={{ fontSize: 12, color: '#909090', fontFamily: 'Nexa-ExtraLight',}}>{item.Date}</Text>
               </View>
             </View>
             <Text style={{position: 'absolute',right: 20, fontSize: 25, color: LightYellow}}>{item.Rating} ★</Text>
@@ -164,7 +168,7 @@ export default function Comments() {
         visible = {modal}
         onRequestClose={() => setModal(false)}
       >
-        <View style = {{width: '100%', height: '100%', backgroundColor: Black, justifyContent: 'center', alignItems: 'center',}}>
+        <KeyboardAvoidingView style = {{width: '100%', height: '100%', backgroundColor: Black, justifyContent: 'center', alignItems: 'center',}}>
           <Text style = {{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 10}}>SUBMIT A REVIEW</Text>
           <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Amplifying PWD voices with inclusive reviews - every voice deserves to be heard.</Text>
             <Ratings
@@ -207,7 +211,7 @@ export default function Comments() {
             onChangeText = {(text) => setText(text)}
             onPress = {adddata}
             />
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
       </>
   )
