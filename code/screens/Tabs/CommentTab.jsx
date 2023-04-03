@@ -27,14 +27,12 @@ const CommentTab = () => {
     const dbremoteEstablishment = new PouchDB('http://admin:admin@192.168.0.192:5984/m_establishments');
 
     try {
-      console.log('Runs')
       let result = await dbremoteEstablishment.allDocs({
         include_docs: true,
         attachments: true,
         
       });
       if(result.rows){
-        console.log('Runs?')
         let modifiedArr = result.rows.map(item => item.doc)
         let filteredData = modifiedArr.filter(item => {
           return item
@@ -79,7 +77,7 @@ const CommentTab = () => {
               <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-ExtraLight'}}>Reviews: {item.CommentsCount}</Text>
           </View>
         </View>
-        <Text style={{position: 'absolute',right: 20, fontSize: 35, color: LightYellow}}>{Math.min(item.Rating / item.RatingCount, 5)} ★</Text>
+        <Text style={{position: 'absolute',right: 20, fontSize: 35, color: LightYellow}}>{Math.min(item.Rating / item.RatingCount, 5).toFixed(2)} ★</Text>
       </Pressable>
     );
    
