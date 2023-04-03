@@ -60,7 +60,7 @@ const CommentTab = () => {
   useEffect(() => {
     
     getdata()
-  },[selectedCategory])
+  },[])
 
   const renderItem = ({item}) => {
     return (

@@ -7,13 +7,14 @@
   import PouchDB from 'pouchdb-react-native' ;
   import 'pouchdb-core';
   import Icon  from 'react-native-vector-icons/MaterialIcons';
+import { Image } from 'react-native';
   const token = 'sk.eyJ1IjoidG9yZHh4IiwiYSI6ImNsZG92OHF2OTAzangzdm80dnJrcHV6YmMifQ.O8EA2bhzmkD4DTBnrvh8Xg'
 
   MapboxGL.setWellKnownTileServer('Mapbox');
   MapboxGL.setAccessToken(token)
 
   const InfoModal = ({ isVisible, onClose, info, onPress }) => (
-    <Modal visible={isVisible} onRequestClose={onClose} transparent animationType='slide'>
+    <Modal visible={isVisible} onRequestClose={onClose} transparent animationType='fade'>
       <View  style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
       <View style = {{width: '90%', height: 150, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center', borderRadius: 5}}>
         <Text>{info}</Text>
@@ -63,7 +64,7 @@
             coordinate={ItemList.Coordinates}
             title={ItemList.Establishment}
             onSelected={() => {
-              setSelectedMarker(marker);
+              setSelectedMarker(ItemList.Establishment);
               setShowModal(true);
             }}
           />
@@ -73,10 +74,12 @@
       <InfoModal
         isVisible={showModal}
         onClose={() => setShowModal(false)}
-        info={selectedMarker && selectedMarker.title}
+        info={selectedMarker && ItemList.Establishment}
         onPress = {() => setShowModal(false)}
       />
-      <View style = {{ width: 75, height: 75, backgroundColor: 'red', position: 'absolute', bottom: 20, left: 15,  borderRadius: 20}}></View>
+      <Pressable style = {{ width: 75, height: 75, position: 'absolute', bottom: 20, left: 15,  borderRadius: 20}}>
+        <Image source={{uri: ItemList.Image}} resizeMode='cover' style = {{width: '100%', height: '100%', borderRadius: 21}} />
+      </Pressable>
     </View>
     );
   };
