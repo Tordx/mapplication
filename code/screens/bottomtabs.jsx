@@ -8,6 +8,7 @@ import CommentTab from './Tabs/CommentTab'
 import MyLocation from './Tabs/MyLocation'
 import DirectionsTab from './Tabs/DirectionsTab'
 import { Black, LightYellow, White } from '../Assets/Colors/Colors'
+import HistoryTab from './Tabs/HistoryTab'
 
 
 const BottomTabs = () => {
@@ -53,8 +54,8 @@ const BottomTabs = () => {
         }} />
         <Tab.Screen 
         
-        name = 'Map' 
-        component={Map} 
+        name = 'MyLocation' 
+        component={MyLocation} 
         options = {{headerShown: false,
         tabBarIcon: ({focused}) => (
             <Icon
@@ -67,8 +68,8 @@ const BottomTabs = () => {
         }} />
         <Tab.Screen 
 
-        name = 'MyLocation' 
-        component={MyLocation}  
+        name = 'HistoryTab' 
+        component={HistoryTab}  
         
         
         options =  {{headerShown: false,
