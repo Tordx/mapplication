@@ -44,31 +44,12 @@ const Signup = () => {
 
   const setNewSuperAdmin = async () => {
       
-    // const id = uuid.v4();
-
-      if(1+1 == 3){
-        console.log('hey')
-      }
-      // if((classname.length == 0) && (subject.length == 0) ) {
-      //   console.log('ilove')}
-     else{
        try {
          var NewSuperAdmin = {
           _id: email,
            email : email,
            password : password,
-          //  FacultyPresident: facultypresident,
-          //  FacultyVicePresident : facultyvicepresident,
-          //  FacultyMembers : facultymembers,
-          //  place: place,
-          //  Price : price,
-          //  Preptime : preptime,
-          //  Deliveryfee : deliveryfee,
-          //  Status: status,
-          //  Image: Images
          }
-      //    console.log(Images)
-      //    console.log('Images')
       dbremoteAccounts.put(NewSuperAdmin)
          .then((response) =>{
            Alert.alert('Your Super Admin is Added has been successfully added!')
@@ -81,7 +62,6 @@ const Signup = () => {
          
        } catch (error) {
         console.log(error)
-       }
        }
       }
 
