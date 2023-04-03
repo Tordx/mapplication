@@ -1,6 +1,6 @@
 
 import React, {useState} from 'react';
-import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView, StyleSheet } from 'react-native'
+import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView, StyleSheet , ToastAndroid , Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native'
 import { useDispatch } from 'react-redux';
@@ -62,16 +62,26 @@ const Login = () => {
           item => item.doc
         );
         let filteredData = modifiedArr.filter(item => {
-          return item.username === username
+          return item.email === username
         });
         if (filteredData.length) {
           let newFilterData = filteredData.map((item) => {
             return item
           });
           const FullDetails = newFilterData[0]
+          const adminemail = newFilterData[0].email
+          const adminpassword = newFilterData[0].password
 
-          dispatch(setUserAccount(FullDetails));
-          navigation.navigate('BottomTabs');
+          if(adminemail === username && adminpassword === password) {
+            dispatch(setUserAccount(FullDetails));
+            navigation.navigate('BottomTabs');
+          } else{
+            Alert.alert('Username and Password did not match!')
+          }
+          console.log('====================================FullDetails');
+          console.log(FullDetails);
+          console.log('====================================FullDetails');
+         
         }
       }
     } catch (error) {
