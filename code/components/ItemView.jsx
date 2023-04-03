@@ -14,11 +14,12 @@ export default function ItemView() {
     const dividedParking = Math.min(ItemList.ParkingRating / ItemList.RatingCount, 5)
     const divideRampRating = Math.min(ItemList.RampRating / ItemList.RatingCount, 5)
     const dividedTactilesRating =  Math.min(ItemList.TactilesRating / ItemList.RatingCount, 5)
+    const divideEstablishmentRating = Math.min(ItemList.EstablishmentRating / ItemList.RatingCount, 5)
     const [rating] = useState(dividedRating)
     const [parking] = useState(dividedParking)
     const [ramp] = useState(divideRampRating)
     const [tactiles] = useState(dividedTactilesRating)
-    console.log(ItemList)
+    const [establishment] = useState(divideEstablishmentRating)
     
 
   
@@ -26,7 +27,7 @@ export default function ItemView() {
   return (
     <View style = {{width: '100%', height: '65%', backgroundColor: Black, borderTopRightRadius: 20, borderTopLeftRadius: 20, alignItems: 'center', justifyContent: 'center', position: 'absolute', bottom: 0}}>
       <View style = {{position: 'absolute', top: 10, left: 10, margin: 10, justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%', flexDirection: 'column'}}>
-      <Text style={{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy', width: '100%', marginBottom: 10}}>{ItemList.Establishment}</Text>
+      <Text style={{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy', width: '100%', marginBottom: 10,}}>{ItemList.Establishment}</Text>
       <Pressable onPress = {() => setModal(true)}
       >
         <Rating
@@ -35,8 +36,8 @@ export default function ItemView() {
         tintColor = {Black}
         jumpValue = {0.5}
         />
-      </Pressable>
-      <Text  style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight', width: '100%', marginVertical: 10}}>Current Rating: {Number(rating.toFixed(2))}</Text>
+      
+      <Text  style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight', width: '100%', marginVertical: 10}}>Overall Rating: {Number(rating.toFixed(2))}</Text></Pressable>
       </View>
       <Comments/>
         <Modal 
@@ -46,12 +47,18 @@ export default function ItemView() {
           onRequestClose={() => setModal(false)}
         
         >
-          <View style = {{width: '100%', height: '100%', backgroundColor: Black}}>
-          <Ratings
+          <View style = {{width: '100%', height: '100%', justifyContent: 'center', backgroundColor: Black}}>
+            <Ratings
             startingValue = {rating}
             title = 'Overall Rating'
             readonly
             result = {Number(rating.toFixed(2))}
+            />
+              <Ratings
+            startingValue = {establishment}
+            title = 'establishment'
+            readonly
+            result = {Number(establishment.toFixed(2))}
             />
             <Ratings
             startingValue = {parking}
