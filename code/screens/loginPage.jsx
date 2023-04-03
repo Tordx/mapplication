@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native'
 import { useDispatch } from 'react-redux';
 import PouchDB from 'pouchdb-react-native' ; 'pouchdb-core'; 
-import { setCoordinates, setEmail, setPassword } from '../config/AccountSlice';
+import { setUserAccount } from '../config/AccountSlice';
 import LinearGradient from 'react-native-linear-gradient';
 import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
  
@@ -24,6 +24,7 @@ export const Loginbox = (props) => {
       onBlur={() => setIsFocused(false)}
       value = {props.value}
       onChangeText = {props.onChangeText}
+      maxLength={30}
 
       />
       <Pressable onPress = {props.onPress} disabled = {props.disabled} style = {{position: 'absolute', right: 10}}>
@@ -39,44 +40,45 @@ export const Loginbox = (props) => {
 
 const Login = () => {
 
+  
+  const [show, setShow] = useState(true)
+  const [username, setUserName] = useState('')
+  const [password, putPassword] = useState('')
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+
   const loginaccount = async() => {
 
      const remoteAccounts = new PouchDB('http://admin:admin@192.168.0.192:5984/m_account');
-     
 
     try {
-      const result = await remoteAccounts.allDocs({
+      let result = await remoteAccounts.allDocs({
         include_docs: true,
         attachments: true,
       });
       if (result.rows) {
-        const modifiedArr = result.rows.map(item => item.doc);
-        const filteredData = modifiedArr.filter(item => {
+        let modifiedArr = result.rows.map(
+          item => item.doc
+        );
+        let filteredData = modifiedArr.filter(item => {
+          return item.username === username
+        });
+        if (filteredData.length) {
+          let newFilterData = filteredData.map((item) => {
+            return item
+          });
+          const FullDetails = newFilterData[0]
 
-          return item?.email === email});
-
-        if (filteredData.length > 0) {
-          const newFilterData = filteredData.map(item => item);
-
-          const emailAddress = newFilterData[0].email
-          const Password = newFilterData[0].password
-          const Coordinates = newFilterData[0].coordinates
-
-          dispatch(setCoordinates(Coordinates));
-          dispatch(setEmail(emailAddress));
-          dispatch(setPassword(Password));
+          dispatch(setUserAccount(FullDetails));
           navigation.navigate('BottomTabs');
         }
       }
     } catch (error) {
       console.error(error);
+      console.log(error)
     }
   }
-  const [show, setShow] = useState(true)
-  const [email, putEmail] = useState('')
-  const [password, putPassword] = useState('')
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
 
   return (
     <LinearGradient style  ={styles.container} colors={['#202020','#202020', '#202020']}>
@@ -86,9 +88,8 @@ const Login = () => {
         <Loginbox 
           placeholder = 'username' 
           secureTextEntry = {false}
-          onPress={() => console.log('usernamepressed')}
-          value = {email}
-          onChangeText = {(value) => putEmail(value)}
+          value = {username}
+          onChangeText = {(value) => setUserName(value)}
         />
         <Loginbox 
           placeholder = 'password' 
@@ -101,7 +102,7 @@ const Login = () => {
       </View>
       <KeyboardAvoidingView style = {{ justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: 0, width: '90%'}}>
       <Pressable style = {{margin: 10, width: '100%', backgroundColor: '#f5f5f5', height: 60, justifyContent: 'center', alignItems: 'center', borderRadius: 20}}
-          onPress = {() => navigation.navigate('BottomTabs')}
+          onPress = {loginaccount}
         >
           <Text style = {{textAlign: 'center', fontSize: 17, fontFamily: 'Nexa-ExtraLight', color: Black}}>
               LOG IN
