@@ -1,33 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit'
 
  export const Account = createSlice({
-   name: 'account',
+   name: 'Account',
    initialState: {
-      email: [],
-      password: [],
-      coordinates: [],
+    useraccount: [],
    },
    reducers: {
-      setEmail: (state , action ) => {
-        state.email = action.payload
+      setUserAccount: (state , action ) => {
+        state.useraccount = action.payload
         console.log(action)
         console.log('action')
-      },
-      setPassword: (state , action ) => {
-        state.password = action.payload
-        console.log(action)
-        console.log('action')
-      },
-      setCoordinates: (state , action ) => {
-        state.coordinates = action.payload
-        console.log(action)
-        console.log('action')
-      },
  
-   }
+      },
+  }
  })
  
  // Action creators are generated for each case reducer function
- export const {setEmail, setPassword, setCoordinates} = Account.actions
+ export const {setUserAccount} = Account.actions
  
  export default Account.reducer
