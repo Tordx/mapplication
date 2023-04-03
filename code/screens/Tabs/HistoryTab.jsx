@@ -63,20 +63,17 @@ const HistoryTab = () => {
 
   const renderItem = ({item}) => {
     return (
-      <Pressable style = {{width: '100%', height: 125, borderColor: LightBlue, borderBottomWidth: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'flex-start', margin: 10., borderRadius: 20}}
-        // onPress={() => {
-        //   dispatch(setItem(item));
-        //   navigation.navigate('ItemViewPage')
-        // }}
+      <Pressable style = {{width: '100%', height: 100, borderColor: LightBlue, borderBottomWidth: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'flex-start'}}
       >
-        <View style = {{padding: 15, flexDirection: 'row',justifyContent: 'center', alignItems: 'center'}}>
+        <View style = {{padding: 15, flexDirection: 'row',justifyContent: 'center', alignItems: 'center', padding: 10}}>
           {/* <Image style = {{width: 100, height: 100, marginRight: 15, borderRadius: 20}} resizeMode='cover' source={{uri: item.Image}} /> */}
-          <View style = {{width: '100%'}}>
-              <Text style={{ fontSize: 22, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left'}}>{item.Date}</Text>
-              <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-ExtraLight'}}>{item.Text}</Text>
+          <View style = {{width: '100%', height: '100%'}}>
+              <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-ExtraLight', width: '60%',}}>{item.Text}</Text>
+              <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', width: '60%', marginVertical: 5}}>{item.CommentID}</Text>
+              <Text style={{  fontSize: 12, color: White, fontFamily: 'Nexa-ExtraLight',}}>{item.Date}</Text>
           </View>
         </View>
-        <Text style={{position: 'absolute',right: 20, fontSize: 35, color: LightYellow}}>{Math.min(item.Rating).toFixed(2)} ★</Text>
+        <Text style={{position: 'absolute',right: 20, fontSize: 30, color: LightYellow}}>{Math.min(item.Rating).toFixed(2)} ★</Text>
       </Pressable>
     );
    

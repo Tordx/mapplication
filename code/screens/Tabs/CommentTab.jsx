@@ -60,11 +60,11 @@ const CommentTab = () => {
   useEffect(() => {
     
     getdata()
-  },[selectedCategory])
+  },[])
 
   const renderItem = ({item}) => {
     return (
-      <Pressable style = {{width: 402, height: 125, borderColor: LightBlue, borderWidth: 2, justifyContent: 'center', alignItems: 'flex-start', margin: 10., borderRadius: 20}}
+      <Pressable style = {{width: 410, height: 125, borderColor: LightBlue, borderWidth: 2, justifyContent: 'center', alignItems: 'flex-start', marginVertical: 10, borderRadius: 20}}
         onPress={() => {
           dispatch(setItem(item));
           navigation.navigate('ItemViewPage')
@@ -87,7 +87,7 @@ const CommentTab = () => {
     <View style = {{alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', backgroundColor: Black}}>
       <View style = {{ position: 'absolute', top: 10}}>
      
-      <Text style = {{paddingLeft: 20, color: White, fontSize: 25, fontFamily: 'Nexa-Heavy'}}>Establishments</Text>
+      <Text style = {{paddingLeft: 20, color: White, fontSize: 30, fontFamily: 'Nexa-Heavy'}}>Establishments</Text>
       
       <ScrollView horizontal showsHorizontalScrollIndicator = {false} style = {{flexDirection: 'row'}}>
       <Pressable  style = {selectedCategory === 'Government' ? styles.selectedCategory : styles.nonselectedCategory} onPress={() => setSelectedCategory('Government')}>
