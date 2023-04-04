@@ -1,11 +1,13 @@
 
 import React, {useState} from 'react';
-import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView , Alert } from 'react-native'
+import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView , Alert , Button , Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { dbremoteAccounts } from '../../database/database';
 import PouchDB from 'pouchdb-react-native' ; 'pouchdb-core'; 
 import uuid from 'react-native-uuid';
+import { launchImageLibrary } from 'react-native-image-picker';
+import RNFetchBlob from 'rn-fetch-blob';
 
 
 
@@ -52,9 +54,38 @@ const Signup = () => {
   const [Sex, setSex] = useState('')
   const [Address, setAddress] = useState('')
   const [AlternateContactNumber, setAlternateContactNumber] = useState('')
+  const [photo, setPhoto] = React.useState(null);
 
   const navigation = useNavigation()
   const id = uuid.v4()
+
+  const handleChoosePhoto = async() => {
+    launchImageLibrary({ noData: true }, async(response) => {
+      // console.log(response);
+      if (response) {
+        const datapic = response
+        // setPhoto(response);
+        try {
+          const data = await RNFetchBlob.fs.readFile(datapic.assets[0].uri, 'base64');
+          const formData = new FormData();
+          formData.append('image', data);
+          const response = await fetch('https://api.imgur.com/3/image', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer bd49a5b019e13ffe584a4c735069141287166b0c',
+            },
+            body: formData,
+          });
+          const result = await response.json();
+          const photolink = result.data.link
+          setPhoto(photolink)
+          console.log('photolink', photolink);
+        } catch (error) {
+          console.log('error', error);
+        }
+      }
+    });
+  };
 
   const setNewSuperAdmin = async () => {
       
@@ -76,6 +107,7 @@ const Signup = () => {
              Sex : Sex,
              Address : Address,
              AlternateContactNumber : AlternateContactNumber,
+             ProfilePhoto: photo
          }
       dbremoteAccounts.put(NewSuperAdmin)
          .then((response) =>{
@@ -194,7 +226,7 @@ const Signup = () => {
           onChangeText={(value) => setAlternateContactNumber(value)}
           value={AlternateContactNumber}
         />
-         <Loginbox 
+         {/* <Loginbox 
           placeholder = 'IDCardImage' 
           secureTextEntry= {show} 
           onPress = {() => setShow(!show)} 
@@ -207,7 +239,10 @@ const Signup = () => {
           onPress = {() => setShow(!show)} 
           onChangeText={(value) => setProfilePicture(value)}
           value={ProfilePicture}
-        />
+        /> */}
+        
+        {/* <Button title="Upload Photo" onPress={handleUploadPhoto} /> */}
+        <Button title="Choose Photo" onPress={handleChoosePhoto} />
         <Pressable style = {{margin: 10, width: '35%', backgroundColor: '#f5f5f5', height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}
         onPress={() => setNewSuperAdmin()}
         >
