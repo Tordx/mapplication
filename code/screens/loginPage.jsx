@@ -8,6 +8,7 @@ import PouchDB from 'pouchdb-react-native' ; 'pouchdb-core';
 import { setUserAccount } from '../config/AccountSlice';
 import LinearGradient from 'react-native-linear-gradient';
 import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
+import { dbremoteAccounts } from '../../database/database';
  
 
 export const Loginbox = (props) => {
@@ -53,7 +54,7 @@ const Login = () => {
      const remoteAccounts = new PouchDB('http://admin:admin@192.168.0.192:5984/m_account');
 
     try {
-      let result = await remoteAccounts.allDocs({
+      let result = await dbremoteAccounts.allDocs({
         include_docs: true,
         attachments: true,
       });
@@ -62,17 +63,17 @@ const Login = () => {
           item => item.doc
         );
         let filteredData = modifiedArr.filter(item => {
-          return item.email === username
+          return item.username === username
         });
         if (filteredData.length) {
           let newFilterData = filteredData.map((item) => {
             return item
           });
           const FullDetails = newFilterData[0]
-          const adminemail = newFilterData[0].email
+          const adminusername = newFilterData[0].username
           const adminpassword = newFilterData[0].password
 
-          if(adminemail === username && adminpassword === password) {
+          if(adminusername === username && adminpassword === password) {
             dispatch(setUserAccount(FullDetails));
             navigation.navigate('BottomTabs');
           } else{

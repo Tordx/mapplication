@@ -7,6 +7,7 @@ import Login from '../screens/loginPage'
 import Signup from '../screens/signup'
 import BottomTabs from '../screens/bottomtabs'
 import ItemViewPage from '../screens/ItemViewPage'
+import EditAccount from '../screens/EditAccount'
 import { Provider } from 'react-redux'
 import store from '../config/store'
 
@@ -57,6 +58,11 @@ const PageNavigation = () => {
           <Page.Screen
             name="ItemViewPage"
             component={ItemViewPage}
+            options={{ headerShown: false }}
+          />
+            <Page.Screen
+            name="EditAccount"
+            component={EditAccount}
             options={{ headerShown: false }}
           />
         </Page.Navigator>

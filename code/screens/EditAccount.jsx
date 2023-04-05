@@ -8,6 +8,7 @@ import PouchDB from 'pouchdb-react-native' ; 'pouchdb-core';
 import uuid from 'react-native-uuid';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
+import { useSelector } from 'react-redux';
 
 
 
@@ -36,24 +37,30 @@ const Loginbox = (props) => {
   )
 }
 
-const Signup = () => {
+const EditAccount = () => {
+
+ const {useraccount} = useSelector((action) => action.login)
+ console.log('====================================useraccount');
+ console.log(useraccount);
+ console.log('====================================useraccount');
 
   const [show, setShow] = useState(false)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [MobileNumber, setMobileNumber] = useState('')
-  const [Nationality, setNationality] = useState('')
-  const [IDType, setIDType] = useState('')
-  const [IDCardImage, setIDCardImage] = useState('')
-  const [IDNumber, setIDNumber] = useState('')
-  const [ProfilePicture, setProfilePicture] = useState('')
-  const [FirstName, setFirstName] = useState('')
-  const [MiddleName, setMiddleName] = useState('')
-  const [LastName, setLastName] = useState('')
-  const [Birthday, setBirthday] = useState('')
-  const [Sex, setSex] = useState('')
-  const [Address, setAddress] = useState('')
-  const [AlternateContactNumber, setAlternateContactNumber] = useState('')
+  const [ids, setID] = useState(useraccount.id)
+  const [username, setUsername] = useState(useraccount.username)
+  const [password, setPassword] = useState(useraccount.password)
+  const [MobileNumber, setMobileNumber] = useState(useraccount.MobileNumber)
+  const [Nationality, setNationality] = useState(useraccount.Nationality)
+  const [IDType, setIDType] = useState(useraccount.IDType)
+//   const [IDCardImage, setIDCardImage] = useState(useraccount.IDCardImage)
+  const [IDNumber, setIDNumber] = useState(useraccount.IDNumber)
+//   const [ProfilePicture, setProfilePicture] = useState(useraccount)
+  const [FirstName, setFirstName] = useState(useraccount.FirstName)
+  const [MiddleName, setMiddleName] = useState(useraccount.MiddleName)
+  const [LastName, setLastName] = useState(useraccount.LastName)
+  const [Birthday, setBirthday] = useState(useraccount.Birthday)
+  const [Sex, setSex] = useState(useraccount.Sex)
+  const [Address, setAddress] = useState(useraccount.Address)
+  const [AlternateContactNumber, setAlternateContactNumber] = useState(useraccount.AlternateContactNumber)
   const [Profilephoto, setProfilePhoto] = React.useState(null);
   const [Idcardimage, setIdCardImage] = React.useState(null);
 
@@ -120,7 +127,7 @@ const Signup = () => {
       
        try {
          var NewSuperAdmin = {
-             _id: id,
+             _id: ids,
              username : username,
              password : password,
              MobileNumber : MobileNumber,
@@ -267,4 +274,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default EditAccount
