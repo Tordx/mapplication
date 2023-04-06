@@ -9,6 +9,8 @@ import uuid from 'react-native-uuid';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setUserAccount } from '../config/AccountSlice';
 
 
 
@@ -40,20 +42,20 @@ const Loginbox = (props) => {
 const EditAccount = () => {
 
  const {useraccount} = useSelector((action) => action.login)
+ const dispatch = useDispatch();
  console.log('====================================useraccount');
  console.log(useraccount);
  console.log('====================================useraccount');
 
   const [show, setShow] = useState(false)
-  const [ids, setID] = useState(useraccount.id)
+  const [ids, setID] = useState(useraccount._id)
+  const [revs, setRev] = useState(useraccount._rev)
   const [username, setUsername] = useState(useraccount.username)
   const [password, setPassword] = useState(useraccount.password)
   const [MobileNumber, setMobileNumber] = useState(useraccount.MobileNumber)
   const [Nationality, setNationality] = useState(useraccount.Nationality)
   const [IDType, setIDType] = useState(useraccount.IDType)
-//   const [IDCardImage, setIDCardImage] = useState(useraccount.IDCardImage)
   const [IDNumber, setIDNumber] = useState(useraccount.IDNumber)
-//   const [ProfilePicture, setProfilePicture] = useState(useraccount)
   const [FirstName, setFirstName] = useState(useraccount.FirstName)
   const [MiddleName, setMiddleName] = useState(useraccount.MiddleName)
   const [LastName, setLastName] = useState(useraccount.LastName)
@@ -61,8 +63,8 @@ const EditAccount = () => {
   const [Sex, setSex] = useState(useraccount.Sex)
   const [Address, setAddress] = useState(useraccount.Address)
   const [AlternateContactNumber, setAlternateContactNumber] = useState(useraccount.AlternateContactNumber)
-  const [Profilephoto, setProfilePhoto] = React.useState(null);
-  const [Idcardimage, setIdCardImage] = React.useState(null);
+  const [Profilephoto, setProfilePhoto] = React.useState(useraccount.Profilephoto);
+  const [Idcardimage, setIdCardImage] = React.useState(useraccount.Idcardimage);
 
   const navigation = useNavigation()
   const id = uuid.v4()
@@ -128,14 +130,13 @@ const EditAccount = () => {
        try {
          var NewSuperAdmin = {
              _id: ids,
+             _rev: revs,
              username : username,
              password : password,
              MobileNumber : MobileNumber,
              Nationality : Nationality,
              IDType : IDType,
-             IDCardImage : IDCardImage,
              IDNumber : IDNumber,
-             ProfilePicture : ProfilePicture,
              FirstName : FirstName,
              MiddleName : MiddleName,
              LastName : LastName,
@@ -146,6 +147,9 @@ const EditAccount = () => {
              Profilephoto: Profilephoto,
              Idcardimage: Idcardimage
          }
+         console.log('putted in readux user');
+         dispatch(setUserAccount(NewSuperAdmin));
+         console.log('putted in readux user');
       dbremoteAccounts.put(NewSuperAdmin)
          .then((response) =>{
            Alert.alert('Your Super Admin is Added has been successfully added!')
@@ -241,22 +245,6 @@ const EditAccount = () => {
           onChangeText={(value) => setAlternateContactNumber(value)}
           value={AlternateContactNumber}
         />
-         {/* <Loginbox 
-          placeholder = 'IDCardImage' 
-          secureTextEntry= {show} 
-          onPress = {() => setShow(!show)} 
-          onChangeText={(value) => setIDCardImage(value)}
-          value={IDCardImage}
-        />
-        <Loginbox 
-          placeholder = 'ProfilePicture' 
-          secureTextEntry= {show} 
-          onPress = {() => setShow(!show)} 
-          onChangeText={(value) => setProfilePicture(value)}
-          value={ProfilePicture}
-        /> */}
-        
-        {/* <Button title="Upload Photo" onPress={handleUploadPhoto} /> */}
         <View style={{flexDirection: "row"}}>
         <Button  title="PROFILE PHOTO" onPress={handleProfilePhoto} />
         <Button title="ID CARD IMAGE" onPress={handleIDCardImage} />
@@ -266,7 +254,7 @@ const EditAccount = () => {
         onPress={() => setNewSuperAdmin()}
         >
           <Text style = {{textAlign: 'center', fontSize: 17, fontWeight: '500'}}>
-             SIGN UP
+             UPDATE PROFILE
           </Text>
         </Pressable>
       </View>

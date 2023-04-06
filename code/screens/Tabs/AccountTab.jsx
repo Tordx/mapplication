@@ -26,7 +26,7 @@ const AccountTab = ()=> {
     <View>
      <View style={{alignItems: 'center'}}>
       <Image
-        source={{ uri: useraccount.Profilephoto }}
+        source={{ uri: useraccount.Profilephoto}}
         style={{width: 200, height: 200,}}
       />
       <Text style={{fontSize: 18}}>{useraccount.username}</Text>

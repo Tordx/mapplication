@@ -12,6 +12,8 @@ import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
+import { launchImageLibrary } from 'react-native-image-picker';
+import RNFetchBlob from 'rn-fetch-blob';
 
  export const Ratings = (props) => (
     <View style = {{justifyContent: 'flex-start', alignItems: 'flex-start', alignSelf: 'flex-start', flexDirection: 'column', marginLeft: 20, marginVertical: 15}} >
@@ -53,6 +55,34 @@ export default function Comments() {
    
     console.log(overallrating)
 
+    const handleProfilePhoto = async() => {
+      launchImageLibrary({ noData: true }, async(response) => {
+        // console.log(response);
+        if (response) {
+          const datapic = response
+          // setPhoto(response);
+          try {
+            const data = await RNFetchBlob.fs.readFile(datapic.assets[0].uri, 'base64');
+            const formData = new FormData();
+            formData.append('image', data);
+            const response = await fetch('https://api.imgur.com/3/image', {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Bearer bd49a5b019e13ffe584a4c735069141287166b0c',
+              },
+              body: formData,
+            });
+            const result = await response.json();
+            const photolink = result.data.link
+            setImageAttachment(photolink)
+            console.log('photolink', photolink);
+          } catch (error) {
+            console.log('error', error);
+          }
+        }
+      });
+    };
+
     const adddata = async () => {
 
       const dbremoteComments = new PouchDB('http://admin:admin@192.168.0.192:5984/m_comments');
@@ -61,7 +91,7 @@ export default function Comments() {
       try {
         var response = {
           _id: id,
-          FullName: useraccount.FullName,
+          FullName: useraccount.FirstName + ' ' +  useraccount.MiddleName + ' ' +  useraccount.LastName,
           Image: useraccount.Image,
           Text: text,
           ImageAttachment: imageattachment,
@@ -98,7 +128,6 @@ export default function Comments() {
         console.log(error);
       }
     };
-
 
     const getdata = async () => {
         const dbremoteComments = new PouchDB('http://admin:admin@192.168.0.192:5984/m_comments');
@@ -223,7 +252,9 @@ export default function Comments() {
             {<View style = {{justifyContent: 'center', alignSelf: 'flex-start', margin: 10, width: 100, height: 100, borderWidth: 2, alignItems: 'center', borderRadius: 20, borderColor: LightYellow}}>
               <Image style = {{width: '100%', height: '100%', borderRadius: 19}} resizeMode='cover' source={require('../Assets/images/welcome-logo.png')} />
             </View>}
-            <Pressable style = {{justifyContent: 'center', alignSelf: 'flex-start', margin: 10, width: 100, height: 100, borderWidth: 2, alignItems: 'center', borderRadius: 20, borderColor: LightYellow}}>
+            <Pressable style = {{justifyContent: 'center', alignSelf: 'flex-start', margin: 10, width: 100, height: 100, borderWidth: 2, alignItems: 'center', borderRadius: 20, borderColor: LightYellow}}
+            onPress={handleProfilePhoto}
+            >
               <Icon
                 name='photo'
                 size={60}
