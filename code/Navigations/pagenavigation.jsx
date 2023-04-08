@@ -10,24 +10,10 @@ import ItemViewPage from '../screens/ItemViewPage'
 import EditAccount from '../screens/EditAccount'
 import { Provider } from 'react-redux'
 import store from '../config/store'
+import UserViewPage from '../screens/UserViewPage'
+import CommentViewPage from '../screens/CommentViewPage'
 
-export type AppStackParamList = {
-  Welcome: undefined;
-  Signup: undefined;
-  Login: undefined;
-  ItemViewPage: undefined;
-  BottomTabs: {
-    name: string,
-  }
-};
-
-const Home = () => <View />;
-const Notifications = () => <View />;
-const Profile = () => <View />;
-const Settings = () => <View />;
-
-
-const Page = createStackNavigator<AppStackParamList>();
+const Page = createStackNavigator();
 
 const PageNavigation = () => {
 
@@ -60,9 +46,14 @@ const PageNavigation = () => {
             component={ItemViewPage}
             options={{ headerShown: false }}
           />
-            <Page.Screen
-            name="EditAccount"
-            component={EditAccount}
+          <Page.Screen
+            name="CommentViewPage"
+            component={CommentViewPage}
+            options={{ headerShown: false }}
+          />
+          <Page.Screen
+            name="UserViewPage"
+            component={UserViewPage}
             options={{ headerShown: false }}
           />
         </Page.Navigator>
