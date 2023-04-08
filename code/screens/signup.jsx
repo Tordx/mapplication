@@ -129,6 +129,7 @@ const Signup = () => {
              IDCardImage : IDCardImage,
              IDNumber : IDNumber,
              ProfilePicture : ProfilePicture,
+             UserID: id,
              FirstName : FirstName,
              MiddleName : MiddleName,
              LastName : LastName,

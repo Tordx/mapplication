@@ -1,6 +1,6 @@
 import { View, Text, FlatList, Image } from 'react-native'
 import React, {useEffect, useState} from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import PouchDB from 'pouchdb-react-native' ; 'pouchdb-core';
 import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
 import { Loginbox } from '../screens/loginPage';
@@ -12,6 +12,7 @@ import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
+import { setUserView } from '../config/AccountSlice';
 
  export const Ratings = (props) => (
     <View style = {{justifyContent: 'flex-start', alignItems: 'flex-start', alignSelf: 'flex-start', flexDirection: 'column', marginLeft: 20, marginVertical: 15}} >
@@ -22,7 +23,7 @@ import { RefreshControl } from 'react-native-gesture-handler';
             onFinishRating={props.onFinishRating}
             tintColor = {Black}
             jumpValue = {props.jumpValue}
-            imageSize={45}
+            imageSize={40}
             ratingColor= '#ffdd85'
             readonly = {props.readonly}
             />
@@ -34,12 +35,13 @@ import { RefreshControl } from 'react-native-gesture-handler';
 export default function Comments() {
 
     const {ItemList} = useSelector((action) => action.items)
-    const {useraccount} = useSelector((action) => action.login)
+    const {useraccount} = useSelector((action) => action.user)
+    const dispatch = useDispatch();
     const navigation = useNavigation();
     const [onrefresh, setOnRefresh] = useState(false)
     const now = new Date();
     const date = now.toLocaleDateString();
-    const [data, setData] = useState('');
+    const [data, setData] = useState([]);
     const [text, setText] = useState('');
     const [modal, setModal] = useState(false);
     const [imageattachment, setImageAttachment] = useState('');
@@ -51,7 +53,7 @@ export default function Comments() {
     const id = uuid.v4();
 
    
-    console.log(overallrating)
+    console.log(data)
 
     const adddata = async () => {
 
@@ -66,6 +68,7 @@ export default function Comments() {
           Text: text,
           ImageAttachment: imageattachment,
           Rating: overallrating,
+          EstablishmentRating: establishment,
           ParkingRating: parking,
           RampRating: ramp,
           TactilesRating: tactiles,
@@ -115,11 +118,12 @@ export default function Comments() {
                 item.doc
             )
             let filteredData = modifiedArr.filter(item => {
-              return item
+             
+              return item.CommentID === ItemList.CommentID;
             })
             if (filteredData) {
                 const newFilteredData = filteredData.filter((item) => {
-                  return item.CommentID === ItemList.CommentID;
+                  return item
                 })
             
                 setData(newFilteredData);
@@ -136,22 +140,31 @@ export default function Comments() {
     useEffect(() => {
         getdata()
     },[])
+
+
        
 
     const renderItem = ({item}) => {
         return (
-          <View style = {{width: 402, height: 100, borderColor: LightBlue, borderBottomWidth: 2, justifyContent: 'center', alignItems: 'flex-start', margin: 10., borderRadius: 10}}
+          <Pressable style = {{width: '100%', height: 100, borderColor: LightBlue, borderBottomWidth: 1, justifyContent: 'center', alignSelf: 'center', borderRadius: 10}}
+          onPress={() => {dispatch(setUserView(item)); navigation.navigate('CommentViewPage')}}
+          android_ripple={{
+            color: 'grey',
+          }}
           >
-            <View style = {{padding: 15, flexDirection: 'row',justifyContent: 'center', alignItems: 'center'}}>
-              <Image style = {{width: 75, height: 75, marginRight: 15, borderRadius: 50}} resizeMode='cover' source={{uri: item?.Image}} />
-              <View style = {{width: '50%'}}>
-                  <Text style={{ fontSize: 16, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 5}}>{item.FullName}</Text>
-                  <Text style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight'}}>{item.Text}</Text>
+            <View style = {{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%',}}>
+              <Pressable  onPress={() => {dispatch(setUserView(item)); navigation.navigate('UserViewPage')}} style = {{width: 75, height: 75, marginRight: 15, borderRadius: 50}} >
+              <Image style = {{width: '100%', height: '100%', borderRadius: 50}} resizeMode='cover' source={require('../Assets/images/welcome-logo.png')} />
+              </Pressable>
+              <View style = {{flexDirection: 'column', width: '75%'}}>
+                  <Text style={{ fontSize: 16, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',}}>{item.FullName}</Text>
+                  <Text style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight', width: '75%', marginVertical: 5}}>{item.Text.slice(0, 50)}</Text>
                   <Text style={{ fontSize: 12, color: White, fontFamily: 'Nexa-ExtraLight'}}>{item.Date}</Text>
               </View>
-            </View>
             <Text style={{position: 'absolute',right: 20, fontSize: 25, color: LightYellow}}>{item.Rating} ★</Text>
-          </View>
+            
+            </View>
+          </Pressable>
         );
        
       }
@@ -164,12 +177,12 @@ export default function Comments() {
 
   return (
     <>
+    <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
     
-    <View style = {{marginTop: 130, justifyContent: 'center', alignItems: 'center',}}>
-    
-     
-    <Pressable onPress = {() => setModal(true)} style = {{ width: 500, borderBottomWidth: 0.3, borderColor: White, justifyContent: 'center', alignItems: 'center',}}>
+    <Pressable onPress = {() => setModal(true)} style = {{ width: 500, borderBottomWidth: 0.3, borderColor: White, justifyContent: 'center', alignItems: 'center'}}>
         <Text style = {{color: White, fontFamily: 'cocogooese_semibold', fontSize: 16, marginBottom: 10}}>Add a Review</Text>
+        
+      
       </Pressable>
       <FlatList
         data={data}
@@ -195,8 +208,8 @@ export default function Comments() {
         <View style = {{width: '100%', height: '100%', backgroundColor: Black, justifyContent: 'center', alignItems: 'center',}}>
           <Text style = {{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 10}}>SUBMIT A REVIEW</Text>
           <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Amplifying PWD voices with inclusive reviews - every voice deserves to be heard.</Text>
-          <Text style={{fontSize: 25, color: White, textAlign: 'left', alignSelf: 'flex-start', paddingLeft: 20, fontFamily: 'Nexa-Heavy'}}>Overall Rating</Text>
-          <Text style={{fontSize: 50, color: LightYellow, textAlign: 'left', alignSelf: 'flex-start', paddingLeft: 20, fontFamily: 'Nexa-Heavy'}}>{overallrating} ★</Text>
+          <Text style={{fontSize: 25, color: White, textAlign: 'left', alignSelf: 'flex-start', paddingLeft: 20, fontFamily: 'Nexa-Heavy'}}>Your overall rating</Text>
+          <Text style={{fontSize: 75, color: LightYellow, textAlign: 'left', alignSelf: 'flex-start', paddingLeft: 20, fontFamily: 'Nexa-Heavy'}}>{overallrating} ★</Text>
             
             <Ratings
             onFinishRating = {(newrating) => setEstablishment(newrating)}
@@ -241,6 +254,7 @@ export default function Comments() {
             />
         </View>
       </Modal>
+      
       </>
   )
 }

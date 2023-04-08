@@ -1,7 +1,7 @@
 import { View, Text, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import { Rating, AirbnbRating } from 'react-native-ratings';
-import { Black, White } from '../Assets/Colors/Colors';
+import { Black, LightYellow, White } from '../Assets/Colors/Colors';
 import { useSelector } from 'react-redux';
 import Comments, { Ratings } from './Comments';
 import { Modal } from 'react-native';
@@ -28,18 +28,22 @@ export default function ItemView() {
     <View style = {{width: '100%', height: '65%', backgroundColor: Black, borderTopRightRadius: 20, borderTopLeftRadius: 20, alignItems: 'center', justifyContent: 'center', position: 'absolute', bottom: 0}}>
       <View style = {{position: 'absolute', top: 10, left: 10, margin: 10, justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%', flexDirection: 'column'}}>
       <Text style={{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy', width: '100%', marginBottom: 10,}}>{ItemList.Establishment}</Text>
-      <Pressable onPress = {() => setModal(true)}
+      
+      <Pressable onPress = {() => {setModal(true); console.log('pressed')}}
       >
         <Rating
         startingValue={rating}
         readonly
         tintColor = {Black}
         jumpValue = {0.5}
+        ratingColor= '#ffdd85'
         />
       
       <Text  style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight', width: '100%', marginVertical: 10}}>Overall Rating: {Number(rating.toFixed(2))}</Text></Pressable>
       </View>
+      <View style = {{width: '100%', marginTop: '40%'}}>
       <Comments/>
+      </View>
         <Modal 
           animationType='slide'
           transparent
@@ -48,12 +52,12 @@ export default function ItemView() {
         
         >
           <View style = {{width: '100%', height: '100%', justifyContent: 'center', backgroundColor: Black}}>
-            <Ratings
-            startingValue = {rating}
-            title = 'Overall Rating'
-            readonly
-            result = {Number(rating.toFixed(2))}
-            />
+          <Text style={{fontSize: 20, color: White, textAlign: 'center', alignSelf: 'center', fontFamily: 'Nexa-ExtraLight'}}><Text style = {{color: LightYellow, fontFamily: 'Nexa-Heavy'}}>{ItemList.Establishment}</Text> earns a total of </Text>
+          <View style = {{alignSelf: 'center', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={{fontSize: 100, color: LightYellow, textAlign: 'center', alignSelf: 'center', fontFamily: 'Nexa-Heavy'}}>{Number(rating.toFixed(2))}</Text>
+          <Text style = {{color: LightYellow, textAlign: 'center', fontFamily: 'Nexa-Heavy', fontSize: 60,}}>★</Text>
+          </View>
+          <Text style={{fontSize: 20, color: White, textAlign: 'center', alignSelf: 'center', fontFamily: 'Nexa-ExtraLight'}}>in <Text style = {{color: LightYellow, fontFamily: 'Nexa-Heavy'}}>{ItemList.RatingCount}</Text> reviews</Text>
               <Ratings
             startingValue = {establishment}
             title = 'establishment'

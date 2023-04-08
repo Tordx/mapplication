@@ -19,7 +19,7 @@ const BottomTabs = () => {
     <>
     <Tab.Navigator
     initialRouteName='Comment'
-    screenOptions={({route}) => ({
+    screenOptions={() => ({
 
         tabBarShowLabel: false,
         tabBarLabelStyle: {

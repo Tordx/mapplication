@@ -15,7 +15,7 @@ import { Dimensions } from 'react-native';
 
 const HistoryTab = () => {
 
-  const {useraccount} = useSelector((action) => action.login)
+  const {useraccount} = useSelector((action) => action.user)
   const [comments, setComments] = useState([]);
 
   const getdata = async () => {

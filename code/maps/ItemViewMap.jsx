@@ -41,9 +41,7 @@ import { Image } from 'react-native';
     const {ItemList} = useSelector((action) => action.items)
     const [selectedMarker, setSelectedMarker] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const {email} = useSelector((store) => store.login)
-    const [usercoordinates, setUserCoordinates] = useState([119.97919707716136, 16.155291199328147]);
-    const [selectedCoordinate, setSelectedCoordinate] = useState(null);
+    const {useraccount} = useSelector((store) => store.user)
 
     
     
