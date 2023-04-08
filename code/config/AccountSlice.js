@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
    name: 'Account',
    initialState: {
     useraccount: [],
+    userview: [],
    },
    reducers: {
       setUserAccount: (state , action ) => {
@@ -12,10 +13,16 @@ import { createSlice } from '@reduxjs/toolkit'
         console.log('action')
  
       },
+      setUserView: (state , action ) => {
+        state.userview = action.payload
+        console.log(action)
+        console.log('action')
+ 
+      },
   }
  })
  
  // Action creators are generated for each case reducer function
- export const {setUserAccount} = Account.actions
+ export const {setUserAccount, setUserView} = Account.actions
  
  export default Account.reducer

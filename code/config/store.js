@@ -7,7 +7,7 @@ import ItemSlice from './ItemSlice'
 export default configureStore({
     reducer: {
 
-        login: AccountSlice,
+        user: AccountSlice,
         items: ItemSlice
     }
     
