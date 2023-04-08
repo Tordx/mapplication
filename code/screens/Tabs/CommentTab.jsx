@@ -64,20 +64,21 @@ const CommentTab = () => {
 
   const renderItem = ({item}) => {
     return (
-      <Pressable style = {{width: 410, height: 125, borderColor: LightBlue, borderWidth: 2, justifyContent: 'center', alignItems: 'flex-start', marginVertical: 10, borderRadius: 20}}
+      <Pressable style = {{width: '98%', height: 100, borderColor: LightBlue, borderWidth: 2, justifyContent: 'center', alignSelf: 'center', alignItems: 'center', marginVertical: 10, marginHorizontal: 10, borderRadius: 20}}
         onPress={() => {
           dispatch(setItem(item));
           navigation.navigate('ItemViewPage')
         }}
       >
-        <View style = {{padding: 15, flexDirection: 'row',justifyContent: 'center', alignItems: 'center'}}>
-          <Image style = {{width: 100, height: 100, marginRight: 15, borderRadius: 20}} resizeMode='cover' source={{uri: item.Image}} />
-          <View style = {{width: '45%'}}>
-              <Text style={{ fontSize: 22, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left'}}>{item.Establishment}</Text>
-              <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-ExtraLight'}}>Reviews: {item.CommentsCount}</Text>
-          </View>
-        </View>
-        <Text style={{position: 'absolute',right: 20, fontSize: 35, color: LightYellow}}>{Math.min(item.Rating / item.RatingCount, 5).toFixed(2)} ★</Text>
+          <View style = {{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+              <Image style = {{width: 75, height: 75, marginRight: 15,marginLeft: 15, borderRadius: 20}} resizeMode='cover' source={{uri: item?.Image}} />
+              <View style = {{flexDirection: 'column', width: '75%'}}>
+                  <Text style={{ fontSize: 16, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 5}}>{item.Establishment}</Text>
+                  <Text style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight'}}>Review Count: {item.RatingCount}</Text>
+              </View>
+            <Text style={{position: 'absolute',right: 20, fontSize: 25, color: LightYellow}}>{Math.min(item.Rating / item.RatingCount).toFixed(2)} ★</Text>
+            
+            </View>
       </Pressable>
     );
    
@@ -101,7 +102,7 @@ const CommentTab = () => {
       </Pressable>
     </ScrollView>
     </View>
-      <View style = {{marginTop: 100}}>
+      <View style = {{marginTop: 125}}>
       <FlatList
         data={selectedCategory === 'Government' ? government : selectedCategory === 'Corporate' ? corporate : local}
         renderItem = {renderItem}
