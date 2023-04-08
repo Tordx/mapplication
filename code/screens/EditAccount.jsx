@@ -39,7 +39,7 @@ const Loginbox = (props) => {
 
 const EditAccount = () => {
 
- const {useraccount} = useSelector((action) => action.login)
+ const {useraccount} = useSelector((action) => action.user)
  console.log('====================================useraccount');
  console.log(useraccount);
  console.log('====================================useraccount');
