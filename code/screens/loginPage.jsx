@@ -9,11 +9,13 @@ import { setUserAccount } from '../config/AccountSlice';
 import LinearGradient from 'react-native-linear-gradient';
 import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
 import { dbremoteAccounts } from '../../database/database';
+import { Modal } from 'react-native';
  
 
 export const Loginbox = (props) => {
 
   const [isFocused, setIsFocused] = useState(false);
+
 
   return (
     <View style = {{width: '90%', justifyContent: 'center', alignItems: 'center', borderColor: isFocused ? LightYellow : LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
@@ -25,7 +27,7 @@ export const Loginbox = (props) => {
       onBlur={() => setIsFocused(false)}
       value = {props.value}
       onChangeText = {props.onChangeText}
-      maxLength={30}
+      maxLength={300}
 
       />
       <Pressable onPress = {props.onPress} disabled = {props.disabled} style = {{position: 'absolute', right: 10}}>
@@ -47,47 +49,55 @@ const Login = () => {
   const [password, putPassword] = useState('')
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
+  const [loading, setLoading] = useState(false)
+  const [loggingIn, setLoggingIn] = useState(false)
 
   const loginaccount = async() => {
-
-     const remoteAccounts = new PouchDB('http://admin:admin@192.168.0.192:5984/m_account');
-
-    try {
-      let result = await dbremoteAccounts.allDocs({
-        include_docs: true,
-        attachments: true,
-      });
-      if (result.rows) {
-        let modifiedArr = result.rows.map(
-          item => item.doc
-        );
-        let filteredData = modifiedArr.filter(item => {
-          return item.username === username
+    const dbremoteAccounts = new PouchDB('http://admin:admin@192.168.0.192:5984/m_account');
+    if (username.length === 0) {
+        ToastAndroid.show("username is empty", ToastAndroid.CENTER)
+      } else if (password.length === 0) {
+        ToastAndroid.show("password is empty", ToastAndroid.CENTER)
+      } else {
+      try {
+        setLoading(true)
+        let result = await dbremoteAccounts.allDocs({
+          include_docs: true,
+          attachments: true,
         });
-        if (filteredData.length) {
-          let newFilterData = filteredData.map((item) => {
-            return item
+        if (result.rows) {
+          let modifiedArr = result.rows.map(
+            item => item.doc
+          );
+          let filteredData = modifiedArr.filter(item => {
+            return item.username === username
           });
-          const FullDetails = newFilterData[0]
-          const adminusername = newFilterData[0].username
-          const adminpassword = newFilterData[0].password
+          if (filteredData.length) {
+            let newFilterData = filteredData.map((item) => {
+              return item
+            });
+            const FullDetails = newFilterData[0]
+            const adminusername = newFilterData[0].username
+            const adminpassword = newFilterData[0].password
 
-          if(adminusername === username && adminpassword === password) {
-            dispatch(setUserAccount(FullDetails));
-            navigation.navigate('BottomTabs');
-          } else{
-            Alert.alert('Username and Password did not match!')
+            if(adminusername === username && adminpassword === password) {
+              dispatch(setUserAccount(FullDetails));
+              navigation.navigate('BottomTabs');
+              setLoading(false)
+            } else{
+              Alert.alert('Username and Password did not match!')
+              setLoading(false)
+            }
+            console.log(FullDetails);
+          
           }
-          console.log('====================================FullDetails');
-          console.log(FullDetails);
-          console.log('====================================FullDetails');
-         
         }
+      } catch (error) {
+        console.error(error);
+        console.log(error)
+        setLoading(false)
+        setLoggingIn(true)
       }
-    } catch (error) {
-      console.error(error);
-      console.log(error)
     }
   }
 
@@ -115,11 +125,47 @@ const Login = () => {
       <Pressable style = {{margin: 10, width: '100%', backgroundColor: '#f5f5f5', height: 60, justifyContent: 'center', alignItems: 'center', borderRadius: 20}}
           onPress = {loginaccount}
         >
-          <Text style = {{textAlign: 'center', fontSize: 17, fontFamily: 'Nexa-ExtraLight', color: Black}}>
+          <Text style = {{textAlign: 'center', fontSize: 17, fontFamily: 'Nexa-Heavy', color: Black}}>
               LOG IN
           </Text>
         </Pressable>
       </KeyboardAvoidingView>
+      <Modal 
+
+        transparent
+        visible = {loading}
+        style={styles.container}
+        animationType='slide'
+
+      >
+        <View style = {{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#00000199'}}>
+          <View style={{width: 400, height: 150, backgroundColor: White, borderRadius: 20, justifyContent: 'center', alignItems: 'center',}}>
+          <Text style = {{textAlign: 'center', fontSize: 17, fontFamily: 'Nexa-Heavy', color: Black}}>Please wait, while we set things up</Text>
+          </View>
+          
+        </View>
+      </Modal>
+      <Modal 
+
+        transparent
+        visible = {loggingIn}
+        onRequestClose={() => setLoggingIn(false)}
+        style={styles.container}
+        animationType='fade'
+
+      >
+        <View style = {{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#00000199'}}>
+          <View style={{width: 400, height: 150, backgroundColor: White, borderRadius: 20, justifyContent: 'center', alignItems: 'center',}}>
+          <Text style = {{textAlign: 'center', fontSize: 17, fontFamily: 'Nexa-Heavy', color: Black}}>Make sure you're connected to the internet</Text>
+          <Pressable style={{position: 'absolute', top: 10, right: 10,justifyContent: 'center', alignItems: 'center',}}
+            onPress={() => setLoggingIn(false)}
+          >
+            <Text style = {{ borderRadius: 20, backgroundColor: 'red', padding: 10, color: White, fontFamily: 'Nexa-Heavy'}}>close</Text>
+          </Pressable>
+          </View>
+          
+        </View>
+      </Modal>
     </LinearGradient>
   )
 };
