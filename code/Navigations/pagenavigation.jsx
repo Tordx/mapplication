@@ -12,6 +12,7 @@ import { Provider } from 'react-redux'
 import store from '../config/store'
 import UserViewPage from '../screens/UserViewPage'
 import CommentViewPage from '../screens/CommentViewPage'
+import { CardStyleInterpolators } from '@react-navigation/stack';
 
 const Page = createStackNavigator();
 
@@ -49,7 +50,9 @@ const PageNavigation = () => {
           <Page.Screen
             name="CommentViewPage"
             component={CommentViewPage}
-            options={{ headerShown: false }}
+            options={{ headerShown: false,
+              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
+            
           />
           <Page.Screen
             name="UserViewPage"
