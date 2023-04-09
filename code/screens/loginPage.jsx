@@ -1,21 +1,21 @@
 
-import React, {useState} from 'react';
-import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView, StyleSheet , ToastAndroid , Alert } from 'react-native'
+import React, {useState,useEffect} from 'react';
+import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView, StyleSheet , ToastAndroid , Alert, BackHandler } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PouchDB from 'pouchdb-react-native' ; 'pouchdb-core'; 
 import { setUserAccount } from '../config/AccountSlice';
 import LinearGradient from 'react-native-linear-gradient';
 import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
-import { dbremoteAccounts } from '../../database/database';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Modal } from 'react-native';
  
 
 export const Loginbox = (props) => {
 
   const [isFocused, setIsFocused] = useState(false);
-
+  const {useraccount} = useSelector((action) => action.user)
 
   return (
     <View style = {{width: '90%', justifyContent: 'center', alignItems: 'center', borderColor: isFocused ? LightYellow : LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
@@ -28,6 +28,8 @@ export const Loginbox = (props) => {
       value = {props.value}
       onChangeText = {props.onChangeText}
       maxLength={300}
+      autoComplete='off'
+      autoCapitalize='none'
 
       />
       <Pressable onPress = {props.onPress} disabled = {props.disabled} style = {{position: 'absolute', right: 10}}>
@@ -46,12 +48,38 @@ const Login = () => {
   
   const [show, setShow] = useState(true)
   const [username, setUserName] = useState('')
-  const [password, putPassword] = useState('')
+  const [password, setPassword] = useState('')
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false)
   const [loggingIn, setLoggingIn] = useState(false)
+  const {useraccount} = useSelector((state) => state.user)
 
+
+  const checkLogin = async () => {
+    try {
+      const userCredentials = await AsyncStorage.getItem('userCredentials');
+      if (userCredentials !== null) {
+        const {username, password} = await JSON.parse(userCredentials);
+        setUserName(username);
+        setPassword(password);
+      }
+    } catch (error) {
+      // Handle error
+      console.error(error);
+    }
+  };
+  
+  useEffect(() => {
+    checkLogin();
+  },[])
+  
+  useEffect(() => {
+    
+    loginaccount(username, password);
+    
+  }, []);
+  
   const loginaccount = async() => {
     const dbremoteAccounts = new PouchDB('http://admin:admin@192.168.0.192:5984/m_account');
     if (username.length === 0) {
@@ -82,6 +110,7 @@ const Login = () => {
 
             if(adminusername === username && adminpassword === password) {
               dispatch(setUserAccount(FullDetails));
+              await AsyncStorage.setItem('userCredentials', JSON.stringify({ username, password }));
               navigation.navigate('BottomTabs');
               setLoading(false)
             } else{
@@ -118,7 +147,7 @@ const Login = () => {
           name = {show ? 'visibility' : 'visibility-off'}
           onPress = {() => setShow(!show)}
           value = {password}
-          onChangeText = {(value) => putPassword(value)}
+          onChangeText = {(value) => setPassword(value)}
         />
       </View>
       <KeyboardAvoidingView style = {{ justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: 0, width: '90%'}}>
