@@ -15,17 +15,18 @@ import { RefreshControl } from 'react-native-gesture-handler';
 import { setUserView } from '../config/AccountSlice';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
+import { ScrollView } from 'react-native';
 
  export const Ratings = (props) => (
-    <View style = {{justifyContent: 'flex-start', alignItems: 'flex-start', alignSelf: 'flex-start', flexDirection: 'column', marginLeft: 20, marginVertical: 15}} >
-          <Text style = {{color: White, fontFamily: 'cocogooese_semibold', fontSize: 20,}}>{props.title}</Text>
-          <View style = {{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+    <View style = {{justifyContent: 'flex-start', alignItems: 'flex-start', alignSelf: 'flex-start', flexDirection: 'column', paddingLeft: 10, marginVertical: 15, width: '100%', borderBottomWidth: 0.5, borderColor: LightBlue}} >
+          <Text style = {{color: White, fontFamily: 'cocogooese_semibold', fontSize: 18, marginBottom: 5}}>{props.title}</Text>
+          <View style = {{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 20}}>
             <Rating
             type='custom'
             onFinishRating={props.onFinishRating}
             tintColor = {Black}
             jumpValue = {props.jumpValue}
-            imageSize={40}
+            imageSize={props.imageSize}
             ratingColor= '#ffdd85'
             readonly = {props.readonly}
             />
@@ -46,7 +47,7 @@ export default function Comments() {
     const [data, setData] = useState([]);
     const [text, setText] = useState('');
     const [modal, setModal] = useState(false);
-    const [imageattachment, setImageAttachment] = useState('');
+    const [imageattachment, setImageAttachment] = useState([]);
     const [establishment, setEstablishment] = useState(3);
     const [ramp, setRamp] = useState(3);
     const [parking, setParking] = useState(3);
@@ -57,14 +58,15 @@ export default function Comments() {
    
     console.log(data)
 
-    const handleProfilePhoto = async() => {
-      launchImageLibrary({ noData: true }, async(response) => {
-        // console.log(response);
+    const handleProfilePhoto = async () => {
+      launchImageLibrary({ noData: true }, async (response) => {
         if (response) {
-          const datapic = response
-          // setPhoto(response);
+          const datapic = response;
           try {
-            const data = await RNFetchBlob.fs.readFile(datapic.assets[0].uri, 'base64');
+            const data = await RNFetchBlob.fs.readFile(
+              datapic.assets[0].uri,
+              'base64'
+            );
             const formData = new FormData();
             formData.append('image', data);
             const response = await fetch('https://api.imgur.com/3/image', {
@@ -75,9 +77,8 @@ export default function Comments() {
               body: formData,
             });
             const result = await response.json();
-            const photolink = result.data.link
-            setImageAttachment(photolink)
-            console.log('photolink', photolink);
+            const photolink = result.data.link;
+            setImageAttachment([...imageattachment, photolink]); // push the new image link to the array
           } catch (error) {
             console.log('error', error);
           }
@@ -93,7 +94,7 @@ export default function Comments() {
       try {
         var response = {
           _id: id,
-          FullName: useraccount.FirstName + ' ' +  useraccount.MiddleName + ' ' +  useraccount.LastName,
+          FullName: useraccount.FullName,
           Image: useraccount.Image,
           Text: text,
           ImageAttachment: imageattachment,
@@ -112,6 +113,7 @@ export default function Comments() {
         const updatedEstablishment = {
           _id: ItemList._id,
           ...doc,
+          userID: useraccount.userID,
           CommentsCount: ItemList.CommentsCount + 1,
           Rating: ItemList.Rating + overallrating,
           RatingCount: ItemList.RatingCount + 1,
@@ -126,6 +128,7 @@ export default function Comments() {
         Alert.alert('Thanks for submitting a review!')
         setModal(false)
         setText('')
+        setImageAttachment([])
         getdata()
       } catch (error) {
         console.log(error);
@@ -171,7 +174,11 @@ export default function Comments() {
     },[])
 
 
-       
+    const removeImage = (index) => {
+      const newImageAttachments = [...imageattachment];
+      newImageAttachments.splice(index, 1);
+      setImageAttachment(newImageAttachments);
+    };
 
     const renderItem = ({item}) => {
         return (
@@ -183,7 +190,7 @@ export default function Comments() {
           >
             <View style = {{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%',}}>
               <Pressable  onPress={() => {dispatch(setUserView(item)); navigation.navigate('UserViewPage')}} style = {{width: 75, height: 75, marginRight: 15, borderRadius: 50}} >
-              <Image style = {{width: '100%', height: '100%', borderRadius: 50}} resizeMode='cover' source={require('../Assets/images/welcome-logo.png')} />
+              <Image style = {{width: '100%', height: '100%', borderRadius: 50}} resizeMode='cover' source={{uri: item.Image}} />
               </Pressable>
               <View style = {{flexDirection: 'column', width: '75%'}}>
                   <Text style={{ fontSize: 16, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',}}>{item.FullName}</Text>
@@ -234,8 +241,9 @@ export default function Comments() {
         visible = {modal}
         onRequestClose={() => setModal(false)}
       >
+          <ScrollView style = {{width: '100%', height: '100%', }}>
         <View style = {{width: '100%', height: '100%', backgroundColor: Black, justifyContent: 'center', alignItems: 'center',}}>
-          <Text style = {{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 10}}>SUBMIT A REVIEW</Text>
+          <Text style = {{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 10, marginTop: 20}}>SUBMIT A REVIEW</Text>
           <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Amplifying PWD voices with inclusive reviews - every voice deserves to be heard.</Text>
           <Text style={{fontSize: 25, color: White, textAlign: 'left', alignSelf: 'flex-start', paddingLeft: 20, fontFamily: 'Nexa-Heavy'}}>Your overall rating</Text>
           <Text style={{fontSize: 75, color: LightYellow, textAlign: 'left', alignSelf: 'flex-start', paddingLeft: 20, fontFamily: 'Nexa-Heavy'}}>{overallrating} ★</Text>
@@ -245,35 +253,47 @@ export default function Comments() {
             result = {establishment}
             title = 'Establishment'
             jumpValue = {0.5}
+            imageSize = {25}
             />
             <Ratings
             onFinishRating = {(newrating) => setParking(newrating)}
             result = {parking}
             title = 'Parking'
+            imageSize = {25}
             />
             <Ratings
             onFinishRating = {(newrating) => setRamp(newrating)}
             result = {ramp}
             title = 'Ramp'
+            imageSize = {25}
             />
             <Ratings
             onFinishRating = {(newrating) => setTactiles(newrating)}
             result = {tactiles}
             title = 'Tactiles'
+            imageSize = {25}
             />
-            <View style = {{justifyContent: 'center', alignSelf: 'flex-start', margin: 20, flexDirection: 'row'}}>
-            {<View style = {{justifyContent: 'center', alignSelf: 'flex-start', margin: 10, width: 100, height: 100, borderWidth: 2, alignItems: 'center', borderRadius: 20, borderColor: LightYellow}}>
-              <Image style = {{width: '100%', height: '100%', borderRadius: 19}} resizeMode='cover' source={require('../Assets/images/welcome-logo.png')} />
-            </View>}
-            <Pressable style = {{justifyContent: 'center', alignSelf: 'flex-start', margin: 10, width: 100, height: 100, borderWidth: 2, alignItems: 'center', borderRadius: 20, borderColor: LightYellow}}
-            onPress={handleProfilePhoto}
-            >
-              <Icon
-                name='photo'
-                size={60}
-                color={LightBlue}
-              />
-            </Pressable>
+            
+            <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'center', marginTop: 10, width: 500, paddingTop: 10,}}>Upload Images</Text>
+            <View style = {{justifyContent: 'center', alignSelf: 'center', margin: 20, flexDirection: 'row'}}>
+            {imageattachment.map((imageLink, index) => (
+              <View style = {{justifyContent: 'center', alignSelf: 'center', margin: 10, width: 100, height: 100, borderWidth: 2, alignItems: 'center', borderRadius: 20, borderColor: LightYellow}}>
+              <Image key={index} source={{ uri: imageLink }} style={{  borderRadius: 20, width: 96, height: 96 }} />
+              <Pressable onPress={() => removeImage(index)} style = {{position: 'absolute', top: -10, right: -10, backgroundColor: 'red', borderRadius: 100}}>
+                <Icon name="close" size={30} color={White} />
+              </Pressable>
+            </View>
+            ))}
+           {imageattachment.length < 3 && (
+              <Pressable style={{ justifyContent: 'center', alignSelf: 'flex-start', margin: 10, width: 100, height: 100, borderWidth: 2, alignItems: 'center', borderRadius: 20, borderColor: LightYellow }}
+                onPress={handleProfilePhoto}>
+                <Icon
+                  name='photo'
+                  size={60}
+                  color={LightBlue}
+                />
+              </Pressable>
+            )}
             </View>
             <Loginbox 
             
@@ -284,6 +304,7 @@ export default function Comments() {
             onPress = {adddata}
             />
         </View>
+        </ScrollView>
       </Modal>
       
       </>
