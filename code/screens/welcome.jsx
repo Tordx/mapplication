@@ -3,10 +3,28 @@ import { StyleSheet, StatusBar, TextInput, View, Text, TouchableOpacity, Image }
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { LightBlue, LightYellow, White } from '../Assets/Colors/Colors'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
 
 const Welcome = () => {
 
     const navigation = useNavigation();
+
+    const checkLogin = async () => {
+        try {
+          const userCredentials = await AsyncStorage.getItem('userCredentials');
+          if (userCredentials !== null) {
+            navigation.navigate('Login')
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+    useEffect(() => {
+        checkLogin()
+    })
+      
 
   return (
     <LinearGradient colors={['#202020','#202020', '#202020']} style = {styles.container}>
