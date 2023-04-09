@@ -55,30 +55,6 @@ const Login = () => {
   const [loggingIn, setLoggingIn] = useState(false)
   const {useraccount} = useSelector((state) => state.user)
 
-
-  const checkLogin = async () => {
-    try {
-      const userCredentials = await AsyncStorage.getItem('userCredentials');
-      if (userCredentials !== null) {
-        const {username, password} = await JSON.parse(userCredentials);
-        setUserName(username);
-        setPassword(password);
-      }
-    } catch (error) {
-      // Handle error
-      console.error(error);
-    }
-  };
-  
-  useEffect(() => {
-    checkLogin();
-  },[])
-  
-  useEffect(() => {
-    
-    loginaccount(username, password);
-    
-  }, []);
   
   const loginaccount = async() => {
     const dbremoteAccounts = new PouchDB('http://admin:admin@192.168.0.192:5984/m_account');
@@ -110,7 +86,7 @@ const Login = () => {
 
             if(adminusername === username && adminpassword === password) {
               dispatch(setUserAccount(FullDetails));
-              await AsyncStorage.setItem('userCredentials', JSON.stringify({ username, password }));
+              await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
               navigation.navigate('BottomTabs');
               setLoading(false)
             } else{

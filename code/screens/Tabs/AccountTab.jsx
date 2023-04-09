@@ -36,15 +36,15 @@ const AccountTab = ()=> {
     <View>
      <View style={{alignItems: 'center'}}>
       <Image
-        source={{ uri: useraccount.Profilephoto}}
+        source={{ uri: useraccount?.Image}}
         style={{width: 200, height: 200,}}
       />
-      <Text style={{fontSize: 18}}>{useraccount.username}</Text>
-      <Text style={{fontSize: 18}}>{useraccount.MobileNumber}</Text>
-      <Text style={{fontSize: 18}}>{useraccount.Nationality}</Text>
+      <Text style={{fontSize: 18}}>{useraccount?.FullName}</Text>
+      <Text style={{fontSize: 18}}>{useraccount?.MobileNumber}</Text>
+      <Text style={{fontSize: 18}}>{useraccount?.Nationality}</Text>
       <Pressable onPress={handleLogout}>
         <Icon
-        name = 'exit-to-app'/>
+        name = 'exit-to-app' size={30}/>
       </Pressable>
       <Button title='edit' onPress={toedit}/>
     </View>

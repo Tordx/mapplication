@@ -5,16 +5,22 @@ import LinearGradient from 'react-native-linear-gradient';
 import { LightBlue, LightYellow, White } from '../Assets/Colors/Colors'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUserAccount } from '../config/AccountSlice';
 
 const Welcome = () => {
 
     const navigation = useNavigation();
+    const dispatch = useDispatch()
 
     const checkLogin = async () => {
         try {
           const userCredentials = await AsyncStorage.getItem('userCredentials');
           if (userCredentials !== null) {
-            navigation.navigate('Login')
+            const FullDetails = await JSON.parse(userCredentials);
+            dispatch(setUserAccount(FullDetails))
+            navigation.navigate('BottomTabs')
+            
           }
         } catch (error) {
           console.error(error);
