@@ -43,17 +43,24 @@ const Signup = () => {
   const [Sex, setSex] = useState('')
   const [Address, setAddress] = useState('')
   const [AlternateContactNumber, setAlternateContactNumber] = useState('')
-  const [Profilephoto, setProfilePhoto] = React.useState(null);
-  const [Idcardimage, setIdCardImage] = React.useState(null);
+  const [Profilephoto, setProfilePhoto] = React.useState('');
+  const [Idcardimage, setIdCardImage] = React.useState('');
+  const [ProfilephotoDisplay, setProfilePhotoDisplay] = React.useState("https://imgur.com/a/Q9oD9Uu");
+  const [IdcardimageDisplay, setIdCardImageDisplay] = React.useState("https://imgur.com/a/Q9oD9Uu");
 
   const navigation = useNavigation()
   const id = uuid.v4()
 
   const handleProfilePhoto = async() => {
     launchImageLibrary({ noData: true }, async(response) => {
+      console.log('response');
+      console.log(response);
+      console.log('response');
       // console.log(response);
       if (response) {
         const datapic = response
+        const piclocation = datapic.assets[0].uri
+        setProfilePhotoDisplay(piclocation)
         // setPhoto(response);
         try {
           const data = await RNFetchBlob.fs.readFile(datapic.assets[0].uri, 'base64');
@@ -82,6 +89,8 @@ const Signup = () => {
       // console.log(response);
       if (response) {
         const datapic = response
+        const piclocation = datapic.assets[0].uri
+        setIdCardImageDisplay(piclocation)
         // setPhoto(response);
         try {
           const data = await RNFetchBlob.fs.readFile(datapic.assets[0].uri, 'base64');

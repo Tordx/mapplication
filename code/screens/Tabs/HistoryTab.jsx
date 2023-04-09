@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { Black, LightBlue, LightYellow, White } from '../../Assets/Colors/Colors';
 import { Dimensions } from 'react-native';
 import { BackHandler } from 'react-native';
+import { dbremoteComments } from '../../../database/database';
 
 
 
@@ -20,8 +21,6 @@ const HistoryTab = () => {
   const [comments, setComments] = useState([]);
 
   const getdata = async () => {
-
-    const dbremoteComments = new PouchDB('http://admin:admin@192.168.0.192:5984/m_comments');
         
         try {
 

@@ -16,6 +16,7 @@ import { setUserView } from '../config/AccountSlice';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import { ScrollView } from 'react-native';
+import { dbremoteEstablishment , dbremoteComments } from '../../database/database';
 
  export const Ratings = (props) => (
     <View style = {{justifyContent: 'flex-start', alignItems: 'flex-start', alignSelf: 'flex-start', flexDirection: 'column', paddingLeft: 10, marginVertical: 15, width: '100%', borderBottomWidth: 0.5, borderColor: LightBlue}} >
@@ -87,9 +88,6 @@ export default function Comments() {
     };
 
     const adddata = async () => {
-
-      const dbremoteComments = new PouchDB('http://admin:admin@192.168.0.192:5984/m_comments');
-      const dbremoteEstablishment = new PouchDB('http://admin:admin@192.168.0.192:5984/m_establishments');
     
       try {
         var response = {
@@ -136,7 +134,6 @@ export default function Comments() {
     };
 
     const getdata = async () => {
-        const dbremoteComments = new PouchDB('http://admin:admin@192.168.0.192:5984/m_comments');
         
         try {
 

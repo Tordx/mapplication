@@ -59,6 +59,11 @@ const PageNavigation = () => {
             component={UserViewPage}
             options={{ headerShown: false }}
           />
+          <Page.Screen
+            name="EditAccount"
+            component={EditAccount}
+            options={{ headerShown: false }}
+          />
         </Page.Navigator>
       </NavigationContainer>
     </Provider>

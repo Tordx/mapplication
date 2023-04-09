@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Modal } from 'react-native';
+import { dbremoteAccounts } from '../../database/database';
  
 
 export const Loginbox = (props) => {
@@ -57,7 +58,7 @@ const Login = () => {
 
   
   const loginaccount = async() => {
-    const dbremoteAccounts = new PouchDB('http://admin:admin@192.168.0.192:5984/m_account');
+
     if (username.length === 0) {
         ToastAndroid.show("username is empty", ToastAndroid.CENTER)
       } else if (password.length === 0) {
