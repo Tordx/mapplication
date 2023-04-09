@@ -31,17 +31,24 @@ const Signup = () => {
   const [Sex, setSex] = useState('')
   const [Address, setAddress] = useState('')
   const [AlternateContactNumber, setAlternateContactNumber] = useState('')
-  const [Profilephoto, setProfilePhoto] = React.useState(null);
-  const [Idcardimage, setIdCardImage] = React.useState(null);
+  const [Profilephoto, setProfilePhoto] = React.useState('');
+  const [Idcardimage, setIdCardImage] = React.useState('');
+  const [ProfilephotoDisplay, setProfilePhotoDisplay] = React.useState("https://imgur.com/a/Q9oD9Uu");
+  const [IdcardimageDisplay, setIdCardImageDisplay] = React.useState("https://imgur.com/a/Q9oD9Uu");
 
   const navigation = useNavigation()
   const id = uuid.v4()
 
   const handleProfilePhoto = async() => {
     launchImageLibrary({ noData: true }, async(response) => {
+      console.log('response');
+      console.log(response);
+      console.log('response');
       // console.log(response);
       if (response) {
         const datapic = response
+        const piclocation = datapic.assets[0].uri
+        setProfilePhotoDisplay(piclocation)
         // setPhoto(response);
         try {
           const data = await RNFetchBlob.fs.readFile(datapic.assets[0].uri, 'base64');
@@ -70,6 +77,8 @@ const Signup = () => {
       // console.log(response);
       if (response) {
         const datapic = response
+        const piclocation = datapic.assets[0].uri
+        setIdCardImageDisplay(piclocation)
         // setPhoto(response);
         try {
           const data = await RNFetchBlob.fs.readFile(datapic.assets[0].uri, 'base64');
@@ -263,21 +272,27 @@ const Signup = () => {
          onPress={ () => {setForth(false); setfifth(true)}}
        >
          <Text style = {styles.buttontext}>Next</Text>
+         </Pressable></View>}
+        {fifth && 
+           <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
+             <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
+              <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
+              <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
+             <View style={{flexDirection: "row" , marginBottom :20}}>
+              <Image source={{uri: ProfilephotoDisplay}} style={{ width: 100, height: 100 , margin: 5 }}/>
+              <Image source={{uri: IdcardimageDisplay}} style={{ width: 100, height: 100 , margin: 5 }}/>
+              </View>
+              <View style={{flexDirection: "row"}}>
+            <Button  title="PROFILE PHOTO" onPress={handleProfilePhoto} />
+            <Button title="ID CARD IMAGE" onPress={handleIDCardImage}  />
+        </View>
+            <Pressable style = {[styles.button]}
+         onPress={ () => {setNewSuperAdmin()}}
+       >
+         <Text style = {styles.buttontext}>CREATE ACCOUNT</Text>
        </Pressable></View>
             }
         
-        {/* <View style={{flexDirection: "row"}}>
-        <Button  title="PROFILE PHOTO" onPress={handleProfilePhoto} />
-        <Button title="ID CARD IMAGE" onPress={handleIDCardImage} />
-        </View>
-
-        <Pressable style = {{margin: 10, width: '35%', backgroundColor: '#f5f5f5', height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}
-        onPress={() => setNewSuperAdmin()}
-        >
-          <Text style = {{textAlign: 'center', fontSize: 17, fontWeight: '500'}}>
-             SIGN UP
-          </Text>
-        </Pressable> */}
       </View>
       </ScrollView>
     </View>

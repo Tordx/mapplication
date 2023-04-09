@@ -12,6 +12,7 @@ import { useDispatch} from 'react-redux'
 import { setItem } from '../../config/ItemSlice'
 import { useNavigation } from '@react-navigation/native'
 import { RefreshControl } from 'react-native'
+import { dbremoteEstablishment } from '../../../database/database'
 
 const CommentTab = () => {
 
@@ -24,9 +25,7 @@ const CommentTab = () => {
   const [onrefresh, setOnRefresh] = useState(false);
 
 
-  const getdata = async () => {
-
-    const dbremoteEstablishment = new PouchDB('https://root:root@database.vidarsson.online/m_establishments');
+  const getdata = async () => {;
 
     try {
       let result = await dbremoteEstablishment.allDocs({

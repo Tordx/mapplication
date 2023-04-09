@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import PouchDB from 'pouchdb-react-native' ;import { Image } from 'react-native';
 import { Black, White } from '../Assets/Colors/Colors';
+import { dbremoteAccounts } from '../../database/database';
  'pouchdb-core';
 export default function UserViewPage() {
 
@@ -15,7 +16,6 @@ export default function UserViewPage() {
 
 
     const getdata = async () => {
-      const dbremoteAccounts = new PouchDB('https://root:root@database.vidarsson.online/m_account');
      
         try {
           let result = await dbremoteAccounts.allDocs({
