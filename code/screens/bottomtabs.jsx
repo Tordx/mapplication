@@ -9,11 +9,28 @@ import MyLocation from './Tabs/MyLocation'
 import DirectionsTab from './Tabs/DirectionsTab'
 import { Black, LightYellow, White } from '../Assets/Colors/Colors'
 import HistoryTab from './Tabs/HistoryTab'
+import { useEffect } from 'react'
+import { BackHandler } from 'react-native'
+import { useFocusEffect, useNavigationContainerRef } from '@react-navigation/native'
 
+const exitApp = () => {
+    BackHandler.exitApp();
+  };
 
 const BottomTabs = () => {
 
     const Tab = createBottomTabNavigator();
+
+    useFocusEffect(
+        React.useCallback(() => {
+          const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            exitApp
+          );
+    
+          return () => backHandler.remove();
+        }, [])
+      );
 
   return (
     <>
