@@ -1,6 +1,6 @@
 
 import React, {useState} from 'react';
-import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView , Alert , Button , Platform } from 'react-native'
+import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView , Alert , Button , Platform, ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { dbremoteAccounts } from '../../database/database';
@@ -8,33 +8,10 @@ import PouchDB from 'pouchdb-react-native' ; 'pouchdb-core';
 import uuid from 'react-native-uuid';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
+import { Loginbox } from './loginPage';
+import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
+import { StyleSheet } from 'react-native';
 
-
-
-const Loginbox = (props) => {
-
-  const [isFocused, setIsFocused] = useState(false);
-
-  return (
-    <View style = {{width: '30%', justifyContent: 'center', alignItems: 'center', backgroundColor: isFocused ? '#ccb16a' : '#ffdd85', borderRadius: 5,  margin: 5, flexDirection: 'row'}}>
-    <TextInput style = {{width: '100%', fontSize: 18, margin: 5, paddingLeft: 5,}}
-      placeholder = {props.placeholder}
-      secureTextEntry = {props.secureTextEntry}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-      onChangeText={props.onChangeText}
-      value={props.value}
-      />
-      <Pressable onPress = {props.onPress} style = {{position: 'absolute', right: 10}}>
-        <Icon
-          name = {props.name}
-          color = '#fff'
-          size  = {25}
-        />
-      </Pressable>
-    </View>
-  )
-}
 
 const Signup = () => {
 
@@ -130,6 +107,7 @@ const Signup = () => {
              IDNumber : IDNumber,
              ProfilePicture : ProfilePicture,
              UserID: id,
+             FullName: FirstName + ' ' + MiddleName + ' ' + LastName,
              FirstName : FirstName,
              MiddleName : MiddleName,
              LastName : LastName,
@@ -155,11 +133,32 @@ const Signup = () => {
        }
       }
 
+      const [opening, setOpening] = useState(true)
+      const [first, setFirst] = useState(false)
+      const [second, setSecond] = useState(false)
+      const [third, setthird] = useState(false)
+      const [forth, setForth] = useState(false)
+      const [fifth, setfifth] = useState(false)
   return (
-    <KeyboardAvoidingView style  ={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#dadada'}} behavior='padding'>
-      <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%'}}>
-        <Image source = {require('../Assets/images/sample_logo.png')} style = {{width: 200, height: 200}} resizeMode = 'contain' />
-        <View style={{flexDirection: 'row'}}>
+    <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: Black}} behavior='padding'>
+      <ScrollView style = {{width: '100%', height: '100%'}}>
+      <View style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
+       {opening && 
+        <View style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
+       <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
+        <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
+        <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
+        <Pressable style = {styles.button}
+          onPress={ () => {setOpening(false); setFirst(true)}}
+        >
+          <Text style = {styles.buttontext}>Continue</Text>
+        </Pressable>
+        </View>}
+      {first && <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
+      <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
+        <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
+        <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
+        
         <Loginbox 
           placeholder = 'username' 
           secureTextEntry = {false} name = '' 
@@ -175,30 +174,16 @@ const Signup = () => {
           onChangeText={(value) => setPassword(value)}
           value={password}
         />
-        <Loginbox 
-          placeholder = 'MobileNumber' 
-          onChangeText={(value) => setMobileNumber(value)}
-          value={MobileNumber}
-        />
-        </View>
-        <View style={{flexDirection: 'row'}}>
-        <Loginbox 
-          placeholder = 'Nationality' 
-          onChangeText={(value) => setNationality(value)}
-          value={Nationality}
-        />
-        <Loginbox 
-          placeholder = 'IDType' 
-          onChangeText={(value) => setIDType(value)}
-          value={IDType}
-        />
-        <Loginbox 
-          placeholder = 'IDNumber' 
-          onChangeText={(value) => setIDNumber(value)}
-          value={IDNumber}
-        />
-        </View>
-        <View style={{flexDirection: 'row'}}>
+        <Pressable style = {[styles.button]}
+          onPress={ () => {setFirst(false); setSecond(true)}}
+        >
+          <Text style = {styles.buttontext}>Next</Text>
+        </Pressable></View>}
+          {second && 
+          <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
+            <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
+              <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
+              <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
         <Loginbox 
           placeholder = 'FirstName' 
           onChangeText={(value) => setFirstName(value)}
@@ -214,7 +199,6 @@ const Signup = () => {
           onChangeText={(value) => setLastName(value)}
           value={LastName}
         />
-        </View>
         <Loginbox 
           placeholder = 'Birthday' 
           onChangeText={(value) => setBirthday(value)}
@@ -225,33 +209,64 @@ const Signup = () => {
           onChangeText={(value) => setSex(value)}
           value={Sex}
         />
+         <Pressable style = {[styles.button]}
+          onPress={ () => {setSecond(false); setthird(true)}}
+        >
+          <Text style = {styles.buttontext}>Next</Text>
+        </Pressable></View>}
+        {third && 
+         <View style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
+       <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
+        <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
+        <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
+        <Loginbox 
+          placeholder = 'MobileNumber' 
+          onChangeText={(value) => setMobileNumber(value)}
+          value={MobileNumber}
+        />
         <Loginbox 
           placeholder = 'Address' 
           onChangeText={(value) => setAddress(value)}
           value={Address}
         />
-        <Loginbox 
-          placeholder = 'AlternateContactNumber' 
-          onChangeText={(value) => setAlternateContactNumber(value)}
-          value={AlternateContactNumber}
-        />
-         {/* <Loginbox 
-          placeholder = 'IDCardImage' 
-          secureTextEntry= {show} 
-          onPress = {() => setShow(!show)} 
-          onChangeText={(value) => setIDCardImage(value)}
-          value={IDCardImage}
-        />
-        <Loginbox 
-          placeholder = 'ProfilePicture' 
-          secureTextEntry= {show} 
-          onPress = {() => setShow(!show)} 
-          onChangeText={(value) => setProfilePicture(value)}
-          value={ProfilePicture}
-        /> */}
+        <Pressable style = {[styles.button]}
+        onPress={ () => {setthird(false); setForth(true)}}
+      >
+        <Text style = {styles.buttontext}>Next</Text>
+      </Pressable></View>}
+        {forth && 
+           <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
+             <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
+              <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
+              <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
+             <Loginbox 
+              placeholder = 'Nationality' 
+              onChangeText={(value) => setNationality(value)}
+              value={Nationality}
+            /> 
+            <Loginbox 
+              placeholder = 'Alternate contact number' 
+              onChangeText={(value) => setAlternateContactNumber(value)}
+              value={AlternateContactNumber}
+            />
+            <Loginbox 
+              placeholder = 'IDType' 
+              onChangeText={(value) => setIDType(value)}
+              value={IDType}
+            />
+            <Loginbox 
+              placeholder = 'IDNumber' 
+              onChangeText={(value) => setIDNumber(value)}
+              value={IDNumber}
+            />
+            <Pressable style = {[styles.button]}
+         onPress={ () => {setForth(false); setfifth(true)}}
+       >
+         <Text style = {styles.buttontext}>Next</Text>
+       </Pressable></View>
+            }
         
-        {/* <Button title="Upload Photo" onPress={handleUploadPhoto} /> */}
-        <View style={{flexDirection: "row"}}>
+        {/* <View style={{flexDirection: "row"}}>
         <Button  title="PROFILE PHOTO" onPress={handleProfilePhoto} />
         <Button title="ID CARD IMAGE" onPress={handleIDCardImage} />
         </View>
@@ -262,10 +277,57 @@ const Signup = () => {
           <Text style = {{textAlign: 'center', fontSize: 17, fontWeight: '500'}}>
              SIGN UP
           </Text>
-        </Pressable>
+        </Pressable> */}
       </View>
-    </KeyboardAvoidingView>
+      </ScrollView>
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+    
+  container: {
+
+      width: '100%', 
+      height: '100%', 
+      alignItems: 'center',
+      alignContent: 'center',
+      justifyContent: 'center'
+  },
+  headertagline: {
+
+      textAlign: 'center', 
+      fontSize: 35, 
+      color: White, 
+      fontFamily: 'Nexa-Heavy',
+      marginBottom: 20
+  },
+  buttoncontainer: {
+      position: 'absolute', 
+      bottom: 30, 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      width: '100%'
+  },
+  button: {
+      borderRadius: 20, 
+      height: 60, 
+      width: '85%', 
+      borderWidth: 2, 
+      borderColor: White,  
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      margin: 5,
+      marginTop: 20
+  },
+  buttontext: {
+      
+      textAlign: 'center', 
+      fontSize: 20, 
+      color: White, 
+      fontFamily: 'Nexa-Heavy'
+  }
+
+})
 
 export default Signup
