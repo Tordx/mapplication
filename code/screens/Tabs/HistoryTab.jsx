@@ -10,6 +10,7 @@ import PouchDB from 'pouchdb-react-native'; 'pouchdb-core';
 import { useEffect } from 'react';
 import { Black, LightBlue, LightYellow, White } from '../../Assets/Colors/Colors';
 import { Dimensions } from 'react-native';
+import { BackHandler } from 'react-native';
 
 
 
@@ -38,7 +39,7 @@ const HistoryTab = () => {
             })
             if (filteredData) {
                 const newFilteredData = filteredData.filter((item) => {
-                  return item.FullName === useraccount.FullName;
+                  return item.userID === useraccount.userID;
                 })
             
                 setComments(newFilteredData);
@@ -56,20 +57,17 @@ const HistoryTab = () => {
     getdata()
   },[])
 
-  const { height } = Dimensions.get('window');
 
-  const TAB_BAR_HEIGHT = 80;
 
 
   const renderItem = ({item}) => {
     return (
-      <Pressable style = {{width: '100%', height: 100, borderColor: LightBlue, borderBottomWidth: 1, justifyContent: 'center', alignSelf: 'center', alignItems: 'flex-start'}}
+      <Pressable style = {{width: '100%', height: 100, justifyContent: 'center', alignSelf: 'center', alignItems: 'flex-start'}}
       >
-        <View style = {{padding: 15, flexDirection: 'row',justifyContent: 'center', alignItems: 'center', padding: 10}}>
-          {/* <Image style = {{width: 100, height: 100, marginRight: 15, borderRadius: 20}} resizeMode='cover' source={{uri: item.Image}} /> */}
+        <View style = {{padding: 15, flexDirection: 'row',justifyContent: 'center', alignItems: 'center', padding: 10,  borderColor: LightBlue, borderBottomWidth: 1}}>
           <View style = {{width: '100%', height: '100%'}}>
-              <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-ExtraLight', width: '60%',}}>{item.Text}</Text>
-              <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', width: '60%', marginVertical: 5}}>{item.CommentID}</Text>
+              <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-ExtraLight', width: '60%', paddingTop: 10}}>{item.Text}</Text>
+              <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', width: '60%',  marginVertical: 5}}>{item.CommentID}</Text>
               <Text style={{  fontSize: 12, color: White, fontFamily: 'Nexa-ExtraLight',}}>{item.Date}</Text>
           </View>
         </View>
