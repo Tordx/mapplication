@@ -26,7 +26,7 @@ const CommentTab = () => {
 
   const getdata = async () => {
 
-    const dbremoteEstablishment = new PouchDB('http://admin:admin@192.168.0.192:5984/m_establishments');
+    const dbremoteEstablishment = new PouchDB('https://root:root@database.vidarsson.online/m_establishments');
 
     try {
       let result = await dbremoteEstablishment.allDocs({

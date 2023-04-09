@@ -15,7 +15,7 @@ export default function UserViewPage() {
 
 
     const getdata = async () => {
-      const dbremoteAccounts = new PouchDB('http://admin:admin@192.168.0.192:5984/m_account');
+      const dbremoteAccounts = new PouchDB('https://root:root@database.vidarsson.online/m_account');
      
         try {
           let result = await dbremoteAccounts.allDocs({
