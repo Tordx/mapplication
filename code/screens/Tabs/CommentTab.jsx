@@ -11,6 +11,7 @@ import PouchDB from 'pouchdb-react-native' ; 'pouchdb-core';
 import { useDispatch} from 'react-redux'
 import { setItem } from '../../config/ItemSlice'
 import { useNavigation } from '@react-navigation/native'
+import { RefreshControl } from 'react-native'
 
 const CommentTab = () => {
 
@@ -20,6 +21,7 @@ const CommentTab = () => {
   const [corporate, setCorporate] = useState([]);
   const [local, setLocal] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('Government');
+  const [onrefresh, setOnRefresh] = useState(false);
 
 
   const getdata = async () => {
@@ -61,6 +63,12 @@ const CommentTab = () => {
     
     getdata()
   },[])
+
+  const refresh = () => {
+    setOnRefresh(true)
+    getdata()
+    setOnRefresh(false)
+  }
 
   const renderItem = ({item}) => {
     return (
@@ -106,7 +114,15 @@ const CommentTab = () => {
       <FlatList
         data={selectedCategory === 'Government' ? government : selectedCategory === 'Corporate' ? corporate : local}
         renderItem = {renderItem}
-        keyExtractor = {item => item._id}
+        keyExtractor = {item => item._id}  
+        refreshControl={
+          <RefreshControl
+          onRefresh={refresh}
+          refreshing = {onrefresh}
+          
+          colors={[LightBlue, LightYellow]}
+          />
+          }
       />
       </View>
     </View>
