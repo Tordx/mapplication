@@ -18,7 +18,7 @@ export const Loginbox = (props) => {
   const {useraccount} = useSelector((action) => action.user)
 
   return (
-    <View style = {{width: '90%', justifyContent: 'center', alignItems: 'center', borderColor: isFocused ? LightYellow : LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
+    <View style = {{width: '95%', justifyContent: 'center', alignItems: 'center', borderColor: isFocused ? LightYellow : LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
     <TextInput style = {{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: White, fontFamily: 'Nexa-ExtraLight'}}
       placeholder = {props.placeholder}
       placeholderTextColor = {'#606060'}
