@@ -12,11 +12,18 @@ import { Loginbox } from './loginPage';
 import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
 import { StyleSheet } from 'react-native';
 
-const handleBackButton = () => {
-  return true;
-};
 
 const Signup = () => {
+
+  
+    const handleBackButton = () => {
+
+      if (opening){
+      navigation.navigate('welcomePage')
+    } else {
+      return null
+    }
+    };
 
     useEffect(() => {
       BackHandler.addEventListener('hardwareBackPress', handleBackButton);
