@@ -84,12 +84,19 @@ const Login = () => {
             const FullDetails = newFilterData[0]
             const adminusername = newFilterData[0].username
             const adminpassword = newFilterData[0].password
+            const adminaccount = newFilterData[0].Account
 
             if(adminusername === username && adminpassword === password) {
               dispatch(setUserAccount(FullDetails));
               await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
-              navigation.navigate('BottomTabs');
-              setLoading(false)
+           
+              if(adminaccount === "User") {
+                navigation.navigate('BottomTabs');
+                setLoading(false)
+              }else{
+                navigation.navigate('AdminLanding');
+                setLoading(false)
+              }
             } else{
               Alert.alert('Username and Password did not match!')
               setLoading(false)
