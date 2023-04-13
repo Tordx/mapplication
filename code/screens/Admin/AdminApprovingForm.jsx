@@ -3,6 +3,7 @@ import React , {useState} from 'react'
 import { Loginbox } from '../loginPage'
 import { useSelector } from 'react-redux'
 
+
 const AdminApprovingForm = () => {
 
     const {useraccount} = useSelector((store) => store.user)
@@ -22,6 +23,7 @@ const AdminApprovingForm = () => {
     const [Sex, setSex] = useState(useraccount.Sex)
     const [Address, setAddress] = useState(useraccount.Address)
     const [AlternateContactNumber, setAlternateContactNumber] = useState(useraccount.AlternateContactNumber)
+    const [userstatus, setUserStatus] = useState('')
 
     console.log('===================================useraccount.Profilephoto=');
     console.log(useraccount.Profilephoto);
@@ -102,7 +104,11 @@ const AdminApprovingForm = () => {
           onChangeText={(value) => setAlternateContactNumber(value)}
           value={AlternateContactNumber}
         />
-        
+         <Loginbox 
+          placeholder = 'Status' 
+          onChangeText={(value) => setUserStatus(value)}
+          value={userstatus}
+        />
     </View>
   )
 }
