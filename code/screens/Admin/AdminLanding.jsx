@@ -2,18 +2,35 @@ import { View, Text , FlatList , Image , Pressable } from 'react-native'
 import React , {useState , useEffect} from 'react'
 import { dbremoteAccounts } from '../../../database/database'
 import { useNavigation } from '@react-navigation/native'
+import { setApprovingAccoung } from '../../config/AccountSlice'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 
 const AdminLanding = () => {
 
-  useEffect(() => {
+  useEffect(async() => {
     
     getUserData()
+    
+    await dbremoteAccounts.changes({
+        since: 'now',
+        live: true,
+        include_docs: true
+      }).on('change', function(change) {
+        getUserData()
+        console.log(change);
+      }).on('error', function (err) {
+        console.log(err);
+      });
 
   }, [])
   
+  const {useraccount} = useSelector((store) => store.user)
+  const dispatch = useDispatch()
+  
   const [userdata, setUserData] = useState('')
-
+  
   const navigation = useNavigation()
 
   const getUserData = async() => {
@@ -34,7 +51,11 @@ const AdminLanding = () => {
             let newFilterData = filteredData.map((item) => {
               return item
             });
-            setUserData(newFilterData)
+            const admindata = newFilterData.filter((item) => item.FullName !== useraccount.FullName);
+            const filterdata = admindata.filter((item) => item.Status !== "Active");
+            setUserData(filterdata)
+
+
           }
         }
       } catch (error) {
@@ -45,13 +66,17 @@ const AdminLanding = () => {
 
     const renderItem = ({item}) => {
         return (
-        <Pressable onPress={() => {navigation.navigate('AdminApprovingForm')}}>
             <View style={{justifyContent: 'center', alignItems: 'center',}}>
-                <Text style={{fontSize: 25}}>
-                    {item.FullName}
-                </Text>
+                <Pressable onPress={() => {navigation.navigate("AdminApprovingForm") , dispatch(setApprovingAccoung(item))}}>
+                    <View style={{flexDirection: 'row'}}>
+                    <Image source={{uri: item.Profilephoto}} style={{ width: 100, height: 100 , margin: 5 }} resizeMode='cover'/>
+                    <Text style={{fontSize: 70}}>
+                        {item.FullName}
+                    </Text>
+                    </View>
+                </Pressable>
            </View> 
-       </Pressable>
+
         );
        
       } 

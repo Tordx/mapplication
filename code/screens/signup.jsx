@@ -50,8 +50,8 @@ const Signup = () => {
   const [Sex, setSex] = useState('')
   const [Address, setAddress] = useState('')
   const [AlternateContactNumber, setAlternateContactNumber] = useState('')
-  const [Profilephoto, setProfilePhoto] = React.useState('');
-  const [Idcardimage, setIdCardImage] = React.useState('');
+  const [Profilephoto, setProfilePhoto] = React.useState(null);
+  const [Idcardimage, setIdCardImage] = React.useState(null);
   const [ProfilephotoDisplay, setProfilePhotoDisplay] = React.useState("https://imgur.com/a/Q9oD9Uu");
   const [IdcardimageDisplay, setIdCardImageDisplay] = React.useState("https://imgur.com/a/Q9oD9Uu");
 
@@ -59,6 +59,11 @@ const Signup = () => {
   const id = uuid.v4()
 
   const handleProfilePhoto = async() => {
+
+    if(Profilephoto !== null){
+      return;
+    }
+
     launchImageLibrary({ noData: true }, async(response) => {
       console.log('response');
       console.log(response);
@@ -92,6 +97,10 @@ const Signup = () => {
   };
 
   const handleIDCardImage = async() => {
+
+    if(Idcardimage !== null){
+      return;
+    }
     launchImageLibrary({ noData: true }, async(response) => {
       // console.log(response);
       if (response) {
@@ -133,7 +142,6 @@ const Signup = () => {
              Nationality : Nationality,
              Disability : disability,
              IDNumber : IDNumber,
-             ProfilePicture : ProfilePicture,
              UserID: id,
              FullName: FirstName + ' ' + MiddleName + ' ' + LastName,
              FirstName : FirstName,
@@ -143,9 +151,10 @@ const Signup = () => {
              Sex : Sex,
              Address : Address,
              AlternateContactNumber : AlternateContactNumber,
-             Image: Profilephoto,
+             Profilephoto: Profilephoto,
              Idcardimage: Idcardimage,
-             Active: 'inactive'
+             Account: "User",
+             Status: 'inactive'
          }
       dbremoteAccounts.put(adduser)
          .then((response) =>{
@@ -250,7 +259,7 @@ const Signup = () => {
             <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
               <Text style = {styles.headertagline}>Then, few of your personal information</Text>
               <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '80%'}}>The information you provided are to be displayed in your account, and rest assured that all information are not used in other means</Text>
-            <Pressable style = {[styles.button, {height: 150, width: 400, borderColor: Profilephoto === null ? LightBlue : '#202020'}]} onPress={handleProfilePhoto} disabled = {Profilephoto === null ?  false : true}>
+            <Pressable style = {[styles.button, {height: 150, width: 400, borderColor: Profilephoto === null ? LightBlue : '#202020'}]} onPress={handleProfilePhoto()} disabled = {Profilephoto === null ?  false : true}>
             <Text style = {[styles.buttontext, {fontFamily: 'Nexa-ExtraLight', color: '#707070'}]}>{Profilephoto === null ? "UPLOAD DISPLAY PHOTO" : "SUCESSFULLY UPLOADED!"}</Text>
             <Icon
               name = {Profilephoto === null ? 'image': 'check-box'}
@@ -355,7 +364,7 @@ const Signup = () => {
               onChangeText={(value) => setIDNumber(value)}
               value={IDNumber}
             />
-            <Pressable style = {[styles.button, {height: 150, width: 400, borderColor: Idcardimage === null ? LightBlue : '#202020'}]} onPress={handleIDCardImage} disabled = {Idcardimage === null ?  false : true}>
+            <Pressable style = {[styles.button, {height: 150, width: 400, borderColor: Idcardimage === null ? LightBlue : '#202020'}]} onPress={handleIDCardImage()} disabled = {Idcardimage === null ?  false : true}>
               <Text style = {[styles.buttontext, {fontFamily: 'Nexa-ExtraLight', color: '#707070'}]}>{Idcardimage === null ? "UPLOAD ID PHOTO" : "SUCESSFULLY UPLOADED!"}</Text>
               <Icon
                 name = {Idcardimage === null ? 'image': 'check-box'}
