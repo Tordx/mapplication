@@ -8,46 +8,43 @@ import { dbremoteAccounts } from '../../database/database';
 export default function UserViewPage() {
 
     const {userview} = useSelector((action) => action.user)
-    const [data, setData] = useState([]);
-
-    
+    const [data, setData] = useState('');
+    console.log(userview)    
+    const getdata = async () => {
+     
+      try {
+        let result = await dbremoteAccounts.allDocs({
+          include_docs: true,
+          attachments: true,
+        });
+        if (result.rows) {
+          let modifiedArr = result.rows.map(
+            item => item.doc
+          );
+          let filteredData = modifiedArr.filter(item => {
+            return item.UserID === userview.UserID
+          });
+          if (filteredData.length) {
+            let newFilterData = filteredData.map((item) => {
+              return item
+            });
+            const FullDetails = newFilterData[0]
+            
+            console.log('ss');
+            setData(FullDetails)
+            console.log(FullDetails);   
+            console.log('loaded');
+          }
+        }
+      } catch (error) {
+        console.error(error);
+        console.log(error)
+      }
+    }
 
     useEffect(() => {
 
-
-    const getdata = async () => {
-     
-        try {
-          let result = await dbremoteAccounts.allDocs({
-            include_docs: true,
-            attachments: true,
-          });
-          if (result.rows) {
-            let modifiedArr = result.rows.map(
-              item => item.doc
-            );
-            let filteredData = modifiedArr.filter(item => {
-              return item.UserID === userview.UserID
-            });
-            if (filteredData.length) {
-              let newFilterData = filteredData.map((item) => {
-                return item
-              });
-              const FullDetails = newFilterData[0]
-              const adminusername = newFilterData[0].username
-              const adminpassword = newFilterData[0].password
-              
-              setData(FullDetails)
-            }
-          }
-        } catch (error) {
-          console.error(error);
-          console.log(error)
-        }
-      }
-    
     getdata()
-    console.log('loaded');
     },[])
   return (
     <View style ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: Black}}>
