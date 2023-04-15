@@ -84,7 +84,7 @@ const Login = () => {
             const FullDetails = newFilterData[0]
             const adminusername = newFilterData[0].username
             const adminpassword = newFilterData[0].password
-            const adminaccount = newFilterData[0].Account
+            const adminaccount = newFilterData[0].userType
             const adminstatus = newFilterData[0].Status
 
             if(adminusername === username && adminpassword === password) {
@@ -96,10 +96,10 @@ const Login = () => {
                 setLoading(false)
                 return;
               }else{
-                  if(adminaccount === "User") {
+                  if(adminaccount === "user") {
                     navigation.navigate('BottomTabs');
                     setLoading(false)
-                  }else{
+                  }else if(adminaccount === "admin") {
                     navigation.navigate('AdminLanding');
                     setLoading(false)
                   }

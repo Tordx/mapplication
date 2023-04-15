@@ -18,9 +18,12 @@ const Welcome = () => {
           const userCredentials = await AsyncStorage.getItem('userCredentials');
           if (userCredentials !== null) {
             const FullDetails = await JSON.parse(userCredentials);
+
             dispatch(setUserAccount(FullDetails))
+            if(FullDetails.userType === 'user') {
             navigation.navigate('BottomTabs')
-            
+            } else if (FullDetails.userType === 'admin')
+            navigation.navigate('AdminLanding')
           }
         } catch (error) {
           console.error(error);
