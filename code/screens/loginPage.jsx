@@ -84,23 +84,34 @@ const Login = () => {
             const FullDetails = newFilterData[0]
             const adminusername = newFilterData[0].username
             const adminpassword = newFilterData[0].password
+            const adminaccount = newFilterData[0].Account
+            const adminstatus = newFilterData[0].Status
 
             if(adminusername === username && adminpassword === password) {
               dispatch(setUserAccount(FullDetails));
               await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
-              navigation.navigate('BottomTabs');
-              setLoading(false)
+
+              if(adminstatus === "inactive"){
+                Alert.alert('Account is Inactive Please Contact the Admin For more Info')
+                setLoading(false)
+                return;
+              }else{
+                  if(adminaccount === "User") {
+                    navigation.navigate('BottomTabs');
+                    setLoading(false)
+                  }else{
+                    navigation.navigate('AdminLanding');
+                    setLoading(false)
+                  }
+              }
+             
             } else{
               Alert.alert('Username and Password did not match!')
               setLoading(false)
             }
-            console.log(FullDetails);
-          
           }
         }
       } catch (error) {
-        console.error(error);
-        console.log(error)
         setLoading(false)
         setLoggingIn(true)
       }
