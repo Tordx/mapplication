@@ -103,6 +103,7 @@ export default function Comments() {
           TactilesRating: tactiles,
           Date: date,
           CommentID: ItemList.CommentID,
+          userID: useraccount.userID,
         };
         dbremoteComments.put(response);
         console.log(response)
@@ -111,7 +112,6 @@ export default function Comments() {
         const updatedEstablishment = {
           _id: ItemList._id,
           ...doc,
-          userID: useraccount.userID,
           CommentsCount: ItemList.CommentsCount + 1,
           Rating: ItemList.Rating + overallrating,
           RatingCount: ItemList.RatingCount + 1,
