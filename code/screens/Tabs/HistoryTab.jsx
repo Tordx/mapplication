@@ -38,7 +38,7 @@ const HistoryTab = () => {
             })
             if (filteredData) {
                 const newFilteredData = filteredData.filter((item) => {
-                  return item.userID === useraccount.userID;
+                  return item.UserID === useraccount.UserID;
                 })
             
                 setComments(newFilteredData);

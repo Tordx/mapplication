@@ -4,27 +4,30 @@ import { useSelector } from 'react-redux';
 import PouchDB from 'pouchdb-react-native' ;import { Image } from 'react-native';
 import { Black, White } from '../Assets/Colors/Colors';
 import { dbremoteAccounts } from '../../database/database';
- 'pouchdb-core';
 export default function UserViewPage() {
 
     const {userview} = useSelector((action) => action.user)
     const [data, setData] = useState('');
-    console.log(userview)    
+    console.log(userview)
     const getdata = async () => {
-     
+      console.log('loaded');
       try {
         let result = await dbremoteAccounts.allDocs({
           include_docs: true,
           attachments: true,
         });
         if (result.rows) {
+          console.log('11');
           let modifiedArr = result.rows.map(
+            
             item => item.doc
           );
+          console.log('22');
           let filteredData = modifiedArr.filter(item => {
             return item.UserID === userview.UserID
           });
           if (filteredData.length) {
+            console.log('33');
             let newFilterData = filteredData.map((item) => {
               return item
             });
@@ -43,7 +46,9 @@ export default function UserViewPage() {
     }
 
     useEffect(() => {
-
+      console.log(userview)
+      console.log('what the fuck');
+    console.log(data)
     getdata()
     },[])
   return (

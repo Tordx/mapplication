@@ -81,7 +81,7 @@ const CommentTab = () => {
               <Image style = {{width: 75, height: 75, marginRight: 15,marginLeft: 15, borderRadius: 20}} resizeMode='cover' source={{uri: item?.Image}} />
               <View style = {{flexDirection: 'column', width: '75%'}}>
                   <Text style={{ fontSize: 16, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 5}}>{item.Establishment}</Text>
-                  <Text style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight'}}>Review Count: {item.RatingCount}</Text>
+                  <Text style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight'}}>Review Count: {item.CommentsCount}</Text>
               </View>
             <Text style={{position: 'absolute',right: 20, fontSize: 25, color: LightYellow}}>{Math.min(item.Rating / item.RatingCount).toFixed(2)} ★</Text>
             
