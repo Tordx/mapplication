@@ -16,7 +16,7 @@ import { setUserView } from '../config/AccountSlice';
 import { launchImageLibrary } from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import { ScrollView } from 'react-native';
-import { dbremoteEstablishment , dbremoteComments } from '../../database/database';
+import { dbremoteEstablishment , dbremoteComments, dbremoteAccounts } from '../../database/database';
 
  export const Ratings = (props) => (
     <View style = {{justifyContent: 'flex-start', alignItems: 'flex-start', alignSelf: 'flex-start', flexDirection: 'column', paddingLeft: 10, marginVertical: 15, width: '100%', borderBottomWidth: 0.5, borderColor: LightBlue}} >
@@ -88,9 +88,9 @@ export default function Comments() {
     };
 
     const adddata = async () => {
-    
+      
       try {
-        var response = {
+        const response = await dbremoteComments.put( {
           _id: id,
           FullName: useraccount.FullName,
           Image: useraccount.Image,
@@ -103,11 +103,16 @@ export default function Comments() {
           TactilesRating: tactiles,
           Date: date,
           CommentID: ItemList.CommentID,
-          userID: useraccount.userID,
-        };
-        dbremoteComments.put(response);
-        console.log(response)
-        
+          UserID: useraccount.UserID,
+        });
+        const update = await dbremoteAccounts.get(useraccount._id);
+        const updatecommentcount = await dbremoteAccounts.put({
+            _id: useraccount._id,
+            ...update,
+            CommentCount: useraccount.CommentCount + 1,
+
+        });
+        console.log(updatecommentcount)
         const doc = await dbremoteEstablishment.get(ItemList._id);
         const updatedEstablishment = {
           _id: ItemList._id,
@@ -123,6 +128,7 @@ export default function Comments() {
         };
         await dbremoteEstablishment.put(updatedEstablishment);
         console.log(updatedEstablishment)
+        console.log(response)
         Alert.alert('Thanks for submitting a review!')
         setModal(false)
         setText('')
