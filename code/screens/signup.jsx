@@ -151,7 +151,7 @@ const Signup = () => {
              Sex : Sex,
              Address : Address,
              AlternateContactNumber : AlternateContactNumber,
-             Profilephoto: Profilephoto,
+             Image: Profilephoto,
              Idcardimage: Idcardimage,
              Account: "User",
              Status: 'inactive'
@@ -213,7 +213,7 @@ const Signup = () => {
        {opening && 
         <View style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
        <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-        <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
+        <Text style = {styles.headertagline}>Welcome to Ease Access!</Text>
         <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '80%'}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
         <Pressable style = {styles.button}
           onPress={ () => {setOpening(false); setFirst(true)}}
@@ -348,7 +348,7 @@ const Signup = () => {
            <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
              <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
               <Text style = {styles.headertagline}>We'll take a look before getting you on-board</Text>
-              <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '90%'}}>We're very much excited to have you as part of Alaminos City PWD Establishment Rating app</Text>
+              <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '90%'}}>Setup your Identification by providing your official PWD ID</Text>
              <Loginbox 
               placeholder = 'Nationality' 
               onChangeText={(value) => setNationality(value)}
@@ -391,7 +391,7 @@ const Signup = () => {
         {fifth && 
         <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
         <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-          <Text style = {[styles.headertagline, {alignSelf: 'center'}]}>We'll take a look before getting you on-board</Text>
+          <Text style = {[styles.headertagline, {alignSelf: 'center'}]}>Thank you for signin up!</Text>
           <Text style = {{fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '90%'}}>At PWD App, our goal is to empower persons with disabilities by providing a platform that promotes accessibility and inclusion. However, to ensure that the app is used by those who truly need it, we have implemented a verification process to confirm that each user is a Person with Disability (PWD).</Text>
 
           <Pressable style = {[styles.button, {width: '85%', borderColor: LightYellow}]}
