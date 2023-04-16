@@ -7704,6 +7704,18 @@ react-native-codegen@^0.71.3:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-country-flag@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/react-native-country-flag/-/react-native-country-flag-1.1.9.tgz#015fa9b4f757f47a800e5f542209e0de27d6836d"
+  integrity sha512-oNeNrx7qf04v75uhqUd9JbqHjAFaH8pSGjoXTincqkSPtwgikH5i+qScBXQUDpuH0SwXgsmgMzecphqeR4015w==
+
+react-native-date-picker@^4.2.10:
+  version "4.2.10"
+  resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-4.2.10.tgz#e84cba21ce413d72b2da1c784af3a8a4b2020df3"
+  integrity sha512-Qtu5mvuESjhSKCsecl5+V3kcGxjB3yUUJbbAq6u8JVZj9/fRf8+IV/yfDSREqMoiLM1ljMumxFT2Qdqkw/++Lw==
+  dependencies:
+    prop-types "^15.8.1"
+
 react-native-gesture-handler@^2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.9.0.tgz#2f63812e523c646f25b9ad660fc6f75948e51241"
