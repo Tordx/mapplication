@@ -24,9 +24,10 @@ export const Loginbox = (props) => {
       placeholder = {props.placeholder}
       placeholderTextColor = {'#606060'}
       secureTextEntry = {props.secureTextEntry}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
+      onFocus={props.onFocus ? props.onFocus : () => setIsFocused(true)}
+      onBlur={props.onBlur ? props.onBlur : () => setIsFocused(false)}
       value = {props.value}
+      onChange = {props.onChange}
       onChangeText = {props.onChangeText}
       maxLength={300}
       autoComplete='off'
@@ -88,25 +89,29 @@ const Login = () => {
             const adminstatus = newFilterData[0].Status
 
             if(adminusername === username && adminpassword === password) {
-              dispatch(setUserAccount(FullDetails));
-              await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
+             
 
               if(adminstatus === "inactive"){
-                Alert.alert('Account is Inactive Please Contact the Admin For more Info')
+                Alert.alert('Account is Inactive', ' Please contact your moderators for more Info')
                 setLoading(false)
                 return;
               }else{
                   if(adminaccount === "user") {
                     navigation.navigate('BottomTabs');
+                    await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
+                    dispatch(setUserAccount(FullDetails));
                     setLoading(false)
-                  }else if(adminaccount === "admin") {
+                  } 
+                  if(adminaccount === "admin") {
+                    await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
+                    dispatch(setUserAccount(FullDetails));
+                    setLoading(false)
                     navigation.navigate('AdminLanding');
-                    setLoading(false)
                   }
               }
              
             } else{
-              Alert.alert('Username and Password did not match!')
+              Alert.alert('Whoooooops!', "something whent wrong or your username & password didn't match our system, please re-enter information correctly")
               setLoading(false)
             }
           }
