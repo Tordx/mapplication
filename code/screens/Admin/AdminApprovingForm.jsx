@@ -6,6 +6,8 @@ import { dbremoteAccounts } from '../../../database/database'
 import { useNavigation } from '@react-navigation/native'
 import { launchImageLibrary } from 'react-native-image-picker'
 import RNFetchBlob from 'rn-fetch-blob';
+import { ScrollView } from 'react-native-gesture-handler'
+import { Black, White } from '../../Assets/Colors/Colors'
 
 
 
@@ -37,7 +39,7 @@ const AdminApprovingForm = () => {
     const [AlternateContactNumber, setAlternateContactNumber] = useState(approvingaccount.AlternateContactNumber)
     const [account, setAccount] = useState(approvingaccount.Account)
     const [userstatus, setUserStatus] = useState(approvingaccount.Status)
-    const [ProfilephotoDisplay, setProfilePhotoDisplay] = useState(approvingaccount.Profilephoto);
+    const [ProfilephotoDisplay, setProfilePhotoDisplay] = useState(approvingaccount.Image);
     const [IdcardimageDisplay, setIdCardImageDisplay] = useState(approvingaccount.Idcardimage);
 
     const navigation = useNavigation()
@@ -128,7 +130,7 @@ const AdminApprovingForm = () => {
               Sex : Sex,
               Address : Address,
               AlternateContactNumber : AlternateContactNumber,
-              Profilephoto: Profilephoto,
+              Image: Profilephoto,
               Idcardimage: Idcardimage,
               Account: account,
               Status: userstatus
@@ -148,88 +150,97 @@ const AdminApprovingForm = () => {
         }
        }
   return (
-
-    <View style={{backgroundColor: "black" , justifyContent: 'center' , alignItems: 'center' , flex: 1}}> 
+    <ScrollView style = {{flex: 1}}>
+    <View style={{backgroundColor: Black, justifyContent: 'center' , alignItems: 'center' , flex: 1}}> 
         <View style={{flexDirection: 'row'}}>
             <Pressable onPress={() => handleProfilePhoto()}>
             <Image source={{uri: ProfilephotoDisplay}} style={{ width: 100, height: 100 , margin: 5 }} resizeMode='cover'/>
             </Pressable>
-            <Pressable onPress={() => handleIDCardImage()}>
-            <Image source={{uri: IdcardimageDisplay}} style={{ width: 100, height: 100 , margin: 5 }} resizeMode='cover'/>
-            </Pressable>
        </View>   
-           
+       <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Username</Text>
        <Loginbox 
           placeholder = 'username' 
           onChangeText={(value) => setUsername(value)}
           value={username}
         />
-        <Loginbox 
-          placeholder = 'password' 
-          onChangeText={(value) => setPassword(value)}
-          value={password}
-        />
-        <Loginbox 
-          placeholder = 'MobileNumber' 
-          onChangeText={(value) => setMobileNumber(value)}
-          value={MobileNumber}
-        />
-        <Loginbox 
-          placeholder = 'Nationality' 
-          onChangeText={(value) => setNationality(value)}
-          value={Nationality}
-        />
+         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>First Name</Text>
          <Loginbox 
-          placeholder = 'Disability' 
-          onChangeText={(value) => setDisability(value)}
-          value={Disability}
-        /><Loginbox 
-        placeholder = 'IDNumber' 
-        onChangeText={(value) => setIDNumber(value)}
-        value={IDNumber}
-         />
-        <Loginbox 
           placeholder = 'FirstName' 
           onChangeText={(value) => setFirstName(value)}
           value={FirstName}
         />
+         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Middle Name</Text>
         <Loginbox 
           placeholder = 'MiddleName' 
           onChangeText={(value) => setMiddleName(value)}
           value={MiddleName}
         />
+         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Last Name</Text>
         <Loginbox 
           placeholder = 'LastName' 
           onChangeText={(value) => setLastName(value)}
           value={LastName}
         />
+         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Birthdate</Text>
         <Loginbox 
-          placeholder = 'Birthday' 
+          placeholder = 'Birthdate' 
           onChangeText={(value) => setBirthday(value)}
           value={Birthday}
         />
+         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Sex/Gender</Text>
         <Loginbox 
-          placeholder = 'Sex' 
+          placeholder = 'Sex/Gender' 
           onChangeText={(value) => setSex(value)}
           value={Sex}
         />
-           <Loginbox 
-          placeholder = 'Address' 
-          onChangeText={(value) => setAddress(value)}
-          value={Address}
+        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Address</Text>
+        <Loginbox 
+        placeholder = 'Address' 
+        onChangeText={(value) => setAddress(value)}
+        value={Address}
         />
-           <Loginbox 
-          placeholder = 'AlternateContactNumber' 
-          onChangeText={(value) => setAlternateContactNumber(value)}
-          value={AlternateContactNumber}
+        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Mobile Number</Text>
+        <Loginbox 
+          placeholder = 'MobileNumber' 
+          onChangeText={(value) => setMobileNumber(value)}
+          value={MobileNumber}
         />
+        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Nationality</Text>
+        <Loginbox 
+          placeholder = 'Nationality' 
+          onChangeText={(value) => setNationality(value)}
+          value={Nationality}
+        />
+        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Disability</Text>
          <Loginbox 
-          placeholder = 'Status' 
-          onChangeText={(value) => setUserStatus(value)}
-          value={userstatus}
+          placeholder = 'Disability' 
+          onChangeText={(value) => setDisability(value)}
+          value={Disability}
+        />
+        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>ID Number</Text>
+        <Loginbox 
+        placeholder = 'IDNumber' 
+        onChangeText={(value) => setIDNumber(value)}
+        value={IDNumber}
+         />
+          <Pressable onPress={() => handleIDCardImage()}>
+            <Image source={{uri: IdcardimageDisplay}} style={{ width: 100, height: 100 , margin: 5 }} resizeMode='cover'/>
+            </Pressable>
+        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Alternate Number</Text>
+        <Loginbox 
+        placeholder = 'Alternate Contact Number' 
+        onChangeText={(value) => setAlternateContactNumber(value)}
+        value={AlternateContactNumber}
+        />
+        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>User Status</Text>
+        <Loginbox 
+        placeholder = 'Status' 
+        onChangeText={(value) => setUserStatus(value)}
+        value={userstatus}
         />
          <Button title='Approve User' onPress={ApproveUser}/>
     </View>
+    </ScrollView>
   )
 }
 
