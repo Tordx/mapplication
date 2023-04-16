@@ -11,6 +11,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { Loginbox } from './loginPage';
 import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
 import { StyleSheet } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 
 
 const Signup = () => {
@@ -54,9 +55,43 @@ const Signup = () => {
   const [Idcardimage, setIdCardImage] = React.useState(null);
   const [ProfilephotoDisplay, setProfilePhotoDisplay] = React.useState("https://imgur.com/a/Q9oD9Uu");
   const [IdcardimageDisplay, setIdCardImageDisplay] = React.useState("https://imgur.com/a/Q9oD9Uu");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false); 
+  const date = new Date()
+  const getdate = date.toLocaleDateString()
 
   const navigation = useNavigation()
   const id = uuid.v4()
+
+  const checkusername = async() => {
+
+    try {
+      let result = await dbremoteAccounts.allDocs({
+        include_docs: true,
+        attachments: true,
+      });
+      if (result.rows) {
+        let modifiedArr = result.rows.map(
+          item => item.doc
+        );
+        let filteredData = modifiedArr.filter(item => {
+          return item.username === username
+        });
+        const newFilterData = filteredData[0]?.username; // Use optional chaining to avoid errors if filteredData[0] is undefined
+        if (newFilterData === username) {
+          Alert.alert('Wait up!',' username already exist.');
+          return;
+        } else {
+          setFirst(false);
+          setSecond(true) 
+        }
+      }
+    }catch (err) {
+      console.log(err);
+      ToastAndroid.show('Something went wrong, try again', ToastAndroid.LONG)
+    }
+  }
+
 
   const handleProfilePhoto = async() => {
 
@@ -123,7 +158,7 @@ const Signup = () => {
           const photolink = result.data.link
           setIdCardImage(photolink)
           console.log('photolink', photolink);
-          ToastAndroid.show('Sucessfully added your ID', ToastAndroid.LONG)
+          ToastAndroid.show('Sucessfully added your ID', ToastAndroid.SHORT)
         } catch (error) {
           console.log('error', error);
         }
@@ -136,7 +171,7 @@ const Signup = () => {
        try {
          var adduser = {
              _id: id,
-             username : username,
+             username : username.toLowerCase(),
              password : password,
              MobileNumber : MobileNumber,
              Nationality : Nationality,
@@ -154,14 +189,37 @@ const Signup = () => {
              Image: Profilephoto,
              Idcardimage: Idcardimage,
              Account: "User",
-             Status: 'inactive'
+             Status: 'inactive',
+             CreationDate: getdate,
          }
       dbremoteAccounts.put(adduser)
          .then((response) =>{
-           Alert.alert('Your Super Admin is Added has been successfully added!')
+           Alert.alert('Amazing!','Your account needs to get verified by one of our moderators within 24 to 48hrs before you can access it.')
            console.log(response)
-          //  SyncSuperAdmin()
-           navigation.navigate('BottomTabs')
+           setUsername('');
+           setPassword('');
+           setMobileNumber('');
+           setNationality('');
+           setIDType('');
+           setDisability('');
+           setIDNumber('');
+           setProfilePicture('');
+           setFirstName('');
+           setMiddleName('');
+           setLastName('');
+           setBirthday('');
+           setSex('');
+           setAddress('');
+           setAlternateContactNumber('');
+           setProfilePhoto(null);
+           setIdCardImage(null);
+           setProfilePhotoDisplay("https://imgur.com/a/Q9oD9Uu");
+           setIdCardImageDisplay("https://imgur.com/a/Q9oD9Uu");
+           setSelectedDate(new Date());
+           setShowDatePicker(false);
+           setOpening(true)
+           setfifth(false)
+           navigation.replace('Login')
 
          })
          .catch(err=>console.log(err))
@@ -179,23 +237,24 @@ const Signup = () => {
       const [fifth, setfifth] = useState(false)
 
       const handleNoSpace = (inputText) => {
-        // Remove spaces from the input text using a regular expression
+       
         const nospace = inputText.replace(/\s/g, '');
         setUsername(nospace)
       };
 
       const handlefirst = () => {
         if ((username.length < 6) && (password.length < 6)) {
-          ToastAndroid.show('username and password must contain at least 6 alphanumeric', ToastAndroid.CENTER)
+          ToastAndroid.show('must contain at least 6 alphanumeric username and password', ToastAndroid.CENTER)
         } else {
-          setFirst(false); setSecond(true) 
+          checkusername()
         }
       }
       const handleSecond = () => {
         if (!(FirstName && LastName && Address && Birthday && Sex)) {
           ToastAndroid.show('Please fill up all fields', ToastAndroid.SHORT)
         } else {
-          setSecond(false); setthird(true)
+          setSecond(false); 
+          setthird(true)
         }
       }
 
@@ -208,6 +267,28 @@ const Signup = () => {
       }
   return (
     <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: Black}} >
+    {showDatePicker && (
+       <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#'}}>
+        <DatePicker
+        modal
+        open = {showDatePicker}
+        style={styles.datePicker}
+        date={selectedDate}
+        mode="date"
+        format="MM-DD-YYYY"
+        onConfirm={(date) => {
+          setShowDatePicker(false)
+          const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+          const selectedDate = new Date(date).toLocaleDateString('en-US', options);
+          setBirthday(selectedDate);
+        }}
+        onCancel={() => {
+          setShowDatePicker(false)
+        }}
+          onDateChange={(date) => setSelectedDate(date)}
+        />
+        </View>
+      )}
       <ScrollView style = {{width: '100%', height: '100%'}}>
       <KeyboardAvoidingView style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
        {opening && 
@@ -259,18 +340,19 @@ const Signup = () => {
             <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
               <Text style = {styles.headertagline}>Then, few of your personal information</Text>
               <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '80%'}}>The information you provided are to be displayed in your account, and rest assured that all information are not used in other means</Text>
-            <Pressable style = {[styles.button, {height: 150, width: 400, borderColor: Profilephoto === null ? LightBlue : '#202020'}]} onPress={handleProfilePhoto()} disabled = {Profilephoto === null ?  false : true}>
+            <Pressable style = {[styles.button, {height: 150, width: 400, borderColor: Profilephoto === null ? LightBlue : '#202020'}]} onPress={handleProfilePhoto} disabled = {Profilephoto === null ?  false : true}>
             <Text style = {[styles.buttontext, {fontFamily: 'Nexa-ExtraLight', color: '#707070'}]}>{Profilephoto === null ? "UPLOAD DISPLAY PHOTO" : "SUCESSFULLY UPLOADED!"}</Text>
-            <Icon
-              name = {Profilephoto === null ? 'image': 'check-box'}
-              size={100}
-              color={Profilephoto === null ? LightBlue: '#90EE90'}
-            />
+            {Profilephoto == null && <Icon
+                name = {'image'}
+                size={100}
+                color={LightBlue}
+              />
+              }
           </Pressable>
-          {Profilephoto && <Image style = {{width: 350, height: 200}} resizeMode='contain' source={{uri: Profilephoto}} />}
+          {Profilephoto && <Image style = {{width: 200, height: 200, marginBottom: 20, borderRadius: 500}} resizeMode='cover' source={{uri: Profilephoto}} />}
         
         <Loginbox 
-          placeholder = 'First mame' 
+          placeholder = 'First name' 
           onChangeText={(value) => setFirstName(value)}
           value={FirstName}
         />
@@ -290,11 +372,13 @@ const Signup = () => {
           onChangeText={(value) => setAddress(value)}
           value={Address}
         />
-
         <Loginbox 
           placeholder = 'Birthday' 
           onChangeText={(value) => setBirthday(value)}
           value={Birthday}
+          name = 'calendar-today'
+          onPress = {() => setShowDatePicker(true)}
+          onFocus = {() => setShowDatePicker(true)}
         />
         <Loginbox 
           placeholder = 'Sex/gender' 
@@ -364,7 +448,7 @@ const Signup = () => {
               onChangeText={(value) => setIDNumber(value)}
               value={IDNumber}
             />
-            <Pressable style = {[styles.button, {height: 150, width: 400, borderColor: Idcardimage === null ? LightBlue : '#202020'}]} onPress={handleIDCardImage()} disabled = {Idcardimage === null ?  false : true}>
+            <Pressable style = {[styles.button, {height: 150, width: 400, borderColor: Idcardimage === null ? LightBlue : '#202020'}]} onPress={handleIDCardImage} disabled = {Idcardimage === null ?  false : true}>
               <Text style = {[styles.buttontext, {fontFamily: 'Nexa-ExtraLight', color: '#707070'}]}>{Idcardimage === null ? "UPLOAD ID PHOTO" : "SUCESSFULLY UPLOADED!"}</Text>
               <Icon
                 name = {Idcardimage === null ? 'image': 'check-box'}
@@ -372,7 +456,7 @@ const Signup = () => {
                 color={Idcardimage === null ? LightBlue: '#90EE90'}
               />
             </Pressable>
-            {Idcardimage && <Image style = {{width: 350, height: 200}} resizeMode='contain' source={{uri: Idcardimage}} />}
+            {/* {Idcardimage && <Image style = {{width: 350, height: 200}} resizeMode='contain' source={{uri: Idcardimage}} />} */}
             <Pressable style = {[styles.button]}
          onPress={handleFourth}
        >
@@ -392,7 +476,7 @@ const Signup = () => {
         <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
         <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
           <Text style = {[styles.headertagline, {alignSelf: 'center'}]}>Thank you for signin up!</Text>
-          <Text style = {{fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '90%'}}>At PWD App, our goal is to empower persons with disabilities by providing a platform that promotes accessibility and inclusion. However, to ensure that the app is used by those who truly need it, we have implemented a verification process to confirm that each user is a Person with Disability (PWD).</Text>
+          <Text style = {{fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '90%'}}>At Ease Access, our goal is to empower persons with disabilities by providing a platform that promotes accessibility and inclusion. However, to ensure that the app is used by those who truly need it, we have implemented a verification process to confirm that each user is a Person with Disability (PWD).</Text>
 
           <Pressable style = {[styles.button, {width: '85%', borderColor: LightYellow}]}
           onPress={() => setnewuser()}
@@ -409,6 +493,8 @@ const Signup = () => {
         </Pressable></View>}
       </KeyboardAvoidingView>
       </ScrollView>
+         
+     
     </View>
   )
 }
@@ -455,8 +541,44 @@ const styles = StyleSheet.create({
       fontSize: 20, 
       color: White, 
       fontFamily: 'Nexa-Heavy'
+  },
+  dateInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: 300,
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20
+  },
+  dateText: {
+    fontSize: 18,
+    color: 'white'
+  },
+  calendarIcon: {
+    marginLeft: 10
+  },
+  datePicker: {
+    width: 300,
+    marginBottom: 20,
+    backgroundColor: White
+  },
+  hiddenInput: {
+    borderWidth: 0
+  },
+  hiddenText: {
+    height: 0
+  },
+  btnTextConfirm: {
+    color: '#0080ff'
+  },
+  btnTextCancel: {
+    color: '#333'
   }
+});
 
-})
 
 export default Signup
