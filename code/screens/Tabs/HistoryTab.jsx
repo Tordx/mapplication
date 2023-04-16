@@ -79,7 +79,7 @@ const HistoryTab = () => {
   return (
     <View style = {{flex: 1, backgroundColor: Black}}>
     <View style={{height: 45, width: '100%'}}>
-      <Text style = {{paddingLeft: 20, color: White, fontSize: 25, fontFamily: 'Nexa-Heavy', top: 10}}>Review History</Text>
+      <Text style = {{paddingLeft: 20, color: White, fontSize: 30, fontFamily: 'Nexa-Heavy', top: 10}}>Review History</Text>
       
       </View>
     <View style = {{flex: 1, backgroundColor: Black, paddingBottom: 100}}>
