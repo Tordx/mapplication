@@ -32,6 +32,8 @@ export const Loginbox = (props) => {
       maxLength={300}
       autoComplete='off'
       autoCapitalize='none'
+      disabled = {props.disabled}
+      
 
       />
       <Pressable onPress = {props.onPress} disabled = {props.disabled} style = {{position: 'absolute', right: 10}}>
@@ -106,7 +108,7 @@ const Login = () => {
                     await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
                     dispatch(setUserAccount(FullDetails));
                     setLoading(false)
-                    navigation.navigate('AdminLanding');
+                    navigation.navigate('Toptabs');
                   }
               }
              
