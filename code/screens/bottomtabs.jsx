@@ -13,7 +13,7 @@ import { useEffect } from 'react'
 import { BackHandler } from 'react-native'
 import { useFocusEffect, useNavigationContainerRef } from '@react-navigation/native'
 
-const exitApp = () => {
+export const exitApp = () => {
     BackHandler.exitApp();
   };
 
