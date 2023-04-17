@@ -7,7 +7,11 @@ import { useNavigation } from '@react-navigation/native'
 import { launchImageLibrary } from 'react-native-image-picker'
 import RNFetchBlob from 'rn-fetch-blob';
 import { ScrollView } from 'react-native-gesture-handler'
-import { Black, White } from '../../Assets/Colors/Colors'
+import { Black, LightBlue, LightYellow, White } from '../../Assets/Colors/Colors'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { StyleSheet } from 'react-native'
+import {Picker} from '@react-native-picker/picker';
+import { Modal } from 'react-native'
 
 
 
@@ -16,7 +20,6 @@ const AdminApprovingForm = () => {
     const {useraccount} = useSelector((store) => store.user)
     const {approvingaccount} = useSelector((store) => store.user)
 
-
     const [id, setID] = useState(approvingaccount._id)
     const [rev, setRev] = useState(approvingaccount._rev)
     const [username, setUsername] = useState(approvingaccount.username)
@@ -24,12 +27,8 @@ const AdminApprovingForm = () => {
     const [MobileNumber, setMobileNumber] = useState(approvingaccount.MobileNumber)
     const [Nationality, setNationality] = useState(approvingaccount.Nationality)
     const [Disability, setDisability] = useState(approvingaccount.Disability)
-    // const [IDType, setIDType] = useState(approvingaccount.IDType)
     const [IDNumber, setIDNumber] = useState(approvingaccount.IDNumber)
-    const [Profilephoto, setProfilePhoto] = useState(approvingaccount.Profilephoto)
-    const [Idcardimage, setIdCardImage] = useState(approvingaccount.Idcardimage)
     const [UserID, setUserID] = useState(approvingaccount.UserID)
-    // const [FullName, setFullName] = useState(approvingaccount.FullName)
     const [FirstName, setFirstName] = useState(approvingaccount.FirstName)
     const [MiddleName, setMiddleName] = useState(approvingaccount.MiddleName)
     const [LastName, setLastName] = useState(approvingaccount.LastName)
@@ -41,6 +40,8 @@ const AdminApprovingForm = () => {
     const [userstatus, setUserStatus] = useState(approvingaccount.Status)
     const [ProfilephotoDisplay, setProfilePhotoDisplay] = useState(approvingaccount.Image);
     const [IdcardimageDisplay, setIdCardImageDisplay] = useState(approvingaccount.Idcardimage);
+    const [ViewID, setViewID] = useState(false);
+    const [viewProfile, setViewProfile] = useState(false);
 
     const navigation = useNavigation()
 
@@ -69,7 +70,7 @@ const AdminApprovingForm = () => {
               });
               const result = await response.json();
               const photolink = result.data.link
-              setProfilePhoto(photolink)
+              setProfilePhotoDisplay(photolink)
               console.log('photolink', photolink);
             } catch (error) {
               console.log('error', error);
@@ -100,7 +101,7 @@ const AdminApprovingForm = () => {
               });
               const result = await response.json();
               const photolink = result.data.link
-              setIdCardImage(photolink)
+              setIdCardImageDisplay(photolink)
               console.log('photolink', photolink);
             } catch (error) {
               console.log('error', error);
@@ -130,17 +131,16 @@ const AdminApprovingForm = () => {
               Sex : Sex,
               Address : Address,
               AlternateContactNumber : AlternateContactNumber,
-              Image: Profilephoto,
-              Idcardimage: Idcardimage,
+              Image: ProfilephotoDisplay,
+              Idcardimage: IdcardimageDisplay,
               Account: account,
               Status: userstatus
           }
        dbremoteAccounts.put(adduser)
           .then((response) =>{
-            Alert.alert('Approve User!')
+            Alert.alert('Saved changes!')
             console.log(response)
-           //  SyncSuperAdmin()
-            navigation.navigate('AdminLanding')
+            navigation.navigate('Toptabs')
  
           })
           .catch(err=>console.log(err))
@@ -152,9 +152,13 @@ const AdminApprovingForm = () => {
   return (
     <ScrollView style = {{flex: 1}}>
     <View style={{backgroundColor: Black, justifyContent: 'center' , alignItems: 'center' , flex: 1}}> 
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',}}>
+            <Pressable onPress={() => setViewProfile(true)} style = {{justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
+            <Image source={{uri: ProfilephotoDisplay}} style={{ width: 150, height: 150 , margin: 5, borderRadius: 300 }} resizeMode='cover'/>
+            <FontAwesome style={{position: 'absolute',}} name = 'search' size = {30}  />
+            </Pressable>
             <Pressable onPress={() => handleProfilePhoto()}>
-            <Image source={{uri: ProfilephotoDisplay}} style={{ width: 100, height: 100 , margin: 5 }} resizeMode='cover'/>
+              <FontAwesome name = 'edit' size={30} color={'red'} />
             </Pressable>
        </View>   
        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Username</Text>
@@ -162,6 +166,7 @@ const AdminApprovingForm = () => {
           placeholder = 'username' 
           onChangeText={(value) => setUsername(value)}
           value={username}
+          disabled
         />
          <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>First Name</Text>
          <Loginbox 
@@ -205,6 +210,12 @@ const AdminApprovingForm = () => {
           onChangeText={(value) => setMobileNumber(value)}
           value={MobileNumber}
         />
+        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Alternate Number</Text>
+        <Loginbox 
+        placeholder = 'Alternate Contact Number' 
+        onChangeText={(value) => setAlternateContactNumber(value)}
+        value={AlternateContactNumber}
+        />
         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Nationality</Text>
         <Loginbox 
           placeholder = 'Nationality' 
@@ -223,25 +234,77 @@ const AdminApprovingForm = () => {
         onChangeText={(value) => setIDNumber(value)}
         value={IDNumber}
          />
-          <Pressable onPress={() => handleIDCardImage()}>
-            <Image source={{uri: IdcardimageDisplay}} style={{ width: 100, height: 100 , margin: 5 }} resizeMode='cover'/>
+         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',}}>
+            <Pressable onPress={() => setViewID(true)} style = {{justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
+            <Image source={{uri: IdcardimageDisplay}} style={{ width: 250, height: 150 , margin: 5, borderRadius: 20 }} resizeMode='cover'/>
+            <FontAwesome style={{position: 'absolute',}} name = 'search' size = {30}  />
             </Pressable>
-        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Alternate Number</Text>
-        <Loginbox 
-        placeholder = 'Alternate Contact Number' 
-        onChangeText={(value) => setAlternateContactNumber(value)}
-        value={AlternateContactNumber}
-        />
+            <Pressable onPress={() => handleIDCardImage()}>
+              <FontAwesome name = 'edit' size={30} color={'red'} />
+            </Pressable>
+       </View>
         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>User Status</Text>
-        <Loginbox 
-        placeholder = 'Status' 
-        onChangeText={(value) => setUserStatus(value)}
-        value={userstatus}
-        />
-         <Button title='Approve User' onPress={ApproveUser}/>
+        <View style = {{width: '95%', justifyContent: 'center', alignItems: 'center', borderColor: LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
+        <Picker
+          itemStyle = {{fontFamily:'Nexa-ExtraLight'}}
+          style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: White}}
+          selectedValue={userstatus}
+          value = {userstatus}
+          onValueChange={(itemValue, itemIndex) => setUserStatus(itemValue)}
+          
+        >
+          <Picker.Item label="Active" value="Active" /> 
+          <Picker.Item label="Inactive" value="Inactive" />
+          <Picker.Item label="Pending" value="Pending" />
+        </Picker>
+      </View>
+        <Pressable style = {[styles.button, {width: '85%', borderColor: LightYellow}]}
+          onPress={ApproveUser}>
+             <FontAwesome
+          name = 'check' size={20} color = {'#90ee90'}/>
+            <Text style = {[styles.buttontext, {fontFamily: 'Nexa-Heavy', color: LightYellow}]}>Submit changes</Text>
+          </Pressable>
     </View>
+    <Modal
+      transparent
+      animationType='fade'
+      visible = {viewProfile}
+      onRequestClose={() => setViewProfile(false)}
+    >
+      <Pressable style = {{width: '100%', height: '100%', backgroundColor: '#00000099', justifyContent: 'center', alignItems: 'center',}}
+      onPressOut={() => setViewProfile(false)}
+      >
+        <Image source={{uri: ProfilephotoDisplay}} resizeMode='contain' style = {{height: '100%', width: '100%'}} />
+      </Pressable>
+    </Modal>
+    <Modal
+      transparent
+      animationType='fade'
+      visible = {ViewID}
+      onRequestClose={() => setViewID(false)}
+    >
+      <Pressable style = {{width: '100%', height: '100%', backgroundColor: '#00000099', justifyContent: 'center', alignItems: 'center',}}
+      onPressOut={() => setViewID(false)}
+      >
+        <Image source={{uri: IdcardimageDisplay}} resizeMode='contain' style = {{height: '100%', width: '100%'}} />
+      </Pressable>
+    </Modal>
     </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  button: {
+    borderRadius: 20, 
+    height: 60, 
+    width: '50%', 
+    borderWidth: 1, 
+    borderColor: White,  
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    margin: 5,
+    marginTop: 20
+},
+})
 
 export default AdminApprovingForm
