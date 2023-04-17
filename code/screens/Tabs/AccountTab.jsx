@@ -31,8 +31,9 @@ const AccountTab = ()=> {
 
 
   return (
-    <ScrollView style = {{width: '100%', height: '100%', backgroundColor: Black}}>
-    <View style = {{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: Black}}>
+    <>
+    <ScrollView style = {{width: '100%', height: '100%', backgroundColor: Black}} showsVerticalScrollIndicator = {false} >
+    <View style = {{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: Black, paddingBottom: 100}}>
     <Text style = {{paddingLeft: 20, color: White, fontSize: 30, fontFamily: 'Nexa-Heavy', top: 10, alignSelf: 'flex-start'}}>My Account</Text>
      <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 30}}>
      <View style={{borderWidth: 1, borderStyle: 'dashed', borderColor: LightYellow, alignItems: 'center', justifyContent: 'center', width: 220, height: 220, borderRadius: 200, marginBottom: 20}}>
@@ -44,7 +45,7 @@ const AccountTab = ()=> {
       </View>
       </View>
          <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'column', margin: 5}}>
-         <Text style={{ fontSize: 35, color: White, fontFamily: 'Nexa-Heavy'}}>{useraccount.FullName}</Text>
+         <Text style={{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy'}}>{useraccount.FullName}</Text>
          <Text style={{ fontSize: 25, color: White, fontFamily: 'Nexa-ExtraLight', marginVertical: 20}}>{useraccount.MobileNumber}</Text>
          </View>
     </View>
@@ -65,7 +66,7 @@ const AccountTab = ()=> {
         </View>
          </View>
          </View>
-    <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row', width: '95%', height: 90, borderBottomWidth: 1, borderColor: LightBlue, borderRadius: 20, marginBottom: 20}}>
+    <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row', width: '95%', height: 90, borderBottomWidth: 1, borderColor: LightBlue, borderRadius: 20, marginBottom: 20,}}>
       <View style={{alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', width: '90%', height: 90}}>
         <View style = {{alignItems: 'center', justifyContent: 'center', width: '30%', flexDirection: 'column', height: '100%'}}>
           <Icon
@@ -93,13 +94,15 @@ const AccountTab = ()=> {
             <Text style = {[styles.buttontext, {fontFamily: 'Nexa-Heavy', color: LightYellow}]}>Edit Info</Text>
           </Pressable>
     </View>
+    </ScrollView>
+    
     
     
     <Pressable onPress={handleLogout} style = {{position: 'absolute', top: 8, right: 10, flexDirection: 'row'}}>
           <FontAwesome
           name = 'sign-out' size={35} color = 'red'/>
         </Pressable>
-    </ScrollView>
+    </>
   )
 }
 
