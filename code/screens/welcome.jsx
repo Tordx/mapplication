@@ -23,7 +23,7 @@ const Welcome = () => {
             navigation.navigate('BottomTabs')
             }
             if (FullDetails.userType === 'admin')
-            navigation.navigate('AdminLanding')
+            navigation.navigate('Toptabs')
           }
         } catch (error) {
           console.error(error);
