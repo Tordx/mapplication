@@ -15,17 +15,4 @@ const ItemViewPage = () => {
   )
 }
 
-const styles = StyleSheet.create({
-
-  container: {
-    flexDirection: 'column', 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    flex: 1, 
-    backgroundColor: '#f2f2f2'
-  }
-
-
-})
-
 export default ItemViewPage

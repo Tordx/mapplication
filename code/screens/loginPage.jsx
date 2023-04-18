@@ -78,7 +78,7 @@ const Login = () => {
             item => item.doc
           );
           let filteredData = modifiedArr.filter(item => {
-            return item.username === username
+            return item.username === username.toLowerCase()
           });
           if (filteredData.length) {
             let newFilterData = filteredData.map((item) => {
@@ -91,10 +91,10 @@ const Login = () => {
             const adminstatus = newFilterData[0].Status
 
             if(adminusername === username && adminpassword === password) {
-             
+              
 
-              if(adminstatus === "inactive"){
-                Alert.alert('Account is Inactive', ' Please contact your moderators for more Info')
+              if(adminstatus !== "active"){
+                Alert.alert('Account is not active', ' Please contact your moderators for more Info')
                 setLoading(false)
                 return;
               }else{
@@ -102,18 +102,22 @@ const Login = () => {
                     navigation.navigate('BottomTabs');
                     await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
                     dispatch(setUserAccount(FullDetails));
+                    setUserName('')
+                    setPassword('')
                     setLoading(false)
                   } 
                   if(adminaccount === "admin") {
                     await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
                     dispatch(setUserAccount(FullDetails));
                     setLoading(false)
+                    setUserName('')
+                    setPassword('')
                     navigation.navigate('Toptabs');
                   }
               }
              
             } else{
-              Alert.alert('Whoooooops!', "something whent wrong or your username & password didn't match our system, please re-enter information correctly")
+              Alert.alert('Whoooooops!', "something went wrong or your username & password didn't match our system")
               setLoading(false)
             }
           }

@@ -25,7 +25,7 @@ const AccountTab = ()=> {
   
   const handleLogout = async () => {
     await AsyncStorage.clear();
-    navigation.replace('Login');
+    navigation.replace('Welcome');
     ToastAndroid.show('Sucessfully signed out', ToastAndroid.BOTTOM)
   };
 
@@ -78,7 +78,7 @@ const AccountTab = ()=> {
           <Text style={{fontSize: 15, fontFamily: 'Nexa-ExtraLight', color: White, marginLeft: 10,  position: 'absolute', bottom: 20}}>{useraccount.Sex.toUpperCase()}</Text>
         </View>
           <View style = {{alignItems: 'center', justifyContent: 'center', width: '33.33%', height: '100%'}}>
-          <CountryFlag isoCode="ph" size={20} style = {{bottom: 43, position: 'absolute'}} />
+          <CountryFlag isoCode={useraccount.Nationality} size={20} style = {{bottom: 43, position: 'absolute'}} />
           <Text style={{fontSize: 15, fontFamily: 'Nexa-ExtraLight', color: White,  position: 'absolute', bottom: 20}}>{useraccount.Nationality.toUpperCase()}</Text>
         </View>
         <View style = {{alignItems: 'center', justifyContent: 'center', width: '30%',height: '100%'}}>
