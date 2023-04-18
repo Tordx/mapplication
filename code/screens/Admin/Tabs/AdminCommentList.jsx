@@ -68,7 +68,7 @@ const AdminCommentList = () => {
         <Pressable style = {{width: '98%', height: 100, borderColor: LightBlue, borderWidth: 2, justifyContent: 'center', alignSelf: 'center', alignItems: 'center', marginVertical: 10, marginHorizontal: 10, borderRadius: 20}}
           onPress={() => {
             dispatch(setItem(item));
-            navigation.navigate('ItemViewPage')
+            navigation.navigate('AdminItemViewPage')
           }}
         >
             <View style = {{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
