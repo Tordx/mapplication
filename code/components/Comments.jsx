@@ -104,6 +104,7 @@ export default function Comments() {
           Date: date,
           CommentID: ItemList.CommentID,
           UserID: useraccount.UserID,
+          Status: 'Active'
         });
         const update = await dbremoteAccounts.get(useraccount._id);
         const updatecommentcount = await dbremoteAccounts.put({
@@ -158,7 +159,7 @@ export default function Comments() {
             })
             if (filteredData) {
                 const newFilteredData = filteredData.filter((item) => {
-                  return item
+                  return item.Status === 'Active'
                 })
             
                 setData(newFilteredData);
