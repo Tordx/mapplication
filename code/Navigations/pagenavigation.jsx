@@ -16,6 +16,7 @@ import { CardStyleInterpolators } from '@react-navigation/stack';
 import AdminApprovingForm from '../screens/Admin/AdminApprovingForm'
 import toptabs from '../screens/Admin/toptabs'
 import Toptabs from '../screens/Admin/toptabs'
+import AdminItemViewPage from '../screens/Admin/AdminItemViewPage'
 
 const Page = createStackNavigator();
 
@@ -72,9 +73,14 @@ const PageNavigation = () => {
           component={Toptabs}
           options={{ headerShown: false }}
           />
-           <Page.Screen
+          <Page.Screen
             name="AdminApprovingForm"
             component={AdminApprovingForm}
+            options={{ headerShown: false }}
+          />
+          <Page.Screen 
+            name = 'AdminItemViewPage'
+            component = {AdminItemViewPage}
             options={{ headerShown: false }}
           />
         </Page.Navigator>
