@@ -109,6 +109,8 @@
         <MapboxGL.Camera
           zoomLevel={14}
           centerCoordinate={usercoordinates}
+          logoEnabled = {false}
+        attributionEnabled = {false}
         />
 
         {markers.map((marker) => (
