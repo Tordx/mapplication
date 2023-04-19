@@ -1,7 +1,8 @@
 import { View, StatusBar } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Map from '../maps/FullViewMap'
 import AccountTab from './Tabs/AccountTab'
 import CommentTab from './Tabs/CommentTab'
@@ -47,12 +48,14 @@ const BottomTabs = () => {
         },
         tabBarStyle: { 
             
+            height: 60,
+            backgroundColor: Black,
+            elevation: 10,
             borderRadius: 20,
             position: 'absolute',
-            bottom: 30,
-            height: 70,
-            marginHorizontal: 15,
-            backgroundColor: Black,
+            bottom: 20,
+            marginHorizontal: 10,
+            shadowColor: '#101010'
 
         },
     })}>
@@ -61,9 +64,9 @@ const BottomTabs = () => {
         component={CommentTab}  
         options =  {{headerShown: false,
         tabBarIcon: ({focused}) => (
-            <Icon
-                name = 'star'
-                size = {focused? 45: 40}
+            <FontAwesome
+                name = {focused? 'star-o': 'star'}
+                size = {30}
                 color = {focused? LightYellow : '#9999'}
 
             />
@@ -75,9 +78,9 @@ const BottomTabs = () => {
         component={MyLocation} 
         options = {{headerShown: false,
         tabBarIcon: ({focused}) => (
-            <Icon
-                name = 'language'
-                size = {focused? 45: 40}
+            <FontAwesome5
+                name = {focused? 'globe-asia':'globe-americas'}
+                size = {30}
                 color = {focused? LightYellow : '#9999'}
 
             />
@@ -91,9 +94,9 @@ const BottomTabs = () => {
         
         options =  {{headerShown: false,
         tabBarIcon: ({focused}) => (
-            <Icon
-                name = 'history'
-                size = {focused? 45: 40}
+            <FontAwesome
+            name = {focused? 'folder-open-o':'folder-open'}
+                size = {30}
                 color = {focused? LightYellow : '#9999'}
 
             />
@@ -105,9 +108,9 @@ const BottomTabs = () => {
         component={AccountTab}
         options =  {{headerShown: false,
         tabBarIcon: ({focused}) => (
-            <Icon
-                name = 'person'
-                size = {focused? 45: 40}
+            <FontAwesome
+                name =  {focused ? 'user-circle-o' : 'user-circle'}
+                size = {30  }
                 color = {focused? LightYellow :  '#9999'}
 
             />
