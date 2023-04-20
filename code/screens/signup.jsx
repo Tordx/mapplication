@@ -111,7 +111,6 @@ const Signup = () => {
         const datapic = response
         const piclocation = datapic.assets[0].uri
         setProfilePhotoDisplay(piclocation)
-        // setPhoto(response);
         try {
           const data = await RNFetchBlob.fs.readFile(datapic.assets[0].uri, 'base64');
           const formData = new FormData();
