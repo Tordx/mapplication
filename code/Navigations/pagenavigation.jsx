@@ -17,6 +17,7 @@ import AdminApprovingForm from '../screens/Admin/AdminApprovingForm'
 import toptabs from '../screens/Admin/toptabs'
 import Toptabs from '../screens/Admin/toptabs'
 import AdminItemViewPage from '../screens/Admin/AdminItemViewPage'
+import AddLocation from '../screens/Admin/Addlocation'
 
 const Page = createStackNavigator();
 
@@ -81,6 +82,11 @@ const PageNavigation = () => {
           <Page.Screen 
             name = 'AdminItemViewPage'
             component = {AdminItemViewPage}
+            options={{ headerShown: false }}
+          />
+           <Page.Screen 
+            name = 'Addlocation'
+            component = {AddLocation}
             options={{ headerShown: false }}
           />
         </Page.Navigator>
