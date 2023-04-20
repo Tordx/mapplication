@@ -63,10 +63,10 @@ const Login = () => {
   const loginaccount = async() => {
 
     if (username.length === 0) {
-        ToastAndroid.show("username is empty", ToastAndroid.CENTER)
-      } else if (password.length === 0) {
-        ToastAndroid.show("password is empty", ToastAndroid.CENTER)
-      } else {
+      ToastAndroid.show("username is empty", ToastAndroid.CENTER)
+    } else if (password.length === 0) {
+      ToastAndroid.show("password is empty", ToastAndroid.CENTER)
+    } else {
       try {
         setLoading(true)
         let result = await dbremoteAccounts.allDocs({
@@ -89,37 +89,37 @@ const Login = () => {
             const adminpassword = newFilterData[0].password
             const adminaccount = newFilterData[0].userType
             const adminstatus = newFilterData[0].Status
-
+  
             if(adminusername === username && adminpassword === password) {
-              
-
               if(adminstatus !== "active"){
                 Alert.alert('Account is not active', ' Please contact your moderators for more Info')
                 setLoading(false)
                 return;
-              }else{
-                  if(adminaccount === "user") {
-                    navigation.navigate('BottomTabs');
-                    await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
-                    dispatch(setUserAccount(FullDetails));
-                    setUserName('')
-                    setPassword('')
-                    setLoading(false)
-                  } 
-                  if(adminaccount === "admin") {
-                    await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
-                    dispatch(setUserAccount(FullDetails));
-                    setLoading(false)
-                    setUserName('')
-                    setPassword('')
-                    navigation.navigate('Toptabs');
-                  }
+              } else {
+                if(adminaccount === "user") {
+                  navigation.navigate('BottomTabs');
+                  await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
+                  dispatch(setUserAccount(FullDetails));
+                  setUserName('')
+                  setPassword('')
+                  setLoading(false)
+                } 
+                if(adminaccount === "admin") {
+                  await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
+                  dispatch(setUserAccount(FullDetails));
+                  setLoading(false)
+                  setUserName('')
+                  setPassword('')
+                  navigation.navigate('Toptabs');
+                }
               }
-             
-            } else{
+            } else {
               Alert.alert('Whoooooops!', "something went wrong or your username & password didn't match our system")
               setLoading(false)
             }
+          } else {
+            Alert.alert('Username not found', "The username you entered doesn't exist in our system. Please try again.")
+            setLoading(false)
           }
         }
       } catch (error) {
@@ -128,7 +128,6 @@ const Login = () => {
       }
     }
   }
-
   return (
     <LinearGradient style  ={styles.container} colors={['#202020','#202020', '#202020']}>
       <View style = {{justifyContent: 'center', alignItems: 'center', width: '98%'}}>
