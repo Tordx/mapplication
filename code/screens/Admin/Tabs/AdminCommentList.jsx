@@ -65,10 +65,16 @@ const AdminCommentList = () => {
   
     const renderItem = ({item}) => {
       return (
-        <Pressable style = {{width: '98%', height: 100, borderColor: LightBlue, borderWidth: 2, justifyContent: 'center', alignSelf: 'center', alignItems: 'center', marginVertical: 10, marginHorizontal: 10, borderRadius: 20}}
+        <Pressable style = {{width: '98%', height: 100, borderColor: LightBlue, borderWidth: 2, justifyContent: 'center', alignSelf: 'center', alignItems: 'center', marginVertical: 5, marginHorizontal: 10, borderRadius: 20}}
           onPress={() => {
             dispatch(setItem(item));
             navigation.navigate('AdminItemViewPage')
+          }}
+          onLongPress={() => {dispatch(setItem(item)); navigation.navigate('EditLocation')}}
+          android_ripple = {{
+            color:'grey',
+            radius: 200,
+            borderRadius: 500
           }}
         >
             <View style = {{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
@@ -77,7 +83,7 @@ const AdminCommentList = () => {
                     <Text style={{ fontSize: 16, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 5}}>{item.Establishment}</Text>
                     <Text style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight'}}>Review Count: {item.CommentsCount}</Text>
                 </View>
-              <Text style={{position: 'absolute',right: 20, fontSize: 25, color: LightYellow}}>{Math.min(item.Rating / item.RatingCount).toFixed(2)} ★</Text>
+              <Text style={{position: 'absolute',right: 20, fontSize: 25, color: LightYellow}}>{item.Rating === 0 ? 0 : Math.min(item.Rating / item.RatingCount).toFixed(2)} ★</Text>
               
               </View>
         </Pressable>
