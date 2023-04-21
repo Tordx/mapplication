@@ -18,6 +18,7 @@ import toptabs from '../screens/Admin/toptabs'
 import Toptabs from '../screens/Admin/toptabs'
 import AdminItemViewPage from '../screens/Admin/AdminItemViewPage'
 import AddLocation from '../screens/Admin/Addlocation'
+import EditLocation from '../screens/Admin/Tabs/EditLocation'
 
 const Page = createStackNavigator();
 
@@ -84,9 +85,14 @@ const PageNavigation = () => {
             component = {AdminItemViewPage}
             options={{ headerShown: false }}
           />
-           <Page.Screen 
+          <Page.Screen 
             name = 'Addlocation'
             component = {AddLocation}
+            options={{ headerShown: false }}
+          />
+          <Page.Screen 
+            name = 'EditLocation'
+            component = {EditLocation}
             options={{ headerShown: false }}
           />
         </Page.Navigator>
