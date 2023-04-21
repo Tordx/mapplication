@@ -13,33 +13,8 @@ import { useDispatch } from 'react-redux';
 import { setUserAccount } from '../config/AccountSlice';
 import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
 import { StyleSheet } from 'react-native';
-
-
-
-const Loginbox = (props) => {
-
-  const [isFocused, setIsFocused] = useState(false);
-
-  return (
-    <View style = {{width: '30%', justifyContent: 'center', alignItems: 'center', backgroundColor: isFocused ? '#ccb16a' : '#ffdd85', borderRadius: 5,  margin: 5, flexDirection: 'row'}}>
-    <TextInput style = {{width: '100%', fontSize: 18, margin: 5, paddingLeft: 5,}}
-      placeholder = {props.placeholder}
-      secureTextEntry = {props.secureTextEntry}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-      onChangeText={props.onChangeText}
-      value={props.value}
-      />
-      <Pressable onPress = {props.onPress} style = {{position: 'absolute', right: 10}}>
-        <Icon
-          name = {props.name}
-          color = '#fff'
-          size  = {25}
-        />
-      </Pressable>
-    </View>
-  )
-}
+import { Loginbox } from './loginPage';
+import { ToastAndroid } from 'react-native';
 
 const EditAccount = () => {
 
@@ -53,10 +28,11 @@ const EditAccount = () => {
   const [ids, setID] = useState(useraccount._id)
   const [revs, setRev] = useState(useraccount._rev)
   const [username, setUsername] = useState(useraccount.username)
-  const [password, setPassword] = useState(useraccount.password)
+  const [password, setPassword] = useState('')
   const [MobileNumber, setMobileNumber] = useState(useraccount.MobileNumber)
   const [Nationality, setNationality] = useState(useraccount.Nationality)
-  const [IDType, setIDType] = useState(useraccount.IDType)
+  const [Disability, setDisability] = useState(useraccount.Disability)
+  const [UserID] = (useraccount.Disability)
   const [IDNumber, setIDNumber] = useState(useraccount.IDNumber)
   const [FirstName, setFirstName] = useState(useraccount.FirstName)
   const [MiddleName, setMiddleName] = useState(useraccount.MiddleName)
@@ -65,9 +41,9 @@ const EditAccount = () => {
   const [Sex, setSex] = useState(useraccount.Sex)
   const [Address, setAddress] = useState(useraccount.Address)
   const [AlternateContactNumber, setAlternateContactNumber] = useState(useraccount.AlternateContactNumber)
-  const [Profilephoto, setProfilePhoto] = React.useState(useraccount.Profilephoto);
+  const [Profilephoto, setProfilePhoto] = React.useState(useraccount.Image);
   const [Idcardimage, setIdCardImage] = React.useState(useraccount.Idcardimage);
-
+  const [CommentCount] = useState(useraccount.CommentCount)
   const navigation = useNavigation()
   const id = uuid.v4()
 
@@ -130,14 +106,14 @@ const EditAccount = () => {
   const setNewSuperAdmin = async () => {
       
        try {
-         var NewSuperAdmin = {
+         var updateuser = {
              _id: ids,
              _rev: revs,
              username : username,
              password : password,
              MobileNumber : MobileNumber,
              Nationality : Nationality,
-             IDType : IDType,
+             Disability : Disability,
              IDNumber : IDNumber,
              FirstName : FirstName,
              MiddleName : MiddleName,
@@ -146,13 +122,17 @@ const EditAccount = () => {
              Sex : Sex,
              Address : Address,
              AlternateContactNumber : AlternateContactNumber,
-             Profilephoto: Profilephoto,
-             Idcardimage: Idcardimage
+             Image: Profilephoto,
+             Idcardimage: Idcardimage,
+             UserID: UserID,
+             userType: "user",
+             Status: "active",
+             CommentCount: CommentCount,
          }
          console.log('putted in readux user');
-         dispatch(setUserAccount(NewSuperAdmin));
+         dispatch(setUserAccount(updateuser));
          console.log('putted in readux user');
-      dbremoteAccounts.put(NewSuperAdmin)
+      dbremoteAccounts.put(updateuser)
          .then((response) =>{
            Alert.alert('Your Super Admin is Added has been successfully added!')
            console.log(response)
@@ -167,40 +147,47 @@ const EditAccount = () => {
        }
       }
 
-      const [opening, setOpening] = useState(true)
-      const [first, setFirst] = useState(false)
+      const checkpassword = async() => {
+        try {
+          let result = await dbremoteAccounts.allDocs({
+            include_docs: true,
+            attachments: true,
+          });
+          if (result.rows) {
+            let modifiedArr = result.rows.map(
+              item => item.doc
+            );
+            let filteredData = modifiedArr.filter(item => {
+              return item.username === useraccount.username
+            });
+            const newFilterData = filteredData[0].password; // Use optional chaining to avoid errors if filteredData[0] is undefined
+            if (newFilterData === password) {
+              ToastAndroid.show("Great!, Let's move on to the next stage", ToastAndroid.CENTER);
+              setFirst(false);
+              setSecond(true) 
+              
+            } else {
+              ToastAndroid.show("Password is incorrect, please try again", ToastAndroid.CENTER);
+              return;
+            }
+          }
+        }catch (err) {
+          console.log(err);
+          ToastAndroid.show('Something went wrong, try again', ToastAndroid.LONG)
+        }
+      }
+
+      const [first, setFirst] = useState(true)
       const [second, setSecond] = useState(false)
-      const [third, setthird] = useState(false)
-      const [forth, setForth] = useState(false)
-      const [fifth, setfifth] = useState(false)
 
   return (
     <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: Black}} behavior='padding'>
     <ScrollView style = {{width: '100%', height: '100%'}}>
     <View style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
-     {opening && 
-      <View style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
-     <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-      <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
-      <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
-      <Pressable style = {styles.button}
-        onPress={ () => {setOpening(false); setFirst(true)}}
-      >
-        <Text style = {styles.buttontext}>Continue</Text>
-      </Pressable>
-      </View>}
     {first && <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
-    <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-      <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
-      <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
-      
-      <Loginbox 
-        placeholder = 'username' 
-        secureTextEntry = {false} name = '' 
-        onPress={() => console.log('usernamepressed')} 
-        onChangeText={(value) => setUsername(value)}
-        value={username}
-      />
+    <Image source = {{uri: 'https://i.imgur.com/19s7qDu.png'}} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
+      <Text style = {styles.headertagline}>Verify your account</Text>
+      <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Before Changing information, please enter your password.</Text>
       <Loginbox 
         placeholder = 'password' 
         secureTextEntry= {show} 
@@ -210,15 +197,18 @@ const EditAccount = () => {
         value={password}
       />
       <Pressable style = {[styles.button]}
-        onPress={ () => {setFirst(false); setSecond(true)}}
+        onPress={checkpassword}
       >
         <Text style = {styles.buttontext}>Next</Text>
-      </Pressable></View>}
+      </Pressable>
+      <Text style = {{ fontSize: 15, color: LightYellow, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginTop: 20}}>If you forgot your password, you may visit the Alaminos city Hall or contact the moderators for a password reset request</Text>
+        
+        </View>}
         {second && 
         <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
-          <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-            <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
-            <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
+       <Image source = {{uri: 'https://i.imgur.com/19s7qDu.png'}} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
+            <Text style = {styles.headertagline}>Edit Information</Text>
+            <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Ensure that all provided information is true, accurate, complete, and up-to-date to avoid negative consequences. False or misleading information can have serious legal and ethical implications.</Text>
       <Loginbox 
         placeholder = 'FirstName' 
         onChangeText={(value) => setFirstName(value)}
@@ -240,77 +230,18 @@ const EditAccount = () => {
         value={Birthday}
       />
       <Loginbox 
-        placeholder = 'Sex' 
-        onChangeText={(value) => setSex(value)}
-        value={Sex}
-      />
-       <Pressable style = {[styles.button]}
-        onPress={ () => {setSecond(false); setthird(true)}}
-      >
-        <Text style = {styles.buttontext}>Next</Text>
-      </Pressable></View>}
-      {third && 
-       <View style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
-     <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-      <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
-      <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
-      <Loginbox 
-        placeholder = 'MobileNumber' 
+        placeholder = 'Mobile Number' 
         onChangeText={(value) => setMobileNumber(value)}
         value={MobileNumber}
       />
-      <Loginbox 
-        placeholder = 'Address' 
-        onChangeText={(value) => setAddress(value)}
-        value={Address}
-      />
-      <Pressable style = {[styles.button]}
-      onPress={ () => {setthird(false); setForth(true)}}
-    >
-      <Text style = {styles.buttontext}>Next</Text>
-    </Pressable></View>}
-      {forth && 
-         <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
-           <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-            <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
-            <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
-           <Loginbox 
-            placeholder = 'Nationality' 
-            onChangeText={(value) => setNationality(value)}
-            value={Nationality}
-          /> 
-          <Loginbox 
-            placeholder = 'Alternate contact number' 
-            onChangeText={(value) => setAlternateContactNumber(value)}
-            value={AlternateContactNumber}
-          />
-          <Loginbox 
-            placeholder = 'IDType' 
-            onChangeText={(value) => setIDType(value)}
-            value={IDType}
-          />
-          <Loginbox 
-            placeholder = 'IDNumber' 
-            onChangeText={(value) => setIDNumber(value)}
-            value={IDNumber}
-          />
-          <Pressable style = {[styles.button]}
-       onPress={ () => {setForth(false); setfifth(true)}}
-     >
-       <Text style = {styles.buttontext}>Next</Text>
-       </Pressable></View>}
-      {fifth && 
-         <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
-           <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-            <Text style = {styles.headertagline}>Welcome to Alaminos city PWD community!</Text>
-            <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
            <View style={{flexDirection: "row" , marginBottom :20}}>
-            <Image source={{uri: Profilephoto}} style={{ width: 100, height: 100 , margin: 5 }}/>
-            <Image source={{uri: Idcardimage}} style={{ width: 100, height: 100 , margin: 5 }}/>
+            <View>
+            <Image source={{uri: Profilephoto}} style={{ width: 250, height: 250 , margin: 10, borderRadius: 500 }}/>
+            <Button  title="PROFILE PHOTO" onPress={handleProfilePhoto} />
             </View>
-            <View style={{flexDirection: "row"}}>
-          <Button  title="PROFILE PHOTO" onPress={handleProfilePhoto} />
-          <Button title="ID CARD IMAGE" onPress={handleIDCardImage}  />
+            </View>
+            <View style={{flexDirection: "row",alignItems: 'center', justifyContent: 'space-between', width: '50%'}}>
+          
       </View>
           <Pressable style = {[styles.button]}
        onPress={ () => {setNewSuperAdmin()}}
