@@ -43,14 +43,17 @@ const AdminAccount = ()=> {
       </View>
       </View>
          <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'column', margin: 5}}>
-         <Text style={{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy'}}>{useraccount.FullName}</Text>
+         <Text style={{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy'}}>{useraccount.FullName.toUpperCase()}</Text>
          <Text style={{ fontSize: 25, color: White, fontFamily: 'Nexa-ExtraLight', marginVertical: 20}}>{useraccount.MobileNumber}</Text>
+         <Text style={{ fontSize: 25, color: White, fontFamily: 'Nexa-ExtraLight', marginVertical: 20}}>{useraccount.userType.toUpperCase()}</Text>
          </View>
     </View>
-    <Pressable onPress={() => navigation.navigate('Addlocation')} style = {{}}>
-          <FontAwesome
-          name = 'plus' size={35} color = 'red'/>
-        </Pressable>
+    <Pressable style = {[styles.button, {width: '85%', borderColor: LightYellow, flexDirection: 'row', height: 100,}]} onPress={() => navigation.navigate('Addlocation')}>
+      <FontAwesome
+          name = 'map-marker' size={30} color = {LightYellow}/>
+      
+      <Text style = {[styles.buttontext, {fontFamily: 'Nexa-ExtraLight', color: LightYellow, fontSize: 25, marginLeft: 20}]}>More Location</Text>
+      </Pressable>
     </View>
     </ScrollView>
     
