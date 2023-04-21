@@ -168,12 +168,22 @@ const AdminApprovingForm = () => {
             </Pressable>
        </View>   
        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Username</Text>
-       <Loginbox 
-          placeholder = 'username' 
-          onChangeText={(value) => setUsername(value)}
-          value={username}
-          disabled
-        />
+       <View style = {{width: '95%', height: 60, justifyContent: 'center', alignItems: 'center', borderColor: LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
+        <Text style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: White, fontFamily: 'Nexa-ExtraLight'}}>{username}</Text>
+       </View>
+       <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Password</Text>
+       {password === Birthday ? 
+       <View
+       style = {{width: '50%', height: 60, justifyContent: 'center', alignItems: 'center', borderColor: LightYellow,borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}
+       >
+        <FontAwesome name = 'check' size = {35} color = {'#90ee90'}/>
+        <Text> Sumbit to make changes </Text>
+       </View>  :  <Pressable 
+        android_ripple={{color: 'gray', radius: 60}}  
+        style = {{width: '50%', height: 60, justifyContent: 'center', alignItems: 'center', borderColor: LightYellow,borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}
+        onLongPress={() => {setPassword(Birthday); Alert.alert("Reset Request", "user's password is now set to its birthday")}}>
+        <Text style={{width: '100%', fontSize: 15, margin: 5, color: LightYellow, fontFamily: 'Nexa-Heavy', textAlign: 'center'}}>{"RESET PASSWORD"}</Text>
+        </Pressable>}
          <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>First Name</Text>
          <Loginbox 
           placeholder = 'FirstName' 
