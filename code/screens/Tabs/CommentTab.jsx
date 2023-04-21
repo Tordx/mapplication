@@ -83,7 +83,7 @@ const CommentTab = () => {
                   <Text style={{ fontSize: 16, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 5}}>{item.Establishment}</Text>
                   <Text style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight'}}>Review Count: {item.CommentsCount}</Text>
               </View>
-            <Text style={{position: 'absolute',right: 20, fontSize: 25, color: LightYellow}}>{Math.min(item.Rating / item.RatingCount).toFixed(2)} ★</Text>
+            <Text style={{position: 'absolute',right: 20, fontSize: 25, color: LightYellow}}>{item.Rating === 0 ? 0 : Math.min(item.Rating / item.RatingCount).toFixed(2)} ★</Text>
             
             </View>
       </Pressable>
