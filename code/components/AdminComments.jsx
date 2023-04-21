@@ -1,6 +1,6 @@
 import { View, Text, Pressable, Image,RefreshControl, FlatList, Modal } from 'react-native'
 import React, {useState, useEffect} from 'react'
-import { dbremoteComments } from '../../database/database';
+import { dbremoteComments, dbremoteEstablishment } from '../../database/database';
 import { useDispatch, useSelector } from 'react-redux';
 import { LightBlue, LightYellow, Black, White } from '../Assets/Colors/Colors';
 import { setUserView } from '../config/AccountSlice';
@@ -65,7 +65,25 @@ const deletecomment = async() => {
         Status: 'deleted'
 
     });
+    console.log(updatecommentcount)
+    const doc = await dbremoteEstablishment.get(ItemList._id);
+    console.log(doc)
+    const updatedEstablishment = {
+      _id: ItemList._id,
+      ...doc,
+      CommentsCount: ItemList.CommentsCount - 1,
+      Rating: ItemList.Rating - userview.Rating,
+      RatingCount: ItemList.RatingCount - 1,
+      ParkingRating: ItemList.ParkingRating -  userview.ParkingRating,
+      RampRating: ItemList.RampRating - userview.RampRating,
+      TactilesRating: ItemList.TactilesRating - userview.TactilesRating,
+      EstablishmentRating: ItemList.EstablishmentRating - userview.EstablishmentRating,
+      Date: data.date,
+    };
+    await dbremoteEstablishment.put(updatedEstablishment);
+    console.log(updatedEstablishment)
     ToastAndroid.show('Comment deleted', ToastAndroid.LONG)
+    setOpenModal(false)
     getdata()
     console.log(updatecommentcount)
 
