@@ -180,6 +180,7 @@ export default function Comments() {
                 })
             
                 setData(newFilteredData);
+                
                 console.log(newFilteredData);
                 
                 
@@ -241,6 +242,10 @@ export default function Comments() {
         
       
       </Pressable>
+      {data.length === 0 && 
+        <View style = {{width: '100%', height: '100%', backgroundColor: Black, justifyContent: 'center', alignItems: 'center',}}>
+      <Text style={{ color: White, fontFamily: 'cocogooese_semibold', fontSize: 16 }}>Be the first one to submit a review!</Text>
+      </View>}
       <FlatList
         data={data}
         renderItem = {renderItem}
