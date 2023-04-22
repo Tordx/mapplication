@@ -48,15 +48,14 @@ const BottomTabs = () => {
         },
         tabBarStyle: { 
             
-            height: 70,
-            backgroundColor: '#101010',
-            elevation: 10,
-            borderRadius: 20,
-            position: 'absolute',
-            bottom: 30,
-            marginHorizontal: 10,
-            shadowColor: '#101010',
-            borderTopWidth: 0
+            backgroundColor: Black,
+            // elevation: 10,
+            // borderRadius: 20,
+            // position: 'absolute',
+            // bottom: 30,
+            // marginHorizontal: 10,
+            // shadowColor: '#101010',
+            // borderTopWidth: 0
 
         },
     })}>
