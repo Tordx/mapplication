@@ -129,7 +129,7 @@ const Login = () => {
     }
   }
   return (
-    <LinearGradient style  ={styles.container} colors={['#202020','#202020', '#202020']}>
+    <View style  ={styles.container}>
       <View style = {{justifyContent: 'center', alignItems: 'center', width: '98%'}}>
         <Image source = {require('../Assets/images/sample_logo.png')} style = {{width: 200, height: 200}} resizeMode = 'contain' />
         <Text style = {styles.headertagline}>Great to have you back!</Text>
@@ -193,7 +193,7 @@ const Login = () => {
           
         </View>
       </Modal>
-    </LinearGradient>
+    </View>
   )
 };
 
@@ -205,7 +205,8 @@ const styles = StyleSheet.create({
       height: '100%', 
       alignItems: 'center',
       alignContent: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      backgroundColor: Black
   },
   headertagline: {
 
