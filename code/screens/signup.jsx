@@ -169,7 +169,11 @@ const Signup = () => {
   };
 
   const setnewuser = async () => {
-      
+
+    if(Profilephoto === 0 || Idcardimage === 0) {
+      Alert.alert('Uploading Profile Picture and ID Card Picture is required')
+    }
+    else { 
        try {
          var adduser = {
              _id: id,
@@ -191,7 +195,7 @@ const Signup = () => {
              Image: Profilephoto,
              Idcardimage: Idcardimage,
              userType: "user",
-             Status: 'inactive',
+             Status: 'Inactive',
              CreationDate: getdate,
              CommentCount: 0,
          }
@@ -231,6 +235,7 @@ const Signup = () => {
         console.log(error)
        }
       }
+    } 
 
       const [opening, setOpening] = useState(true)
       const [first, setFirst] = useState(false)
