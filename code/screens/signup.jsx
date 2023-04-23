@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView , Alert , Button , Platform, ScrollView, ToastAndroid, BackHandler } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { dbremoteAccounts } from '../../database/database';
 import PouchDB from 'pouchdb-react-native' ; 'pouchdb-core'; 
 import uuid from 'react-native-uuid';
@@ -12,27 +12,30 @@ import { Loginbox } from './loginPage';
 import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
 import { StyleSheet } from 'react-native';
 import DatePicker from 'react-native-date-picker';
+import { Picker } from '@react-native-picker/picker';
+import {countries} from '../Assets/Countries'
 
 
 const Signup = () => {
 
   
-    const handleBackButton = () => {
-
-      if (opening){
-      navigation.navigate('welcomePage')
-    } else {
-      return null
-    }
-    };
-
-    useEffect(() => {
-      BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+  useFocusEffect(
+    React.useCallback(() => {
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        () =>  {
+          if (opening && navigation.canGoBack()) {
+            navigation.goBack();
+            return true;
+          } else {
+            return null;
+          }
+        }
+      );
   
-      return () => {
-        BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-      };
-    }, []);
+      return () => backHandler.remove();
+    }, [opening, navigation])
+  );
   
 
   const [show, setShow] = useState(false)
@@ -108,7 +111,6 @@ const Signup = () => {
         const datapic = response
         const piclocation = datapic.assets[0].uri
         setProfilePhotoDisplay(piclocation)
-        // setPhoto(response);
         try {
           const data = await RNFetchBlob.fs.readFile(datapic.assets[0].uri, 'base64');
           const formData = new FormData();
@@ -188,9 +190,10 @@ const Signup = () => {
              AlternateContactNumber : AlternateContactNumber,
              Image: Profilephoto,
              Idcardimage: Idcardimage,
-             Account: "User",
+             userType: "user",
              Status: 'inactive',
              CreationDate: getdate,
+             CommentCount: 0,
          }
       dbremoteAccounts.put(adduser)
          .then((response) =>{
@@ -213,8 +216,8 @@ const Signup = () => {
            setAlternateContactNumber('');
            setProfilePhoto(null);
            setIdCardImage(null);
-           setProfilePhotoDisplay("https://imgur.com/a/Q9oD9Uu");
-           setIdCardImageDisplay("https://imgur.com/a/Q9oD9Uu");
+           setProfilePhotoDisplay("");
+           setIdCardImageDisplay("");
            setSelectedDate(new Date());
            setShowDatePicker(false);
            setOpening(true)
@@ -433,11 +436,20 @@ const Signup = () => {
              <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
               <Text style = {styles.headertagline}>We'll take a look before getting you on-board</Text>
               <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '90%'}}>Setup your Identification by providing your official PWD ID</Text>
-             <Loginbox 
-              placeholder = 'Nationality' 
-              onChangeText={(value) => setNationality(value)}
-              value={Nationality}
-            /> 
+              <View style = {{width: '95%', justifyContent: 'center', alignItems: 'center', borderColor: LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
+                <Picker
+                  itemStyle = {{fontFamily:'Nexa-ExtraLight'}}
+                  style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: White}}
+                  selectedValue={Nationality}
+                  value = {Nationality}
+                  onValueChange={(itemValue, itemIndex) => setNationality(itemValue)}
+                  
+                >
+                    {countries.map((country) => (
+                      <Picker.Item key={country.id} label={country.name} value={country.id} />
+                    ))}
+                </Picker>
+              </View>
             <Loginbox 
               placeholder = 'Type of Disability' 
               onChangeText={(value) => setDisability(value)}
@@ -456,7 +468,6 @@ const Signup = () => {
                 color={Idcardimage === null ? LightBlue: '#90EE90'}
               />
             </Pressable>
-            {/* {Idcardimage && <Image style = {{width: 350, height: 200}} resizeMode='contain' source={{uri: Idcardimage}} />} */}
             <Pressable style = {[styles.button]}
          onPress={handleFourth}
        >

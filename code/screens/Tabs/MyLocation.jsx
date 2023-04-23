@@ -18,7 +18,10 @@ const MyLocation = () => {
   }, [userLocation]);
 
   return (
-    <MapboxGL.MapView style={{ flex: 1 }}>
+    <MapboxGL.MapView style={{ flex: 1 }}
+    logoEnabled = {false}
+    attributionEnabled = {false}
+    >
       <MapboxGL.Camera
        zoomLevel={14} centerCoordinate = {userLocation} 
       />

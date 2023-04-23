@@ -12,6 +12,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { StyleSheet } from 'react-native'
 import {Picker} from '@react-native-picker/picker';
 import { Modal } from 'react-native'
+import { countries } from '../../Assets/Countries'
 
 
 
@@ -36,12 +37,15 @@ const AdminApprovingForm = () => {
     const [Sex, setSex] = useState(approvingaccount.Sex)
     const [Address, setAddress] = useState(approvingaccount.Address)
     const [AlternateContactNumber, setAlternateContactNumber] = useState(approvingaccount.AlternateContactNumber)
-    const [account, setAccount] = useState(approvingaccount.Account)
+    const [userType] = useState(approvingaccount.userType)
     const [userstatus, setUserStatus] = useState(approvingaccount.Status)
     const [ProfilephotoDisplay, setProfilePhotoDisplay] = useState(approvingaccount.Image);
     const [IdcardimageDisplay, setIdCardImageDisplay] = useState(approvingaccount.Idcardimage);
     const [ViewID, setViewID] = useState(false);
     const [viewProfile, setViewProfile] = useState(false);
+    const [CreationDate] = useState(approvingaccount.CreationDate)
+    const [CommentCount] = useState(approvingaccount.CommentCount)
+    
 
     const navigation = useNavigation()
 
@@ -133,8 +137,10 @@ const AdminApprovingForm = () => {
               AlternateContactNumber : AlternateContactNumber,
               Image: ProfilephotoDisplay,
               Idcardimage: IdcardimageDisplay,
-              Account: account,
-              Status: userstatus
+              userType: userType,
+              Status: userstatus,
+              CreationDate: CreationDate,
+              CommentCount: CommentCount,
           }
        dbremoteAccounts.put(adduser)
           .then((response) =>{
@@ -162,12 +168,22 @@ const AdminApprovingForm = () => {
             </Pressable>
        </View>   
        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Username</Text>
-       <Loginbox 
-          placeholder = 'username' 
-          onChangeText={(value) => setUsername(value)}
-          value={username}
-          disabled
-        />
+       <View style = {{width: '95%', height: 60, justifyContent: 'center', alignItems: 'center', borderColor: LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
+        <Text style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: White, fontFamily: 'Nexa-ExtraLight'}}>{username}</Text>
+       </View>
+       <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Password</Text>
+       {password === Birthday ? 
+       <View
+       style = {{width: '50%', height: 60, justifyContent: 'center', alignItems: 'center', borderColor: LightYellow,borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}
+       >
+        <FontAwesome name = 'check' size = {35} color = {'#90ee90'}/>
+        <Text> Sumbit to make changes </Text>
+       </View>  :  <Pressable 
+        android_ripple={{color: 'gray', radius: 60}}  
+        style = {{width: '50%', height: 60, justifyContent: 'center', alignItems: 'center', borderColor: LightYellow,borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}
+        onLongPress={() => {setPassword(Birthday); Alert.alert("Reset Request", "user's password is now set to its birthday")}}>
+        <Text style={{width: '100%', fontSize: 15, margin: 5, color: LightYellow, fontFamily: 'Nexa-Heavy', textAlign: 'center'}}>{"RESET PASSWORD"}</Text>
+        </Pressable>}
          <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>First Name</Text>
          <Loginbox 
           placeholder = 'FirstName' 
@@ -217,11 +233,20 @@ const AdminApprovingForm = () => {
         value={AlternateContactNumber}
         />
         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Nationality</Text>
-        <Loginbox 
-          placeholder = 'Nationality' 
-          onChangeText={(value) => setNationality(value)}
-          value={Nationality}
-        />
+        <View style = {{width: '95%', justifyContent: 'center', alignItems: 'center', borderColor: LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
+                <Picker
+                  itemStyle = {{fontFamily:'Nexa-ExtraLight'}}
+                  style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: White}}
+                  selectedValue={Nationality}
+                  value = {Nationality}
+                  onValueChange={(itemValue, itemIndex) => setNationality(itemValue)}
+                  
+                >
+                    {countries.map((country) => (
+                      <Picker.Item key={country.id} label={country.name} value={country.id} />
+                    ))}
+                </Picker>
+              </View>
         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Disability</Text>
          <Loginbox 
           placeholder = 'Disability' 
@@ -253,9 +278,9 @@ const AdminApprovingForm = () => {
           onValueChange={(itemValue, itemIndex) => setUserStatus(itemValue)}
           
         >
-          <Picker.Item label="Active" value="Active" /> 
-          <Picker.Item label="Inactive" value="Inactive" />
-          <Picker.Item label="Pending" value="Pending" />
+          <Picker.Item label="Active" value="active" /> 
+          <Picker.Item label="Inactive" value="inactive" />
+          <Picker.Item label="Pending" value="pending" />
         </Picker>
       </View>
         <Pressable style = {[styles.button, {width: '85%', borderColor: LightYellow}]}

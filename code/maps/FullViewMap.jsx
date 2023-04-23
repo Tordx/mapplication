@@ -32,45 +32,12 @@
   );
 
   const Map = () => {
-
-    // useEffect(() => {
-
-    //   getEventData()
-
-    // },[usercoordinates])
       
     const [selectedMarker, setSelectedMarker] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const {email} = useSelector((store) => store.login)
     const [usercoordinates] = useState([119.9782, 16.1556]);
     const [selectedCoordinate, setSelectedCoordinate] = useState(null);
-
-    // const getEventData = async() => {
-
-    //   const remoteAccounts = new PouchDB('http://admin:admin@192.168.0.192:5984/m_account');
-
-    //   var result = await remoteAccounts.allDocs({
-    //     include_docs: true,
-    //     attachments: true
-    //   });
-    //   if(result.rows){
-    //       let modifiedArr = result.rows.map(function(item){
-    //       return item.doc
-    //   });
-    //   let filteredData = modifiedArr.filter(item => {
-    //       return item
-    //     });
-    //     if(filteredData) {
-    //         let newFilterData = filteredData.map(item => {
-    //             return item
-                
-    //         })
-    //         setUserCoordinates(newFilterData[0].coordinates)
-    //         console.log(newFilterData[0].coordinates)
-            
-    //     }
-    // }  
-    // };
 
     const [markers] = useState([
       {
@@ -109,6 +76,8 @@
         <MapboxGL.Camera
           zoomLevel={14}
           centerCoordinate={usercoordinates}
+          logoEnabled = {false}
+        attributionEnabled = {false}
         />
 
         {markers.map((marker) => (

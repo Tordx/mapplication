@@ -1,13 +1,16 @@
   //import liraries
   import React, { useState, useEffect, useRef } from 'react';
-  import { View, Text, Modal, Pressable } from 'react-native';
+  import { View, Text, Modal, Pressable, FlatList } from 'react-native';
   import MapboxGL from '@rnmapbox/maps';
-  import { useSelector } from 'react-redux'
+  import { useDispatch, useSelector } from 'react-redux'
   import { Store } from '@reduxjs/toolkit';
   import PouchDB from 'pouchdb-react-native' ;
   import 'pouchdb-core';
   import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native';
+import { dbremoteComments } from '../../database/database';
+import { Dimensions } from 'react-native';
+import { setNewImage } from '../config/ItemSlice';
   const token = 'sk.eyJ1IjoidG9yZHh4IiwiYSI6ImNsZG92OHF2OTAzangzdm80dnJrcHV6YmMifQ.O8EA2bhzmkD4DTBnrvh8Xg'
 
   MapboxGL.setWellKnownTileServer('Mapbox');
@@ -36,17 +39,62 @@ import { Image } from 'react-native';
 
     useEffect(() => {
 
-    },[])
+      getcommentimage()
+
+    },[images])
+
     
+    const dispatch = useDispatch();
     const {ItemList} = useSelector((action) => action.items)
     const [selectedMarker, setSelectedMarker] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [images, setImages] = useState();
+    const [TopImage, setTopImage] = useState("");
     const {useraccount} = useSelector((store) => store.user)
 
-    
-    
+    const getcommentimage = async() => {
 
+        let result = await dbremoteComments.allDocs({
+          attachments: true,
+          include_docs: true,
+        });
+        if(result.rows) {
+          let modifiedArr = result.rows.map(item => 
+            item.doc
+        );
+          let filteredData = modifiedArr.filter((item) => {
+            return item.CommentID === ItemList.CommentID
+          })
+          
+          const newFilteredData = filteredData.map((item) => item.ImageAttachment);
+          const newFilteredURL = newFilteredData.map(item => item.filter(url => url !== ""));
+          const flattenedImages = newFilteredURL.flat(); // <-- flatten the images array
+          if (flattenedImages[0] === null) {
+            return
+          } else {
+            setTopImage(flattenedImages[0])
+            dispatch(setNewImage(flattenedImages[0]))
+          }
+          console.log(flattenedImages[0]);
+          setImages(flattenedImages)
+          console.log(flattenedImages);
+        }
+
+
+    }
+
+    const windowWidth = Dimensions.get('window').width;
+
+    const renderItem = ({ item }) => {
+        return(
+          <Image
+            source = {{uri: item}}
+            style = {{width: windowWidth, height: '100%', alignSelf: 'center'}}
+          />
+        )
+    }
     return (
+      <>
       <View style = {{width: '100%', height: '36%', position: 'absolute', top: 0}}>
       <MapboxGL.MapView style={{flex: 1}}
         logoEnabled = {false}
@@ -61,24 +109,31 @@ import { Image } from 'react-native';
             children={true}
             coordinate={ItemList.Coordinates}
             title={ItemList.Establishment}
-            onSelected={() => {
-              setSelectedMarker(ItemList.Establishment);
-              setShowModal(true);
-            }}
           />
         
       
       </MapboxGL.MapView>
-      <InfoModal
-        isVisible={showModal}
-        onClose={() => setShowModal(false)}
-        info={selectedMarker && ItemList.Establishment}
-        onPress = {() => setShowModal(false)}
-      />
-      <Pressable style = {{ width: 75, height: 75, position: 'absolute', bottom: 20, left: 15,  borderRadius: 20}}>
-        <Image source={{uri: ItemList.Image}} resizeMode='cover' style = {{width: '100%', height: '100%', borderRadius: 21}} />
-      </Pressable>
+      {TopImage && (
+      <Pressable
+        onPress={() => setShowModal(true)} style = {{ width: 75, height: 75, position: 'absolute', bottom: 20, left: 15,  borderRadius: 20}}>
+        <Image source={{uri: TopImage}} resizeMode='cover' style = {{width: '100%', height: '100%', borderRadius: 21}} />
+
+        </Pressable>
+      )}
     </View>
+    
+    <Modal visible={showModal} onRequestClose={() => setShowModal(false)} animationType='slide'>
+       <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
+        <FlatList
+        data={images}
+        horizontal
+        pagingEnabled
+        keyExtractor={item => item._id}
+        renderItem={renderItem}
+      />
+      </View>
+      </Modal>
+    </>
     );
   };
 

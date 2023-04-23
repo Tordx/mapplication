@@ -6,9 +6,10 @@ import { useNavigation } from '@react-navigation/native'
 import { setUserAccount } from '../../config/AccountSlice'
 import Icon from 'react-native-vector-icons/Foundation'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import CountryFlag from 'react-native-country-flag'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Black, LightBlue, LightYellow, White } from '../../Assets/Colors/Colors'
-import CountryFlag from 'react-native-country-flag'
+
 
 
 const AccountTab = ()=> {
@@ -25,7 +26,7 @@ const AccountTab = ()=> {
   
   const handleLogout = async () => {
     await AsyncStorage.clear();
-    navigation.replace('Login');
+    navigation.replace('Welcome');
     ToastAndroid.show('Sucessfully signed out', ToastAndroid.BOTTOM)
   };
 
@@ -50,7 +51,7 @@ const AccountTab = ()=> {
          </View>
     </View>
      <Text style={{ fontSize: 25, color: White, fontFamily: 'Nexa-Heavy', width: '90%', textAlign: 'left'}}>About</Text>
-    <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row', margin: 5, width: '95%', height: 90, borderTopWidth: 1, borderColor: LightBlue,borderRadius: 20}}>
+    <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row', margin: 5, width: '95%', height: 90, borderTopWidth: 0.5, borderColor: LightBlue}}>
     <View style={{alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', width: '90%', height: 90}}>
         <View style = {{alignItems: 'center', justifyContent: 'center', width: '30%',height: '100%'}}>
         <FontAwesome size={25} name = 'star-o' color = {LightYellow}  style = {{ position: 'absolute', bottom: 40}}/>
@@ -66,7 +67,7 @@ const AccountTab = ()=> {
         </View>
          </View>
          </View>
-    <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row', width: '95%', height: 90, borderBottomWidth: 1, borderColor: LightBlue, borderRadius: 20, marginBottom: 20,}}>
+    <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row', width: '95%', height: 90, borderBottomWidth: 0.5, borderColor: LightBlue, marginBottom: 20, margin: 5,}}>
       <View style={{alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', width: '90%', height: 90}}>
         <View style = {{alignItems: 'center', justifyContent: 'center', width: '30%', flexDirection: 'column', height: '100%'}}>
           <Icon
@@ -78,7 +79,7 @@ const AccountTab = ()=> {
           <Text style={{fontSize: 15, fontFamily: 'Nexa-ExtraLight', color: White, marginLeft: 10,  position: 'absolute', bottom: 20}}>{useraccount.Sex.toUpperCase()}</Text>
         </View>
           <View style = {{alignItems: 'center', justifyContent: 'center', width: '33.33%', height: '100%'}}>
-          <CountryFlag isoCode="ph" size={20} style = {{bottom: 43, position: 'absolute'}} />
+          <CountryFlag isoCode={useraccount.Nationality} size={20} style = {{bottom: 43, position: 'absolute'}} />
           <Text style={{fontSize: 15, fontFamily: 'Nexa-ExtraLight', color: White,  position: 'absolute', bottom: 20}}>{useraccount.Nationality.toUpperCase()}</Text>
         </View>
         <View style = {{alignItems: 'center', justifyContent: 'center', width: '30%',height: '100%'}}>

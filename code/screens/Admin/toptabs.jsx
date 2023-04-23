@@ -30,8 +30,8 @@ function Toptabs() {
 
     return (
         <>
-        <View style = {{backgroundColor: Black, width: '100%', height: 35}}>
-        <Text style = {{paddingLeft: 20, color: White, fontSize: 20, fontFamily: 'Nexa-Heavy', top: 10, alignSelf: 'flex-start'}}>ADMIN DASH</Text>
+        <View style = {{backgroundColor: Black, width: '100%', height: 40}}>
+        <Text style = {{paddingLeft: 20, color: White, fontSize: 20, fontFamily: 'Nexa-Heavy', top: 10, alignSelf: 'flex-start'}}>ADMIN DASHBOARD</Text>
         </View>
         <Tab.Navigator
         tabBarOptions={{

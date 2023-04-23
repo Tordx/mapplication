@@ -17,6 +17,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import { ScrollView } from 'react-native';
 import { dbremoteEstablishment , dbremoteComments, dbremoteAccounts } from '../../database/database';
+import { Switch } from 'react-native';
 
  export const Ratings = (props) => (
     <View style = {{justifyContent: 'flex-start', alignItems: 'flex-start', alignSelf: 'flex-start', flexDirection: 'column', paddingLeft: 10, marginVertical: 15, width: '100%', borderBottomWidth: 0.5, borderColor: LightBlue}} >
@@ -53,11 +54,26 @@ export default function Comments() {
     const [ramp, setRamp] = useState(3);
     const [parking, setParking] = useState(3);
     const [tactiles, setTactiles] = useState(3);
+    const [isEnabled, setIsEnabled] = useState(false);
+    const [FullName, setFullName] = useState(useraccount.FullName);
+    const [image, setImage] = useState(useraccount.Image);
     const overallrating = Math.min((establishment + ramp + parking + tactiles) / 4)
     const id = uuid.v4();
 
-   
     console.log(data)
+
+    useEffect(() => {
+      
+    if (isEnabled) {
+      setFullName('Anonymous');
+      setImage('https://icon-library.com/images/anonymous-user-icon/anonymous-user-icon-4.jpg');
+    } else {
+      // Set fullName and image to their original values
+      // You can replace these with your own logic to set the default values
+      setFullName(useraccount.FullName);
+      setImage(useraccount.Image);
+    }
+    },[isEnabled])
 
     const handleProfilePhoto = async () => {
       launchImageLibrary({ noData: true }, async (response) => {
@@ -92,8 +108,8 @@ export default function Comments() {
       try {
         const response = await dbremoteComments.put( {
           _id: id,
-          FullName: useraccount.FullName,
-          Image: useraccount.Image,
+          FullName: FullName,
+          Image: image,
           Text: text,
           ImageAttachment: imageattachment,
           Rating: overallrating,
@@ -104,6 +120,7 @@ export default function Comments() {
           Date: date,
           CommentID: ItemList.CommentID,
           UserID: useraccount.UserID,
+          Status: 'Active'
         });
         const update = await dbremoteAccounts.get(useraccount._id);
         const updatecommentcount = await dbremoteAccounts.put({
@@ -132,6 +149,7 @@ export default function Comments() {
         Alert.alert('Thanks for submitting a review!')
         setModal(false)
         setText('')
+        setIsEnabled(false)
         setImageAttachment([])
         getdata()
       } catch (error) {
@@ -158,10 +176,11 @@ export default function Comments() {
             })
             if (filteredData) {
                 const newFilteredData = filteredData.filter((item) => {
-                  return item
+                  return item.Status === 'Active'
                 })
             
                 setData(newFilteredData);
+                
                 console.log(newFilteredData);
                 
                 
@@ -223,6 +242,10 @@ export default function Comments() {
         
       
       </Pressable>
+      {data.length === 0 && 
+        <View style = {{width: '100%', height: '100%', backgroundColor: Black, justifyContent: 'center', alignItems: 'center',}}>
+      <Text style={{ color: White, fontFamily: 'cocogooese_semibold', fontSize: 16 }}>Be the first one to submit a review!</Text>
+      </View>}
       <FlatList
         data={data}
         renderItem = {renderItem}
@@ -297,6 +320,20 @@ export default function Comments() {
                 />
               </Pressable>
             )}
+            </View>
+            <View style = {{flexDirection: 'row',justifyContent: 'flex-start', alignSelf: 'flex-start', alignItems: 'center', marginBottom: 10, width: '100%', marginLeft: 15}}>
+            <Image style = {{ paddingLeft: 20, width: 50, height: 50, borderRadius: 500}} resizeMode = 'cover' source={{uri: image}}/>
+            <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginLeft: 5,}}>{FullName}</Text>
+            </View>
+            <View style = {{flexDirection: 'row',justifyContent: 'flex-start', alignSelf: 'flex-start', alignItems: 'center', marginBottom: 5, width: '100%', height: 40, backgroundColor: '#252525'}}>
+            <Switch style = {{ paddingLeft: 20}} 
+              trackColor={{false: '#808080', true: LightYellow}}
+              thumbColor={isEnabled ? '#e2e2e2' : LightYellow}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={() => setIsEnabled(!isEnabled)}
+              value={isEnabled}
+            />
+            <Text style = {{ fontSize: 17, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center',}}>Submit anonymously</Text>
             </View>
             <Loginbox 
             

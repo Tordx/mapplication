@@ -19,8 +19,8 @@ export const Loginbox = (props) => {
   const {useraccount} = useSelector((action) => action.user)
 
   return (
-    <View style = {{width: '95%', justifyContent: 'center', alignItems: 'center', borderColor: isFocused ? LightYellow : LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
-    <TextInput style = {{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: White, fontFamily: 'Nexa-ExtraLight'}}
+    <View style = {{width: '95%', height: 65,justifyContent: 'flex-start', alignItems: 'center', borderColor: isFocused ? LightYellow : LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
+    <TextInput style = {{width: '90%', height: '100%', fontSize: 18, paddingLeft: 20, color: White, fontFamily: 'Nexa-ExtraLight', borderRadius: 20, }}
       placeholder = {props.placeholder}
       placeholderTextColor = {'#606060'}
       secureTextEntry = {props.secureTextEntry}
@@ -63,10 +63,10 @@ const Login = () => {
   const loginaccount = async() => {
 
     if (username.length === 0) {
-        ToastAndroid.show("username is empty", ToastAndroid.CENTER)
-      } else if (password.length === 0) {
-        ToastAndroid.show("password is empty", ToastAndroid.CENTER)
-      } else {
+      ToastAndroid.show("username is empty", ToastAndroid.CENTER)
+    } else if (password.length === 0) {
+      ToastAndroid.show("password is empty", ToastAndroid.CENTER)
+    } else {
       try {
         setLoading(true)
         let result = await dbremoteAccounts.allDocs({
@@ -78,7 +78,7 @@ const Login = () => {
             item => item.doc
           );
           let filteredData = modifiedArr.filter(item => {
-            return item.username === username
+            return item.username === username.toLowerCase()
           });
           if (filteredData.length) {
             let newFilterData = filteredData.map((item) => {
@@ -89,33 +89,37 @@ const Login = () => {
             const adminpassword = newFilterData[0].password
             const adminaccount = newFilterData[0].userType
             const adminstatus = newFilterData[0].Status
-
+  
             if(adminusername === username && adminpassword === password) {
-             
-
-              if(adminstatus === "inactive"){
-                Alert.alert('Account is Inactive', ' Please contact your moderators for more Info')
+              if(adminstatus !== "active"){
+                Alert.alert('Account is not active', ' Please contact your moderators for more Info')
                 setLoading(false)
                 return;
-              }else{
-                  if(adminaccount === "user") {
-                    navigation.navigate('BottomTabs');
-                    await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
-                    dispatch(setUserAccount(FullDetails));
-                    setLoading(false)
-                  } 
-                  if(adminaccount === "admin") {
-                    await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
-                    dispatch(setUserAccount(FullDetails));
-                    setLoading(false)
-                    navigation.navigate('Toptabs');
-                  }
+              } else {
+                if(adminaccount === "user") {
+                  navigation.navigate('BottomTabs');
+                  await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
+                  dispatch(setUserAccount(FullDetails));
+                  setUserName('')
+                  setPassword('')
+                  setLoading(false)
+                } 
+                if(adminaccount === "admin") {
+                  await AsyncStorage.setItem('userCredentials', JSON.stringify(FullDetails));
+                  dispatch(setUserAccount(FullDetails));
+                  setLoading(false)
+                  setUserName('')
+                  setPassword('')
+                  navigation.navigate('Toptabs');
+                }
               }
-             
-            } else{
-              Alert.alert('Whoooooops!', "something whent wrong or your username & password didn't match our system, please re-enter information correctly")
+            } else {
+              Alert.alert('Whoooooops!', "something went wrong or your username & password didn't match our system")
               setLoading(false)
             }
+          } else {
+            Alert.alert('Username not found', "The username you entered doesn't exist in our system. Please try again.")
+            setLoading(false)
           }
         }
       } catch (error) {
@@ -124,9 +128,8 @@ const Login = () => {
       }
     }
   }
-
   return (
-    <LinearGradient style  ={styles.container} colors={['#202020','#202020', '#202020']}>
+    <View style  ={styles.container}>
       <View style = {{justifyContent: 'center', alignItems: 'center', width: '98%'}}>
         <Image source = {require('../Assets/images/sample_logo.png')} style = {{width: 200, height: 200}} resizeMode = 'contain' />
         <Text style = {styles.headertagline}>Great to have you back!</Text>
@@ -190,7 +193,7 @@ const Login = () => {
           
         </View>
       </Modal>
-    </LinearGradient>
+    </View>
   )
 };
 
@@ -202,7 +205,8 @@ const styles = StyleSheet.create({
       height: '100%', 
       alignItems: 'center',
       alignContent: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      backgroundColor: Black
   },
   headertagline: {
 

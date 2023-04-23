@@ -1,12 +1,12 @@
-import React from 'react'
-import { StyleSheet, StatusBar, TextInput, View, Text, TouchableOpacity, Image } from 'react-native'
+import React,{ useEffect, useState, Button } from 'react'
+import { StyleSheet, StatusBar, TextInput, View, Text, TouchableOpacity, Image, PermissionsAndroid  } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { LightBlue, LightYellow, White } from '../Assets/Colors/Colors'
+import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUserAccount } from '../config/AccountSlice';
+import Geolocation from '@react-native-community/geolocation';
 
 const Welcome = () => {
 
@@ -33,10 +33,23 @@ const Welcome = () => {
     useEffect(() => {
         checkLogin()
     })
+    useEffect(() => {
+        Geolocation.requestAuthorization();
+    
+        Geolocation.getCurrentPosition(
+          position => {
+            console.log(position);
+          },
+          error => {
+            console.log(error);
+          },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+      }, []);
       
 
   return (
-    <LinearGradient colors={['#202020','#202020', '#202020']} style = {styles.container}>
+    <View style = {styles.container}>
         <StatusBar backgroundColor={'#202020'} barStyle ='light-content' />
              <Image source = {require('../Assets/images/alaminos-logo.png')} style = {{width: '50%', height: 300, alignItems: 'center', justifyContent: 'center', margin: 10, borderRadius: 25}} resizeMode = 'contain' />
          <Text style = {styles.headertagline}>Alaminos City, PWD-friendly Application</Text>
@@ -51,7 +64,7 @@ const Welcome = () => {
                 <Text  style = {styles.buttontext} >Register</Text>
             </TouchableOpacity>
         </View>
-    </LinearGradient>
+    </View>
   )
 }
 
@@ -63,7 +76,8 @@ const styles = StyleSheet.create({
         height: '100%', 
         alignItems: 'center',
         alignContent: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: Black
     },
     headertagline: {
 
