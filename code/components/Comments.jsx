@@ -57,6 +57,7 @@ export default function Comments() {
     const [isEnabled, setIsEnabled] = useState(false);
     const [FullName, setFullName] = useState(useraccount.FullName);
     const [image, setImage] = useState(useraccount.Image);
+    const [userID, setUserID] = useState(useraccount.UserID)
     const overallrating = Math.min((establishment + ramp + parking + tactiles) / 4)
     const id = uuid.v4();
 
@@ -66,12 +67,14 @@ export default function Comments() {
       
     if (isEnabled) {
       setFullName('Anonymous');
+      setUserID('Anonymous')
       setImage('https://icon-library.com/images/anonymous-user-icon/anonymous-user-icon-4.jpg');
     } else {
       // Set fullName and image to their original values
       // You can replace these with your own logic to set the default values
       setFullName(useraccount.FullName);
       setImage(useraccount.Image);
+      setUserID(useraccount.UserID)
     }
     },[isEnabled])
 
@@ -119,7 +122,7 @@ export default function Comments() {
           TactilesRating: tactiles,
           Date: date,
           CommentID: ItemList.CommentID,
-          UserID: useraccount.UserID,
+          UserID: userID,
           Status: 'Active'
         });
         const update = await dbremoteAccounts.get(useraccount._id);
