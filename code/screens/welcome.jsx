@@ -32,21 +32,9 @@ const Welcome = () => {
 
     useEffect(() => {
         checkLogin()
-    })
-    useEffect(() => {
-        Geolocation.requestAuthorization();
+    },[])
+
     
-        Geolocation.getCurrentPosition(
-          position => {
-            console.log(position);
-          },
-          error => {
-            console.log(error);
-          },
-          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-        );
-      }, []);
-      
 
   return (
     <View style = {styles.container}>
