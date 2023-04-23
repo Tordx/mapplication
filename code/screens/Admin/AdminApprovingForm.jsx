@@ -278,9 +278,9 @@ const AdminApprovingForm = () => {
           onValueChange={(itemValue, itemIndex) => setUserStatus(itemValue)}
           
         >
-          <Picker.Item label="Active" value="active" /> 
-          <Picker.Item label="Inactive" value="inactive" />
-          <Picker.Item label="Pending" value="pending" />
+          <Picker.Item label="Active" value="Active" /> 
+          <Picker.Item label="Inactive" value="Inactive" />
+          <Picker.Item label="Pending" value="Pending" />
         </Picker>
       </View>
         <Pressable style = {[styles.button, {width: '85%', borderColor: LightYellow}]}
