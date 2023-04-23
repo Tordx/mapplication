@@ -55,7 +55,7 @@ const AdminLanding = () => {
       if (result.rows) {
         let modifiedArr = result.rows.map(item => item.doc);
         let filterUserData = modifiedArr.filter(item => item.FullName !== useraccount.FullName);
-        let filterStatusData = filterUserData.filter(item => item.Status !== "active");
+        let filterStatusData = filterUserData.filter(item => item.Status !== "Active");
         let filteredData = filterStatusData.filter(item => {
           return item && (
             new RegExp(searchTerm, 'i').test(item.FullName) ||
