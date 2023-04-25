@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image } from 'react-native'
+import { View, Text, FlatList, Image, useColorScheme } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PouchDB from 'pouchdb-react-native' ; 'pouchdb-core';
@@ -59,6 +59,7 @@ export default function Comments() {
     const [image, setImage] = useState(useraccount.Image);
     const [userID, setUserID] = useState(useraccount.UserID)
     const overallrating = Math.min((establishment + ramp + parking + tactiles) / 4)
+    const colorScheme = useColorScheme() === 'dark';
     const id = uuid.v4();
 
     console.log(data)

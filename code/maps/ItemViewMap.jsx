@@ -3,8 +3,6 @@
   import { View, Text, Modal, Pressable, FlatList } from 'react-native';
   import MapboxGL from '@rnmapbox/maps';
   import { useDispatch, useSelector } from 'react-redux'
-  import { Store } from '@reduxjs/toolkit';
-  import PouchDB from 'pouchdb-react-native' ;
   import 'pouchdb-core';
   import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { Image } from 'react-native';
@@ -16,44 +14,23 @@ import { setNewImage } from '../config/ItemSlice';
   MapboxGL.setWellKnownTileServer('Mapbox');
   MapboxGL.setAccessToken(token)
 
-  const InfoModal = ({ isVisible, onClose, info, onPress }) => (
-    <Modal visible={isVisible} onRequestClose={onClose} transparent animationType='fade'>
-      <View  style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
-      <View style = {{width: '90%', height: 150, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center', borderRadius: 5}}>
-        <Text>{info}</Text>
-        <Pressable 
-          onPress = {onPress}
-          style = {{position: 'absolute', top: 10, right: 10}}
-          >
-          <Icon
-          name = 'close'
-          size = {25}
-          />
-        </Pressable>
-      </View>
-      </View>
-    </Modal>
-  );
-
   const ItemViewMap = () => {
 
     useEffect(() => {
 
       getcommentimage()
 
-    },[images])
+    },[])
 
     
     const dispatch = useDispatch();
     const {ItemList} = useSelector((action) => action.items)
-    const [selectedMarker, setSelectedMarker] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [images, setImages] = useState();
     const [TopImage, setTopImage] = useState("");
-    const {useraccount} = useSelector((store) => store.user)
 
     const getcommentimage = async() => {
-
+        console.log(ItemList)
         let result = await dbremoteComments.allDocs({
           attachments: true,
           include_docs: true,
@@ -65,15 +42,16 @@ import { setNewImage } from '../config/ItemSlice';
           let filteredData = modifiedArr.filter((item) => {
             return item.CommentID === ItemList.CommentID
           })
-          
           const newFilteredData = filteredData.map((item) => item.ImageAttachment);
           const newFilteredURL = newFilteredData.map(item => item.filter(url => url !== ""));
-          const flattenedImages = newFilteredURL.flat(); // <-- flatten the images array
+          const flattenedImages = newFilteredURL.flat();
+          
           if (flattenedImages[0] === null) {
             return
           } else {
             setTopImage(flattenedImages[0])
-            dispatch(setNewImage(flattenedImages[0]))
+            console.log('hello');
+          console.log(flattenedImages);
           }
           console.log(flattenedImages[0]);
           setImages(flattenedImages)
