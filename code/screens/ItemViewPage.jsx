@@ -1,6 +1,5 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
-import MapboxGL from '@rnmapbox/maps'
 import ItemViewMap from '../maps/ItemViewMap'
 import ItemView from '../components/ItemView'
 

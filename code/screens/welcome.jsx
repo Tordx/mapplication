@@ -1,15 +1,15 @@
 import React,{ useEffect, useState, Button } from 'react'
-import { StyleSheet, StatusBar, TextInput, View, Text, TouchableOpacity, Image, PermissionsAndroid  } from 'react-native'
+import { StyleSheet, StatusBar, TextInput, View, Text, TouchableOpacity, Image, useColorScheme  } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { setUserAccount } from '../config/AccountSlice';
-import Geolocation from '@react-native-community/geolocation';
 
 const Welcome = () => {
 
+    const colorScheme = useColorScheme() === 'dark';
     const navigation = useNavigation();
     const dispatch = useDispatch()
 
@@ -37,19 +37,19 @@ const Welcome = () => {
     
 
   return (
-    <View style = {styles.container}>
+    <View style = {[styles.container, {backgroundColor: colorScheme ? Black : White}]}>
         <StatusBar backgroundColor={'#202020'} barStyle ='light-content' />
-             <Image source = {require('../Assets/images/alaminos-logo.png')} style = {{width: '50%', height: 300, alignItems: 'center', justifyContent: 'center', margin: 10, borderRadius: 25}} resizeMode = 'contain' />
-         <Text style = {styles.headertagline}>Alaminos City, PWD-friendly Application</Text>
-         <Text style = {styles.headertagline}>Join and be heard!</Text>
+             <Image source = {require('../Assets/images/alaminos-logo.png')} style = {{width: '50%', height: 300, alignItems: 'center', justifyContent: 'center', margin: 1, borderRadius: 25}} resizeMode = 'contain' />
+         <Text style = {[styles.headertagline, {color: colorScheme ?  White: Black, fontSize: 50}]}>Ease Access</Text>
+         <Text style = {[styles.headertagline, {color: colorScheme ?  White: Black, width: '80%'}]}>Alaminos City's PWD-friendly Application, join and be heard!</Text>
         <View style = {styles.buttoncontainer}>
             <TouchableOpacity style = {styles.button} 
             onPress = {() => navigation.navigate('Login')}>
-                <Text style = {styles.buttontext}>Sign In</Text>
+                <Text style = {[styles.buttontext,{color: colorScheme ?  White: Black}]}>Sign In</Text>
             </TouchableOpacity>
             <TouchableOpacity  style = {[styles.button, {borderColor: LightYellow}]} 
             onPress = {() => navigation.navigate('Signup')}>
-                <Text  style = {styles.buttontext} >Register</Text>
+                <Text  style = {[styles.buttontext,{color: colorScheme ?  White: Black}]} >Register</Text>
             </TouchableOpacity>
         </View>
     </View>

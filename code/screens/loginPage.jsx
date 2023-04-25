@@ -1,6 +1,6 @@
 
 import React, {useState,useEffect} from 'react';
-import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView, StyleSheet , ToastAndroid , Alert, BackHandler } from 'react-native'
+import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView, StyleSheet , ToastAndroid , Alert, useColorScheme } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,10 +17,10 @@ export const Loginbox = (props) => {
 
   const [isFocused, setIsFocused] = useState(false);
   const {useraccount} = useSelector((action) => action.user)
-
+  const colorScheme = useColorScheme() === 'dark';
   return (
-    <View style = {{width: '95%', height: 65,justifyContent: 'flex-start', alignItems: 'center', borderColor: isFocused ? LightYellow : LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
-    <TextInput style = {{width: '90%', height: '100%', fontSize: 18, paddingLeft: 20, color: White, fontFamily: 'Nexa-ExtraLight', borderRadius: 20, }}
+    <View style = {{width: '95%', height: 65,justifyContent: 'flex-start', alignItems: 'center', borderColor: isFocused ? LightYellow : colorScheme ? LightBlue : '#808080', borderWidth: colorScheme ? 2 : 1, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
+    <TextInput style = {{width: '90%', height: '100%', fontSize: 18, paddingLeft: 20, color: colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', borderRadius: 20, }}
       placeholder = {props.placeholder}
       placeholderTextColor = {'#606060'}
       secureTextEntry = {props.secureTextEntry}
@@ -39,7 +39,7 @@ export const Loginbox = (props) => {
       <Pressable onPress = {props.onPress} disabled = {props.disabled} style = {{position: 'absolute', right: 10}}>
         <Icon
           name = {props.name}
-          color = '#fff'
+          color = {colorScheme ? White : Black}
           size  = {25}
         />
       </Pressable>
@@ -49,7 +49,7 @@ export const Loginbox = (props) => {
 
 const Login = () => {
 
-  
+  const colorScheme = useColorScheme() === 'dark';
   const [show, setShow] = useState(true)
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
@@ -57,7 +57,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false)
   const [loggingIn, setLoggingIn] = useState(false)
-  const {useraccount} = useSelector((state) => state.user)
 
   
   const loginaccount = async() => {
@@ -129,10 +128,10 @@ const Login = () => {
     }
   }
   return (
-    <View style  ={styles.container}>
+    <View style = {[styles.container, {backgroundColor: colorScheme ? Black : White}]}>
       <View style = {{justifyContent: 'center', alignItems: 'center', width: '98%'}}>
         <Image source = {require('../Assets/images/sample_logo.png')} style = {{width: 200, height: 200}} resizeMode = 'contain' />
-        <Text style = {styles.headertagline}>Great to have you back!</Text>
+        <Text style = {[styles.headertagline, {color: colorScheme ? White : Black}]}>Great to have you back!</Text>
         <Loginbox 
           placeholder = 'username' 
           secureTextEntry = {false}
@@ -149,10 +148,10 @@ const Login = () => {
         />
       </View>
       <KeyboardAvoidingView style = {{ justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: 0, width: '90%'}}>
-      <Pressable style = {{margin: 10, width: '100%', backgroundColor: '#f5f5f5', height: 60, justifyContent: 'center', alignItems: 'center', borderRadius: 20}}
+      <Pressable style = {{margin: 10, width: '100%', backgroundColor: colorScheme ? White : Black, height: 60, justifyContent: 'center', alignItems: 'center', borderRadius: 20}}
           onPress = {loginaccount}
         >
-          <Text style = {{textAlign: 'center', fontSize: 17, fontFamily: 'Nexa-Heavy', color: Black}}>
+          <Text style = {{textAlign: 'center', fontSize: 17, fontFamily: 'Nexa-Heavy', color: colorScheme ? Black : White}}>
               LOG IN
           </Text>
         </Pressable>

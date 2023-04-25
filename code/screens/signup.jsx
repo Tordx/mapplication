@@ -1,6 +1,6 @@
 
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView , Alert , Button , Platform, ScrollView, ToastAndroid, BackHandler } from 'react-native'
+import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView , Alert , Button , Platform, ScrollView, ToastAndroid, BackHandler, useColorScheme } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { dbremoteAccounts } from '../../database/database';
@@ -37,7 +37,6 @@ const Signup = () => {
     }, [opening, navigation])
   );
   
-
   const [show, setShow] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -62,7 +61,7 @@ const Signup = () => {
   const [showDatePicker, setShowDatePicker] = useState(false); 
   const date = new Date()
   const getdate = date.toLocaleDateString()
-
+  const colorScheme = useColorScheme() === 'dark';
   const navigation = useNavigation()
   const id = uuid.v4()
 
@@ -274,9 +273,9 @@ const Signup = () => {
         }
       }
   return (
-    <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: Black}} >
+    <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundcolor: colorScheme ? Black : White}} >
     {showDatePicker && (
-       <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#'}}>
+       <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
         <DatePicker
         modal
         open = {showDatePicker}
@@ -302,8 +301,8 @@ const Signup = () => {
        {opening && 
         <View style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
        <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-        <Text style = {styles.headertagline}>Welcome to Ease Access!</Text>
-        <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '80%'}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
+        <Text style = {[styles.headertagline, {color: colorScheme ? White : Black}]}>Welcome to Ease Access!</Text>
+        <Text style = {{ fontSize: 20, color: colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '80%'}}>We're thrilled to have you on our journey towards a more inclusive world for people with disabilities. With your support, we can work towards breaking down barriers and creating a more accessible and equal society. we can't wait for you to be a part of our community!</Text>
         <Pressable style = {styles.button}
           onPress={ () => {setOpening(false); setFirst(true)}}
         >
@@ -312,8 +311,8 @@ const Signup = () => {
         </View>}
       {first && <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
       <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-      <Text style = {styles.headertagline}>Let's Get Started</Text>
-        <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '80%'}}>First,  Create Your Account by Filling in Your Username and Password</Text>
+      <Text style = {[styles.headertagline, {color: colorScheme ? White : Black}]}>Let's Get Started</Text>
+        <Text style = {{ fontSize: 20, color: colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '80%'}}>First,  Create Your Account by Filling in Your Username and Password</Text>
         
         <Loginbox 
           placeholder = 'username' 
@@ -346,14 +345,14 @@ const Signup = () => {
           {second && 
           <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
             <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-              <Text style = {styles.headertagline}>Then, few of your personal information</Text>
-              <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '80%'}}>The information you provided are to be displayed in your account, and rest assured that all information are not used in other means</Text>
-            <Pressable style = {[styles.button, {height: 150, width: 400, borderColor: Profilephoto === null ? LightBlue : '#202020'}]} onPress={handleProfilePhoto} disabled = {Profilephoto === null ?  false : true}>
+              <Text style = {[styles.headertagline, {color: colorScheme ? White : Black}]}>Then, few of your personal information</Text>
+              <Text style = {{ fontSize: 20, color: colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '80%'}}>The information you provided are to be displayed in your account, and rest assured that all information are not used in other means</Text>
+            <Pressable style = {[styles.button, {borderWidth: colorScheme ?  2 : 1, height: 150, width: 400, borderColor: colorScheme ? LightBlue  : Profilephoto ? LightBlue : '#808080'}]} onPress={handleProfilePhoto} disabled = {Profilephoto === null ?  false : true}>
             <Text style = {[styles.buttontext, {fontFamily: 'Nexa-ExtraLight', color: '#707070'}]}>{Profilephoto === null ? "UPLOAD DISPLAY PHOTO" : "SUCESSFULLY UPLOADED!"}</Text>
             {Profilephoto == null && <Icon
                 name = {'image'}
                 size={100}
-                color={LightBlue}
+                color={colorScheme ? LightBlue : '#808080'}
               />
               }
           </Pressable>
@@ -410,8 +409,8 @@ const Signup = () => {
         {third && 
          <View style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
        <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-        <Text style = {styles.headertagline}>We'll keep you updated</Text>
-        <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>To provide you with better service and support, we'll be collecting your phone number. Rest assured that we take your privacy seriously and will only use your phone number for the specific purposes outlined in our privacy policy.</Text>
+        <Text style = {[styles.headertagline, {color: colorScheme ? White : Black}]}>We'll keep you updated</Text>
+        <Text style = {{ fontSize: 20, color: colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>To provide you with better service and support, we'll be collecting your phone number. Rest assured that we take your privacy seriously and will only use your phone number for the specific purposes outlined in our privacy policy.</Text>
         <Loginbox 
           placeholder = 'Mobile number' 
           onChangeText={(value) => setMobileNumber(value)}
@@ -439,12 +438,12 @@ const Signup = () => {
         {forth && 
            <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
              <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-              <Text style = {styles.headertagline}>We'll take a look before getting you on-board</Text>
-              <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '90%'}}>Setup your Identification by providing your official PWD ID</Text>
+              <Text style = {[styles.headertagline, {color: colorScheme ? White : Black}]}>We'll take a look before getting you on-board</Text>
+              <Text style = {{ fontSize: 20, color: colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '90%'}}>Setup your Identification by providing your official PWD ID</Text>
               <View style = {{width: '95%', justifyContent: 'center', alignItems: 'center', borderColor: LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
                 <Picker
                   itemStyle = {{fontFamily:'Nexa-ExtraLight'}}
-                  style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: White}}
+                  style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: colorScheme ? White : Black}}
                   selectedValue={Nationality}
                   value = {Nationality}
                   onValueChange={(itemValue, itemIndex) => setNationality(itemValue)}
@@ -492,7 +491,7 @@ const Signup = () => {
         <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
         <Image source = {require('../Assets/images/welcome-signup.png')} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
           <Text style = {[styles.headertagline, {alignSelf: 'center'}]}>Thank you for signin up!</Text>
-          <Text style = {{fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '90%'}}>At Ease Access, our goal is to empower persons with disabilities by providing a platform that promotes accessibility and inclusion. However, to ensure that the app is used by those who truly need it, we have implemented a verification process to confirm that each user is a Person with Disability (PWD).</Text>
+          <Text style = {{fontSize: 20, color: colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20, width: '90%'}}>At Ease Access, our goal is to empower persons with disabilities by providing a platform that promotes accessibility and inclusion. However, to ensure that the app is used by those who truly need it, we have implemented a verification process to confirm that each user is a Person with Disability (PWD).</Text>
 
           <Pressable style = {[styles.button, {width: '85%', borderColor: LightYellow}]}
           onPress={() => setnewuser()}
@@ -529,7 +528,7 @@ const styles = StyleSheet.create({
 
       textAlign: 'center', 
       fontSize: 35, 
-      color: White, 
+      color: White,
       fontFamily: 'Nexa-Heavy',
       marginBottom: 20
   },
@@ -545,7 +544,7 @@ const styles = StyleSheet.create({
       height: 60, 
       width: '85%', 
       borderWidth: 2, 
-      borderColor: White,  
+      bordercolor: White, 
       justifyContent: 'center', 
       alignItems: 'center', 
       margin: 5,
@@ -555,7 +554,6 @@ const styles = StyleSheet.create({
       
       textAlign: 'center', 
       fontSize: 20, 
-      color: White, 
       fontFamily: 'Nexa-Heavy'
   },
   dateInput: {
@@ -580,7 +578,6 @@ const styles = StyleSheet.create({
   datePicker: {
     width: 300,
     marginBottom: 20,
-    backgroundColor: White
   },
   hiddenInput: {
     borderWidth: 0
