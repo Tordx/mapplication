@@ -7,6 +7,7 @@ import { setUserView } from '../config/AccountSlice';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { ToastAndroid } from 'react-native';
+import { useColorScheme } from 'react-native';
 
 export default function AdminComments() {
 
@@ -17,6 +18,7 @@ export default function AdminComments() {
   const [onrefresh, setOnRefresh] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const colorScheme = useColorScheme() === 'dark'
 
   const getdata = async () => {
         
@@ -106,9 +108,9 @@ const deletecomment = async() => {
               <Image style = {{width: '100%', height: '100%', borderRadius: 50}} resizeMode='cover' source={{uri: item.Image}} />
               </Pressable>
               <View style = {{flexDirection: 'column', width: '75%'}}>
-                  <Text style={{ fontSize: 16, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',}}>{item.FullName}</Text>
-                  <Text style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight', width: '75%', marginVertical: 5}}>{item.Text.slice(0, 50)}</Text>
-                  <Text style={{ fontSize: 12, color: White, fontFamily: 'Nexa-ExtraLight'}}>{item.Date}</Text>
+                  <Text style={{ fontSize: 16, color: colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',}}>{item.FullName}</Text>
+                  <Text style={{ fontSize: 15, color:  colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', width: '75%', marginVertical: 5}}>{item.Text.slice(0, 50)}</Text>
+                  <Text style={{ fontSize: 12, color:  colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight'}}>{item.Date}</Text>
               </View>
             <Text style={{position: 'absolute',right: 20, fontSize: 25, color: LightYellow}}>{item.Rating} ★</Text>
             
@@ -144,8 +146,8 @@ const deletecomment = async() => {
         onRequestClose={() => setOpenModal(false)}
       >
         <View style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <View style = {{width: '90%', height: '40%', backgroundColor: Black,  justifyContent: 'center', alignItems: 'center', borderRadius: 20, elevation: 10}}>
-            <FontAwesome name = 'warning' size = {40} color = {'yellow'} />
+          <View style = {{width: '90%', height: '40%', backgroundColor:  colorScheme ? Black : White,  justifyContent: 'center', alignItems: 'center', borderRadius: 20, elevation: 10}}>
+            <FontAwesome name = 'warning' size = {40} color = {'#fec20c'} />
           <Text style = {{textAlign: 'center', fontSize: 15, width: '95%', marginTop: 5, fontFamily: 'Nexa-ExtraLight'}}>Warning: Please review the following comment carefully before deleting it. We value freedom of expression and encourage diverse opinions but we do not tolerate hate speech or any form of discrimination on our platform. Please ensure that the comment violates our community guidelines before taking any action. If you have any doubts or questions, please consult our policies and reach out to our support team for further guidance. Thank you for your efforts in keeping our platform safe and respectful for all users.</Text>
           <Pressable onPress={deletecomment}>
             <Text style = {{marginTop: 10, padding: 10, borderRadius: 20, borderColor: 'red', borderWidth: 2, color: 'red', fontSize: 20, fontFamily: 'Nexa-Heavy', textAlign: 'center'}}>DELETE</Text>

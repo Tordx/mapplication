@@ -1,4 +1,4 @@
-import { View, Text, StatusBar } from 'react-native'
+import { View, Text, StatusBar, useColorScheme } from 'react-native'
 import React from 'react'
 import { dbremoteAccounts } from '../../../database/database';
 import { useSelector } from 'react-redux';
@@ -17,6 +17,7 @@ import { dbremoteComments } from '../../../database/database';
 
 const HistoryTab = () => {
 
+  const colorScheme = useColorScheme()=== 'dark';
   const {useraccount} = useSelector((action) => action.user)
   const [comments, setComments] = useState([]);
 
@@ -65,9 +66,9 @@ const HistoryTab = () => {
       >
         <View style = {{padding: 15, flexDirection: 'row',justifyContent: 'center', alignItems: 'center', padding: 10,  borderColor: LightBlue, borderBottomWidth: 1}}>
           <View style = {{width: '100%', height: '100%'}}>
-              <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-ExtraLight', width: '60%', paddingTop: 10}}>{item.Text}</Text>
-              <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', width: '60%',  marginVertical: 5}}>{item.CommentID}</Text>
-              <Text style={{  fontSize: 12, color: White, fontFamily: 'Nexa-ExtraLight',}}>{item.Date}</Text>
+              <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', width: '60%', paddingTop: 10}}>{item.Text}</Text>
+              <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', width: '60%',  marginVertical: 5}}>{item.CommentID}</Text>
+              <Text style={{  fontSize: 12, color:  colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight',}}>{item.Date}</Text>
           </View>
         </View>
         <Text style={{position: 'absolute',right: 20, fontSize: 30, color: LightYellow}}>{Math.min(item.Rating).toFixed(2)} ★</Text>
@@ -77,12 +78,12 @@ const HistoryTab = () => {
   } 
 
   return (
-    <View style = {{flex: 1, backgroundColor: Black}}>
+    <View style = {{flex: 1, backgroundColor:  colorScheme ? Black : White}}>
     <View style={{height: 45, width: '100%'}}>
-      <Text style = {{paddingLeft: 20, color: White, fontSize: 30, fontFamily: 'Nexa-Heavy', top: 10}}>Review History</Text>
+      <Text style = {{paddingLeft: 20, color:  colorScheme ? White : Black, fontSize: 30, fontFamily: 'Nexa-Heavy', top: 10}}>Review History</Text>
       
       </View>
-    <View style = {{flex: 1, backgroundColor: Black, paddingBottom: 100}}>
+    <View style = {{flex: 1, backgroundColor:  colorScheme ? Black : White, paddingBottom: 100}}>
       
       <FlatList
         data={comments}

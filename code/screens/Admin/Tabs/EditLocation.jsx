@@ -18,6 +18,7 @@ import { ToastAndroid } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { dbremoteEstablishment } from '../../../../database/database';
+import { useColorScheme } from 'react-native';
 const EditLocation = () => {
 
     const navigation = useNavigation();
@@ -31,6 +32,7 @@ const EditLocation = () => {
     const id = uuid.v4()
     const date = new Date()
     const todate = date.toLocaleDateString()
+    const colorScheme = useColorScheme() === 'dark';
 
     const setnewlocation = async () => {
       
@@ -119,10 +121,10 @@ const EditLocation = () => {
                     title={Establishment}
                 />
             </MapboxGL.MapView>
-            <View style={{backgroundColor: Black, justifyContent: 'center', alignItems: 'center', height: 400, borderTopRightRadius: 20, borderTopLeftRadius: 20}}>
+            <View style={{backgroundColor:  colorScheme ? Black : White, justifyContent: 'center', alignItems: 'center', height: 400, borderTopRightRadius: 20, borderTopLeftRadius: 20}}>
             <ScrollView style = {{width: '100%', height: '100%'}} showsVerticalScrollIndicator = {false}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            <Text style = {{paddingLeft: 20, color: White, fontSize: 20, fontFamily: 'Nexa-Heavy', paddingTop: 10, marginTop: 10, alignSelf: 'flex-start'}}>ADD NEW LOCATION</Text>
+            <Text style = {{paddingLeft: 20, color:  colorScheme ? White : Black, fontSize: 20, fontFamily: 'Nexa-Heavy', paddingTop: 10, marginTop: 10, alignSelf: 'flex-start'}}>ADD NEW LOCATION</Text>
             <Pressable style = {[styles.button, {height: 150, width: 400, borderColor: Idcardimage === null ? LightBlue : '#202020'}]} onPress={handleEstablishmentImage} disabled = {Idcardimage === null ?  false : true}>
               <Text style = {[styles.buttontext, {fontFamily: 'Nexa-ExtraLight', color: '#707070'}]}>{Idcardimage === null ? "UPLOAD ID PHOTO" : "SUCESSFULLY UPLOADED!"}</Text>
               <Icon
@@ -141,11 +143,11 @@ const EditLocation = () => {
                 onChangeText = {(text) => setEstablishment(text)}
                 value = {Establishment}
                 />
-                <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Property Type</Text>
+                <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Property Type</Text>
                 <View style = {{width: '95%', justifyContent: 'center', alignItems: 'center', borderColor: LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
                 <Picker
                     itemStyle = {{fontFamily:'Nexa-ExtraLight'}}
-                    style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: White}}
+                    style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color:  colorScheme ? White : Black}}
                     selectedValue={PropertyType}
                     value = {PropertyType}
                     onValueChange={(itemValue, itemIndex) => setPropertyType(itemValue)}
@@ -158,7 +160,7 @@ const EditLocation = () => {
                 </Picker>
                 </View>
                 <Pressable style = {{justifyContent: 'center', alignItems: 'center',}} onPress = {setnewlocation} >
-                    <Text style = {{borderColor: LightYellow, borderWidth: 1, borderRadius: 20, width: 200, padding: 20, textAlign: 'center', marginVertical: 10}}>
+                    <Text style = {{borderColor: LightYellow, borderWidth: 1, borderRadius: 20, width: 200, padding: 20, textAlign: 'center', marginVertical: 10, color:  colorScheme ? White : Black}}>
                         CONFIRM
                     </Text>
                 </Pressable>

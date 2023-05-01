@@ -8,12 +8,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import CountryFlag from 'react-native-country-flag'
 import { useNavigation } from '@react-navigation/native';
+import { useColorScheme } from 'react-native';
 export default function UserViewPage() {
 
     const {userview} = useSelector((action) => action.user)
     const [data, setData] = useState('');
     const [nationality, setNationality] = useState('')
     const navigation = useNavigation();
+    const colorScheme = useColorScheme()=== 'dark';
     console.log(userview)
     const getdata = async () => {
       console.log('loaded');
@@ -60,7 +62,7 @@ export default function UserViewPage() {
     getdata()
     },[])
   return (
-    <View style ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: Black}}>
+    <View style ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor:  colorScheme ? Black : White}}>
            <View style={{borderWidth: 1, borderStyle: 'dashed', borderColor: LightYellow, alignItems: 'center', justifyContent: 'center', width: 220, height: 220, borderRadius: 200, marginBottom: 20}}>
      <View style={{borderWidth: 1, borderColor: LightBlue, alignItems: 'center', justifyContent: 'center', width: 210, height: 210, borderRadius: 200}}>
       <Image
@@ -70,13 +72,13 @@ export default function UserViewPage() {
       </View>
       </View>
         <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'column', margin: 5}}>
-          <Text style={{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy'}}>{data.FullName}</Text>
+          <Text style={{ fontSize: 30, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy'}}>{data.FullName}</Text>
           <View style = {{alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginTop: 15}}>
               <FontAwesome size={30} name = 'star-o' color = {LightYellow}/>
-              <Text style={{marginLeft: 15, fontSize: 25, textAlign: 'center', fontFamily: 'Nexa-ExtraLight', color: White}}>{data.CommentCount} REVIEWS</Text>
+              <Text style={{marginLeft: 15, fontSize: 25, textAlign: 'center', fontFamily: 'Nexa-ExtraLight', color:  colorScheme ? White : Black}}>{data.CommentCount} REVIEWS</Text>
             </View>
         </View>
-        <Text style={{ fontSize: 25, color: White, fontFamily: 'Nexa-Heavy', width: '90%', textAlign: 'left'}}>About</Text>
+        <Text style={{ fontSize: 25, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', width: '90%', textAlign: 'left'}}>About</Text>
     <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row', margin: 5, width: '95%', height: 90, borderWidth: 1, borderColor: LightBlue,borderRadius: 20}}>
     <View style={{alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', width: '90%', height: 90}}>
       <View style = {{alignItems: 'center', justifyContent: 'center', width: '30%', flexDirection: 'column', height: '100%'}}>
@@ -86,15 +88,15 @@ export default function UserViewPage() {
             size={25}
             style = {{ position: 'absolute', bottom: 40}}
           />
-          <Text style={{fontSize: 15, fontFamily: 'Nexa-ExtraLight', color: White, marginLeft: 10,  position: 'absolute', bottom: 20}}>{data.Sex}</Text>
+          <Text style={{fontSize: 15, fontFamily: 'Nexa-ExtraLight', color:  colorScheme ? White : Black, marginLeft: 10,  position: 'absolute', bottom: 20}}>{data.Sex}</Text>
         </View>
         <View style = {{alignItems: 'center', justifyContent: 'center', width: '33%',height: '100%'}}>
         <FontAwesome5 size={25} name = 'wheelchair' color = {'blue'}  style = {{ position: 'absolute', bottom: 40}}/>
-              <Text style={{ position: 'absolute', bottom: 20, fontSize: 15, textAlign: 'center', fontFamily: 'Nexa-ExtraLight', color: White}}>{data.Disability}</Text>
+              <Text style={{ position: 'absolute', bottom: 20, fontSize: 15, textAlign: 'center', fontFamily: 'Nexa-ExtraLight', color:  colorScheme ? White : Black}}>{data.Disability}</Text>
             </View>
             <View style = {{alignItems: 'center', justifyContent: 'center', width: '30%', height: '100%'}}>
           <CountryFlag isoCode={nationality} size={20} style = {{bottom: 43, position: 'absolute'}} />
-          <Text style={{fontSize: 15, fontFamily: 'Nexa-ExtraLight', color: White,  position: 'absolute', bottom: 20}}>{nationality.toUpperCase()}</Text>
+          <Text style={{fontSize: 15, fontFamily: 'Nexa-ExtraLight', color:  colorScheme ? White : Black,  position: 'absolute', bottom: 20}}>{nationality.toUpperCase()}</Text>
         </View>
          </View>
          </View>
@@ -104,7 +106,7 @@ export default function UserViewPage() {
         <Icon
           name='keyboard-arrow-left'
           size={50}
-          color={White}
+          color={ colorScheme ? White : Black}
         />
       </Pressable>
     </View>
