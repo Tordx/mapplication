@@ -102,10 +102,6 @@ const Signup = () => {
     }
 
     launchImageLibrary({ noData: true }, async(response) => {
-      console.log('response');
-      console.log(response);
-      console.log('response');
-      // console.log(response);
       if (response) {
         const datapic = response
         const piclocation = datapic.assets[0].uri
@@ -182,7 +178,7 @@ const Signup = () => {
              Nationality : Nationality,
              Disability : disability,
              IDNumber : IDNumber,
-             UserID: id,
+             UserID: username + id,
              FullName: FirstName + ' ' + MiddleName + ' ' + LastName,
              FirstName : FirstName,
              MiddleName : MiddleName,

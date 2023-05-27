@@ -16,35 +16,28 @@ export default function UserViewPage() {
     const navigation = useNavigation();
     console.log(userview)
     const getdata = async () => {
-      console.log('loaded');
       try {
         let result = await dbremoteAccounts.allDocs({
           include_docs: true,
           attachments: true,
         });
         if (result.rows) {
-          console.log('11');
           let modifiedArr = result.rows.map(
             
             item => item.doc
           );
-          console.log('22');
           let filteredData = modifiedArr.filter(item => {
             return item.UserID === userview.UserID
           });
           if (filteredData.length) {
-            console.log('33');
             let newFilterData = filteredData.map((item) => {
               return item
             });
             const FullDetails = newFilterData[0]
             const nationality = newFilterData[0].Nationality
-            
-            console.log('ss');
             setNationality(nationality)
             setData(FullDetails)
-            console.log(FullDetails);   
-            console.log('loaded');
+            console.log(FullDetails);
           }
         }
       } catch (error) {

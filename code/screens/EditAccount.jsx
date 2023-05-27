@@ -20,9 +20,6 @@ const EditAccount = () => {
 
  const {useraccount} = useSelector((action) => action.user)
  const dispatch = useDispatch();
- console.log('====================================useraccount');
- console.log(useraccount);
- console.log('====================================useraccount');
 
   const [show, setShow] = useState(false)
   const [ids, setID] = useState(useraccount._id)
@@ -32,7 +29,7 @@ const EditAccount = () => {
   const [MobileNumber, setMobileNumber] = useState(useraccount.MobileNumber)
   const [Nationality, setNationality] = useState(useraccount.Nationality)
   const [Disability, setDisability] = useState(useraccount.Disability)
-  const [UserID] = (useraccount.Disability)
+  const [UserID] = (useraccount.UserID)
   const [IDNumber, setIDNumber] = useState(useraccount.IDNumber)
   const [FirstName, setFirstName] = useState(useraccount.FirstName)
   const [MiddleName, setMiddleName] = useState(useraccount.MiddleName)
@@ -115,6 +112,7 @@ const EditAccount = () => {
              Nationality : Nationality,
              Disability : Disability,
              IDNumber : IDNumber,
+             FullName: FirstName + ' ' + MiddleName + ' ' + LastName,
              FirstName : FirstName,
              MiddleName : MiddleName,
              LastName : LastName,
@@ -129,12 +127,10 @@ const EditAccount = () => {
              Status: "active",
              CommentCount: CommentCount,
          }
-         console.log('putted in readux user');
          dispatch(setUserAccount(updateuser));
-         console.log('putted in readux user');
       dbremoteAccounts.put(updateuser)
          .then((response) =>{
-           Alert.alert('Your Super Admin is Added has been successfully added!')
+           Alert.alert('Account details changed.')
            console.log(response)
           //  SyncSuperAdmin()
            navigation.navigate('BottomTabs')
@@ -162,7 +158,7 @@ const EditAccount = () => {
             });
             const newFilterData = filteredData[0].password; // Use optional chaining to avoid errors if filteredData[0] is undefined
             if (newFilterData === password) {
-              ToastAndroid.show("Great!, Let's move on to the next stage", ToastAndroid.CENTER);
+              ToastAndroid.show("Great! Let's move on to the next stage", ToastAndroid.CENTER);
               setFirst(false);
               setSecond(true) 
               
@@ -187,7 +183,7 @@ const EditAccount = () => {
     {first && <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
     <Image source = {{uri: 'https://i.imgur.com/19s7qDu.png'}} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
       <Text style = {styles.headertagline}>Verify your account</Text>
-      <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Before Changing information, please enter your password.</Text>
+      <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Please enter your password to proceed.</Text>
       <Loginbox 
         placeholder = 'password' 
         secureTextEntry= {show} 
