@@ -7,6 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CountryFlag from 'react-native-country-flag'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Black, LightBlue, LightYellow, White } from '../../../Assets/Colors/Colors'
+import { useColorScheme } from 'react-native'
 
 
 
@@ -14,7 +15,7 @@ const AdminAccount = ()=> {
 
 
   const {useraccount} = useSelector((action) => action.user)
-
+  const colorScheme = useColorScheme()==='dark';
   const navigation = useNavigation()
 
   const toedit = () => {
@@ -30,9 +31,9 @@ const AdminAccount = ()=> {
 
   return (
     <>
-    <ScrollView style = {{width: '100%', height: '100%', backgroundColor: Black}} showsVerticalScrollIndicator = {false} >
-    <View style = {{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: Black, paddingBottom: 100}}>
-    <Text style = {{paddingLeft: 20, color: White, fontSize: 30, fontFamily: 'Nexa-Heavy', top: 10, alignSelf: 'flex-start'}}>Admin Account</Text>
+    <ScrollView style = {{width: '100%', height: '100%', backgroundColor:  colorScheme ? Black : White}} showsVerticalScrollIndicator = {false} >
+    <View style = {{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor:  colorScheme ? Black : White, paddingBottom: 100}}>
+    <Text style = {{paddingLeft: 20, color:  colorScheme ? White : Black, fontSize: 30, fontFamily: 'Nexa-Heavy', top: 10, alignSelf: 'flex-start'}}>Admin Account</Text>
      <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 30}}>
      <View style={{borderWidth: 1, borderStyle: 'dashed', borderColor: LightYellow, alignItems: 'center', justifyContent: 'center', width: 220, height: 220, borderRadius: 200, marginBottom: 20}}>
      <View style={{borderWidth: 1, borderColor: LightBlue, alignItems: 'center', justifyContent: 'center', width: 210, height: 210, borderRadius: 200}}>
@@ -43,16 +44,16 @@ const AdminAccount = ()=> {
       </View>
       </View>
          <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'column', margin: 5}}>
-         <Text style={{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy'}}>{useraccount.FullName.toUpperCase()}</Text>
-         <Text style={{ fontSize: 25, color: White, fontFamily: 'Nexa-ExtraLight', marginVertical: 20}}>{useraccount.MobileNumber}</Text>
-         <Text style={{ fontSize: 25, color: White, fontFamily: 'Nexa-ExtraLight', marginVertical: 20}}>{useraccount.userType.toUpperCase()}</Text>
+         <Text style={{ fontSize: 30, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy'}}>{useraccount.FullName.toUpperCase()}</Text>
+         <Text style={{ fontSize: 25, color:  colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', marginVertical: 20}}>{useraccount.MobileNumber}</Text>
+         <Text style={{ fontSize: 25, color:  colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', marginVertical: 20}}>{useraccount.userType.toUpperCase()}</Text>
          </View>
     </View>
-    <Pressable style = {[styles.button, {width: '85%', borderColor: LightYellow, flexDirection: 'row', height: 100,}]} onPress={() => navigation.navigate('Addlocation')}>
+    <Pressable style = {[styles.button, {width: '85%', borderColor:  colorScheme ? LightYellow : Black, flexDirection: 'row', height: 100,}]} onPress={() => navigation.navigate('Addlocation')}>
       <FontAwesome
-          name = 'map-marker' size={30} color = {LightYellow}/>
+          name = 'map-marker' size={30} color = { colorScheme ? LightYellow : Black}/>
       
-      <Text style = {[styles.buttontext, {fontFamily: 'Nexa-ExtraLight', color: LightYellow, fontSize: 25, marginLeft: 20}]}>More Location</Text>
+      <Text style = {[styles.buttontext, {fontFamily: 'Nexa-ExtraLight', color:  colorScheme ? LightYellow : Black, fontSize: 25, marginLeft: 20}]}>More Location</Text>
       </Pressable>
     </View>
     </ScrollView>

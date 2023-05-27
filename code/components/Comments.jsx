@@ -19,14 +19,16 @@ import { ScrollView } from 'react-native';
 import { dbremoteEstablishment , dbremoteComments, dbremoteAccounts } from '../../database/database';
 import { Switch } from 'react-native';
 
- export const Ratings = (props) => (
+ export const Ratings = (props) => { 
+  const colorScheme = useColorScheme() === 'dark';
+  return (
     <View style = {{justifyContent: 'flex-start', alignItems: 'flex-start', alignSelf: 'flex-start', flexDirection: 'column', paddingLeft: 10, marginVertical: 15, width: '100%', borderBottomWidth: 0.5, borderColor: LightBlue}} >
-          <Text style = {{color: White, fontFamily: 'cocogooese_semibold', fontSize: 18, marginBottom: 5}}>{props.title}</Text>
+          <Text style = {{color: colorScheme ? White: Black, fontFamily: 'cocogooese_semibold', fontSize: 18, marginBottom: 5}}>{props.title}</Text>
           <View style = {{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 20}}>
             <Rating
             type='custom'
             onFinishRating={props.onFinishRating}
-            tintColor = {Black}
+            tintColor = {props.tintColor}
             jumpValue = {props.jumpValue}
             imageSize={props.imageSize}
             ratingColor= '#ffdd85'
@@ -36,6 +38,7 @@ import { Switch } from 'react-native';
             </View>
         </View>
   )
+}
 
 export default function Comments() {
 
@@ -219,9 +222,9 @@ export default function Comments() {
               <Image style = {{width: '100%', height: '100%', borderRadius: 50}} resizeMode='cover' source={{uri: item.Image}} />
               </Pressable>
               <View style = {{flexDirection: 'column', width: '75%'}}>
-                  <Text style={{ fontSize: 16, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',}}>{item.FullName}</Text>
-                  <Text style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight', width: '75%', marginVertical: 5}}>{item.Text.slice(0, 50)}</Text>
-                  <Text style={{ fontSize: 12, color: White, fontFamily: 'Nexa-ExtraLight'}}>{item.Date}</Text>
+                  <Text style={{ fontSize: 16, color: colorScheme ? White: Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',}}>{item.FullName}</Text>
+                  <Text style={{ fontSize: 15, color: colorScheme ? White: Black, fontFamily: 'Nexa-ExtraLight', width: '75%', marginVertical: 5}}>{item.Text.slice(0, 50)}</Text>
+                  <Text style={{ fontSize: 12, color: colorScheme ? White: Black, fontFamily: 'Nexa-ExtraLight'}}>{item.Date}</Text>
               </View>
             <Text style={{position: 'absolute',right: 20, fontSize: 25, color: LightYellow}}>{item.Rating} ★</Text>
             
@@ -242,7 +245,7 @@ export default function Comments() {
     <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
     
     <Pressable onPress = {() => setModal(true)} style = {{ width: 500, borderBottomWidth: 0.3, borderColor: White, justifyContent: 'center', alignItems: 'center'}}>
-        <Text style = {{color: White, fontFamily: 'cocogooese_semibold', fontSize: 16, marginBottom: 10}}>Add a Review</Text>
+        <Text style = {{color: colorScheme ? White: Black, fontFamily: 'cocogooese_semibold', fontSize: 16, marginBottom: 10}}>Add a Review</Text>
         
       
       </Pressable>
@@ -272,10 +275,10 @@ export default function Comments() {
         onRequestClose={() => setModal(false)}
       >
           <ScrollView style = {{width: '100%', height: '100%', }}>
-        <View style = {{width: '100%', height: '100%', backgroundColor: Black, justifyContent: 'center', alignItems: 'center',}}>
-          <Text style = {{ fontSize: 30, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 10, marginTop: 20}}>SUBMIT A REVIEW</Text>
-          <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Amplifying PWD voices with inclusive reviews - every voice deserves to be heard.</Text>
-          <Text style={{fontSize: 25, color: White, textAlign: 'left', alignSelf: 'flex-start', paddingLeft: 20, fontFamily: 'Nexa-Heavy'}}>Your overall rating</Text>
+        <View style = {{width: '100%', height: '100%', backgroundColor: colorScheme ? Black: White, justifyContent: 'center', alignItems: 'center',}}>
+          <Text style = {{ fontSize: 30, color: colorScheme ? White: Black, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 10, marginTop: 20}}>SUBMIT A REVIEW</Text>
+          <Text style = {{ fontSize: 20, color: colorScheme ? White: Black, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Amplifying PWD voices with inclusive reviews - every voice deserves to be heard.</Text>
+          <Text style={{fontSize: 25, color: colorScheme ? White: Black, textAlign: 'left', alignSelf: 'flex-start', paddingLeft: 20, fontFamily: 'Nexa-Heavy'}}>Your overall rating</Text>
           <Text style={{fontSize: 75, color: LightYellow, textAlign: 'left', alignSelf: 'flex-start', paddingLeft: 20, fontFamily: 'Nexa-Heavy'}}>{overallrating} ★</Text>
             
             <Ratings
@@ -284,24 +287,28 @@ export default function Comments() {
             title = 'Establishment'
             jumpValue = {0.5}
             imageSize = {25}
+            tintColor = {colorScheme ? Black: White}
             />
             <Ratings
             onFinishRating = {(newrating) => setParking(newrating)}
             result = {parking}
             title = 'Parking'
             imageSize = {25}
+            tintColor = {colorScheme ? Black: White}
             />
             <Ratings
             onFinishRating = {(newrating) => setRamp(newrating)}
             result = {ramp}
             title = 'Ramp'
             imageSize = {25}
+            tintColor = {colorScheme ? Black: White}
             />
             <Ratings
             onFinishRating = {(newrating) => setTactiles(newrating)}
             result = {tactiles}
             title = 'Tactiles'
             imageSize = {25}
+            tintColor = {colorScheme ? Black: White}
             />
             
             <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'center', marginTop: 10, width: 500, paddingTop: 10,}}>Upload Images</Text>
@@ -329,7 +336,7 @@ export default function Comments() {
             <Image style = {{ paddingLeft: 20, width: 50, height: 50, borderRadius: 500}} resizeMode = 'cover' source={{uri: image}}/>
             <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginLeft: 5,}}>{FullName}</Text>
             </View>
-            <View style = {{flexDirection: 'row',justifyContent: 'flex-start', alignSelf: 'flex-start', alignItems: 'center', marginBottom: 5, width: '100%', height: 40, backgroundColor: '#252525'}}>
+            <View style = {{flexDirection: 'row',justifyContent: 'flex-start', alignSelf: 'flex-start', alignItems: 'center', marginBottom: 5, width: '100%', height: 40, backgroundColor: colorScheme ? '#202020': White}}>
             <Switch style = {{ paddingLeft: 20}} 
               trackColor={{false: '#808080', true: LightYellow}}
               thumbColor={isEnabled ? '#e2e2e2' : LightYellow}
@@ -337,7 +344,7 @@ export default function Comments() {
               onValueChange={() => setIsEnabled(!isEnabled)}
               value={isEnabled}
             />
-            <Text style = {{ fontSize: 17, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center',}}>Submit anonymously</Text>
+            <Text style = {{ fontSize: 17, color: colorScheme ? White: Black, fontFamily: 'Nexa-ExtraLight', textAlign: 'center',}}>Submit anonymously</Text>
             </View>
             <Loginbox 
             

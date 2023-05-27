@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { Black, LightBlue, LightYellow, White } from '../../../Assets/Colors/Colors'
 import { Loginbox } from '../../loginPage'
 import { RefreshControl } from 'react-native'
+import { useColorScheme } from 'react-native'
 
 
 const ActiveUsers = () => {
@@ -34,7 +35,7 @@ const ActiveUsers = () => {
   
   const {useraccount} = useSelector((store) => store.user)
   const dispatch = useDispatch()
-  
+  const colorScheme = useColorScheme() === 'dark';
   const [userdata, setUserData] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [refresh, setRefresh] = useState(false)
@@ -85,9 +86,9 @@ const ActiveUsers = () => {
               <Image style = {{width: 75, height: 75, marginRight: 15,marginLeft: 15, borderRadius: 20}} resizeMode='cover' source={{uri: item?.Image}} />
               <View style = {{flexDirection: 'column', width: '75%'}}>
                   
-                  <Text style={{ fontSize: 18, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '75%'}}>{item.FullName}</Text>
-                  <Text style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight', width: '75%', marginVertical: 5}}>{item.Disability}</Text>
-                  <Text style={{ fontSize: 12, color: White, fontFamily: 'Nexa-ExtraLight'}}>{item.CreationDate}</Text>
+                  <Text style={{ fontSize: 18, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '75%'}}>{item.FullName}</Text>
+                  <Text style={{ fontSize: 15, color:  colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', width: '75%', marginVertical: 5}}>{item.Disability}</Text>
+                  <Text style={{ fontSize: 12, color:  colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight'}}>{item.CreationDate}</Text>
               </View>
             <Text style={{position: 'absolute',right: 20, fontSize: 12, color: '#90EE90', fontFamily: 'cocogooese_semibold'}}>{item.Status}</Text>
             
@@ -107,8 +108,8 @@ const ActiveUsers = () => {
       }
 
   return (
-    <View style = {{backgroundColor: Black, flex: 1, justifyContent: 'center', alignItems: 'center',}}>
-     <Text style={{ fontSize: 20, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '95%', marginVertical: 20}}>ACTIVE USERS</Text>
+    <View style = {{backgroundColor:  colorScheme ? Black : White, flex: 1, justifyContent: 'center', alignItems: 'center',}}>
+     <Text style={{ fontSize: 20, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '95%', marginVertical: 20}}>ACTIVE USERS</Text>
       <Loginbox
        placeholder = 'Search by name, status, disability...'
        name = 'close'

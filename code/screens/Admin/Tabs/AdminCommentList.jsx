@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 import {  } from 'react-native'
 import { setItem } from '../../../config/ItemSlice'
 import { dbremoteEstablishment } from '../../../../database/database'
+import { useColorScheme } from 'react-native'
 
 const AdminCommentList = () => {
     const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const AdminCommentList = () => {
     const [local, setLocal] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('Government');
     const [onrefresh, setOnRefresh] = useState(false);
-  
+    const colorScheme = useColorScheme() === 'dark';
   
     const getdata = async () => {;
   
@@ -80,8 +81,8 @@ const AdminCommentList = () => {
             <View style = {{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
                 <Image style = {{width: 75, height: 75, marginRight: 15,marginLeft: 15, borderRadius: 20}} resizeMode='cover' source={{uri: item?.Image}} />
                 <View style = {{flexDirection: 'column', width: '75%'}}>
-                    <Text style={{ fontSize: 16, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 5}}>{item.Establishment}</Text>
-                    <Text style={{ fontSize: 15, color: White, fontFamily: 'Nexa-ExtraLight'}}>Review Count: {item.CommentsCount}</Text>
+                    <Text style={{ fontSize: 16, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 5}}>{item.Establishment}</Text>
+                    <Text style={{ fontSize: 15, color:  colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight'}}>Review Count: {item.CommentsCount}</Text>
                 </View>
               <Text style={{position: 'absolute',right: 20, fontSize: 25, color: LightYellow}}>{item.Rating === 0 ? 0 : Math.min(item.Rating / item.RatingCount).toFixed(2)} ★</Text>
               
@@ -92,18 +93,18 @@ const AdminCommentList = () => {
     } 
     return (
       
-        <View style = {{backgroundColor: Black, flex: 1, justifyContent: 'center', alignItems: 'center',}}>
-        <Text style={{ fontSize: 20, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginTop: 20, width: '95%'}}>ESTABLISHMENTS</Text>
-        <View style = {{backgroundColor: Black, width: '95%', justifyContent: 'center', alignItems: 'center',}}>
+        <View style = {{backgroundColor:  colorScheme ? Black : White, flex: 1, justifyContent: 'center', alignItems: 'center',}}>
+        <Text style={{ fontSize: 20, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginTop: 20, width: '95%'}}>ESTABLISHMENTS</Text>
+        <View style = {{backgroundColor:  colorScheme ? Black : White, width: '95%', justifyContent: 'center', alignItems: 'center',}}>
         <ScrollView horizontal showsHorizontalScrollIndicator = {false} style = {{flexDirection: 'row'}}>
         <Pressable  style = {selectedCategory === 'Government' ? styles.selectedCategory : styles.nonselectedCategory} onPress={() => setSelectedCategory('Government')}>
-          <Text style = {selectedCategory === 'Government' ? styles.selectedText : styles.nonselectedText}>Government</Text>
+          <Text style = {selectedCategory === 'Government' ? [styles.selectedText, {color: colorScheme ? White : Black}] : [styles.nonselectedText, {color:  colorScheme ? White : Black}]}>Government</Text>
         </Pressable>
         <Pressable  style = {selectedCategory === 'Corporate' ? styles.selectedCategory : styles.nonselectedCategory} onPress={() => setSelectedCategory('Corporate')}>
-        <Text style = {selectedCategory === 'Corporate' ? styles.selectedText : styles.nonselectedText}>Corporate</Text>
+        <Text style = {selectedCategory === 'Corporate' ?  [styles.selectedText, {color: colorScheme ? White : Black}] : [styles.nonselectedText, {color:  colorScheme ? White : Black}]}>Corporate</Text>
         </Pressable>
         <Pressable  style = {selectedCategory === 'Local' ? styles.selectedCategory : styles.nonselectedCategory} onPress={() => setSelectedCategory('Local')}>
-        <Text style = {selectedCategory === 'Local' ? styles.selectedText : styles.nonselectedText}>Local</Text>
+        <Text style = {selectedCategory === 'Local' ?  [styles.selectedText, {color: colorScheme ? White : Black}] : [styles.nonselectedText, {color:  colorScheme ? White : Black}]}>Local</Text>
         </Pressable>
       </ScrollView>
       </View>

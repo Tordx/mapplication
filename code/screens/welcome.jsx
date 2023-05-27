@@ -41,7 +41,7 @@ const Welcome = () => {
         <StatusBar backgroundColor={'#202020'} barStyle ='light-content' />
              <Image source = {require('../Assets/images/alaminos-logo.png')} style = {{width: '50%', height: 300, alignItems: 'center', justifyContent: 'center', margin: 1, borderRadius: 25}} resizeMode = 'contain' />
          <Text style = {[styles.headertagline, {color: colorScheme ?  White: Black, fontSize: 50}]}>Ease Access</Text>
-         <Text style = {[styles.headertagline, {color: colorScheme ?  White: Black, width: '80%'}]}>Alaminos City's PWD-friendly Application, join and be heard!</Text>
+         <Text style = {[styles.headertagline, {color: colorScheme ?  White: Black, width: '80%', marginBottom: 20}]}>Alaminos City's PWD-friendly Application, join and be heard!</Text>
         <View style = {styles.buttoncontainer}>
             <TouchableOpacity style = {styles.button} 
             onPress = {() => navigation.navigate('Login')}>

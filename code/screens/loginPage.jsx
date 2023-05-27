@@ -90,7 +90,7 @@ const Login = () => {
             const adminstatus = newFilterData[0].Status
   
             if(adminusername === username && adminpassword === password) {
-              if(adminstatus !== "active"){
+              if(adminstatus !== "Active"){
                 Alert.alert('Account is not active', ' Please contact your moderators for more Info')
                 setLoading(false)
                 return;

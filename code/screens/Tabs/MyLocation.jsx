@@ -29,13 +29,13 @@ const MyLocation = () => {
   const requestLocationPermission = async () => {
     const status = await check(PERMISSIONS.ANDROID.LOCATION_WHEN_IN_USE);
     console.log(status);
-    if (status === 'unavailable') {
+    if (status === 'granted') {
       setVisible(true);
       setButton(false)
       console.log(status);
     } else {
       const result = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
-      if (result === 'granted') {
+      if (result === 'unavailable') {
         setVisible(true);
       }
     }

@@ -13,6 +13,7 @@ import { StyleSheet } from 'react-native'
 import {Picker} from '@react-native-picker/picker';
 import { Modal } from 'react-native'
 import { countries } from '../../Assets/Countries'
+import { useColorScheme } from 'react-native'
 
 
 
@@ -20,7 +21,7 @@ const AdminApprovingForm = () => {
 
     const {useraccount} = useSelector((store) => store.user)
     const {approvingaccount} = useSelector((store) => store.user)
-
+    const colorScheme = useColorScheme() === 'dark';
     const [id, setID] = useState(approvingaccount._id)
     const [rev, setRev] = useState(approvingaccount._rev)
     const [username, setUsername] = useState(approvingaccount.username)
@@ -157,7 +158,7 @@ const AdminApprovingForm = () => {
        }
   return (
     <ScrollView style = {{flex: 1}}>
-    <View style={{backgroundColor: Black, justifyContent: 'center' , alignItems: 'center' , flex: 1}}> 
+    <View style={{backgroundColor:  colorScheme ? Black : White, justifyContent: 'center' , alignItems: 'center' , flex: 1}}> 
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',}}>
             <Pressable onPress={() => setViewProfile(true)} style = {{justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
             <Image source={{uri: ProfilephotoDisplay}} style={{ width: 150, height: 150 , margin: 5, borderRadius: 300 }} resizeMode='cover'/>
@@ -167,11 +168,11 @@ const AdminApprovingForm = () => {
               <FontAwesome name = 'edit' size={30} color={'red'} />
             </Pressable>
        </View>   
-       <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Username</Text>
+       <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Username</Text>
        <View style = {{width: '95%', height: 60, justifyContent: 'center', alignItems: 'center', borderColor: LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
-        <Text style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: White, fontFamily: 'Nexa-ExtraLight'}}>{username}</Text>
+        <Text style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color:  colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight'}}>{username}</Text>
        </View>
-       <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Password</Text>
+       <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Password</Text>
        {password === Birthday ? 
        <View
        style = {{width: '50%', height: 60, justifyContent: 'center', alignItems: 'center', borderColor: LightYellow,borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}
@@ -184,59 +185,59 @@ const AdminApprovingForm = () => {
         onLongPress={() => {setPassword(Birthday); Alert.alert("Reset Request", "user's password is now set to its birthday")}}>
         <Text style={{width: '100%', fontSize: 15, margin: 5, color: LightYellow, fontFamily: 'Nexa-Heavy', textAlign: 'center'}}>{"RESET PASSWORD"}</Text>
         </Pressable>}
-         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>First Name</Text>
+         <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>First Name</Text>
          <Loginbox 
           placeholder = 'FirstName' 
           onChangeText={(value) => setFirstName(value)}
           value={FirstName}
         />
-         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Middle Name</Text>
+         <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Middle Name</Text>
         <Loginbox 
           placeholder = 'MiddleName' 
           onChangeText={(value) => setMiddleName(value)}
           value={MiddleName}
         />
-         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Last Name</Text>
+         <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Last Name</Text>
         <Loginbox 
           placeholder = 'LastName' 
           onChangeText={(value) => setLastName(value)}
           value={LastName}
         />
-         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Birthdate</Text>
+         <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Birthdate</Text>
         <Loginbox 
           placeholder = 'Birthdate' 
           onChangeText={(value) => setBirthday(value)}
           value={Birthday}
         />
-         <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Sex/Gender</Text>
+         <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Sex/Gender</Text>
         <Loginbox 
           placeholder = 'Sex/Gender' 
           onChangeText={(value) => setSex(value)}
           value={Sex}
         />
-        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Address</Text>
+        <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Address</Text>
         <Loginbox 
         placeholder = 'Address' 
         onChangeText={(value) => setAddress(value)}
         value={Address}
         />
-        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Mobile Number</Text>
+        <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Mobile Number</Text>
         <Loginbox 
           placeholder = 'MobileNumber' 
           onChangeText={(value) => setMobileNumber(value)}
           value={MobileNumber}
         />
-        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Alternate Number</Text>
+        <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Alternate Number</Text>
         <Loginbox 
         placeholder = 'Alternate Contact Number' 
         onChangeText={(value) => setAlternateContactNumber(value)}
         value={AlternateContactNumber}
         />
-        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Nationality</Text>
+        <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Nationality</Text>
         <View style = {{width: '95%', justifyContent: 'center', alignItems: 'center', borderColor: LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
                 <Picker
                   itemStyle = {{fontFamily:'Nexa-ExtraLight'}}
-                  style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: White}}
+                  style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color:  colorScheme ? White : Black}}
                   selectedValue={Nationality}
                   value = {Nationality}
                   onValueChange={(itemValue, itemIndex) => setNationality(itemValue)}
@@ -247,13 +248,13 @@ const AdminApprovingForm = () => {
                     ))}
                 </Picker>
               </View>
-        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Disability</Text>
+        <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>Disability</Text>
          <Loginbox 
           placeholder = 'Disability' 
           onChangeText={(value) => setDisability(value)}
           value={Disability}
         />
-        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>ID Number</Text>
+        <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>ID Number</Text>
         <Loginbox 
         placeholder = 'IDNumber' 
         onChangeText={(value) => setIDNumber(value)}
@@ -268,11 +269,11 @@ const AdminApprovingForm = () => {
               <FontAwesome name = 'edit' size={30} color={'red'} />
             </Pressable>
        </View>
-        <Text style={{ fontSize: 17, color: White, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>User Status</Text>
+        <Text style={{ fontSize: 17, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', textAlign: 'left',width: '93%', marginVertical: 5}}>User Status</Text>
         <View style = {{width: '95%', justifyContent: 'center', alignItems: 'center', borderColor: LightBlue, borderWidth: 2, borderRadius: 20,  margin: 5, flexDirection: 'row'}}>
         <Picker
           itemStyle = {{fontFamily:'Nexa-ExtraLight'}}
-          style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color: White}}
+          style={{width: '100%', fontSize: 18, margin: 5, paddingLeft: 20, color:  colorScheme ? White : Black}}
           selectedValue={userstatus}
           value = {userstatus}
           onValueChange={(itemValue, itemIndex) => setUserStatus(itemValue)}

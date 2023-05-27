@@ -1,4 +1,4 @@
-import { View, StatusBar } from 'react-native'
+import { View, StatusBar, useColorScheme } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -19,6 +19,8 @@ export const exitApp = () => {
   };
 
 const BottomTabs = () => {
+
+    const colorScheme = useColorScheme() === 'dark';
 
     const Tab = createBottomTabNavigator();
 
@@ -48,7 +50,7 @@ const BottomTabs = () => {
         },
         tabBarStyle: { 
             
-            backgroundColor: '#101010',
+            backgroundColor: colorScheme ?  '#101010' : '#f6f6f6',
             height: 65,
             elevation: 10,
             borderRadius: 20,
