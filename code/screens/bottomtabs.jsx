@@ -8,7 +8,7 @@ import AccountTab from './Tabs/AccountTab'
 import CommentTab from './Tabs/CommentTab'
 import MyLocation from './Tabs/MyLocation'
 import DirectionsTab from './Tabs/DirectionsTab'
-import { Black, LightYellow, White } from '../Assets/Colors/Colors'
+import { Black, DarkYellow, LightYellow, White } from '../Assets/Colors/Colors'
 import HistoryTab from './Tabs/HistoryTab'
 import { useEffect } from 'react'
 import { BackHandler } from 'react-native'
@@ -70,7 +70,7 @@ const BottomTabs = () => {
             <FontAwesome
                 name = {focused? 'star-o': 'star'}
                 size = {30}
-                color = {focused? LightYellow : '#9999'}
+                color = {focused? DarkYellow : '#9999'}
 
             />
         )
@@ -84,7 +84,7 @@ const BottomTabs = () => {
             <FontAwesome5
                 name = {focused? 'globe-asia':'globe-americas'}
                 size = {30}
-                color = {focused? LightYellow : '#9999'}
+                color = {focused? DarkYellow : '#9999'}
 
             />
         )
@@ -100,7 +100,7 @@ const BottomTabs = () => {
             <FontAwesome
             name = {focused? 'folder-open-o':'folder-open'}
                 size = {30}
-                color = {focused? LightYellow : '#9999'}
+                color = {focused? DarkYellow : '#9999'}
 
             />
         )
@@ -114,7 +114,7 @@ const BottomTabs = () => {
             <FontAwesome
                 name =  {focused ? 'user-circle-o' : 'user-circle'}
                 size = {30  }
-                color = {focused? LightYellow :  '#9999'}
+                color = {focused? DarkYellow :  '#9999'}
 
             />
         )

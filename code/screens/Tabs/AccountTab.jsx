@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/Foundation'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CountryFlag from 'react-native-country-flag'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Black, LightBlue, LightYellow, White } from '../../Assets/Colors/Colors'
+import { Black, DarkYellow, LightBlue, LightYellow, White } from '../../Assets/Colors/Colors'
 
 
 
@@ -36,8 +36,8 @@ const AccountTab = ()=> {
     <View style = {{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor:  colorScheme ? Black : White, paddingBottom: 100}}>
     <Text style = {{paddingLeft: 20, color:  colorScheme ? White : Black, fontSize: 30, fontFamily: 'Nexa-Heavy', top: 10, alignSelf: 'flex-start'}}>My Account</Text>
      <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 30}}>
-     <View style={{borderWidth: 1, borderStyle: 'dashed', borderColor: LightYellow, alignItems: 'center', justifyContent: 'center', width: 220, height: 220, borderRadius: 200, marginBottom: 20}}>
-     <View style={{borderWidth: 1, borderColor: LightBlue, alignItems: 'center', justifyContent: 'center', width: 210, height: 210, borderRadius: 200}}>
+     <View style={{borderWidth: 1, borderStyle: 'dashed', borderColor: colorScheme ? LightYellow : LightBlue, alignItems: 'center', justifyContent: 'center', width: 220, height: 220, borderRadius: 200, marginBottom: 20}}>
+     <View style={{borderWidth: 2, borderColor:  colorScheme ?  LightBlue : DarkYellow, alignItems: 'center', justifyContent: 'center', width: 210, height: 210, borderRadius: 200}}>
       <Image
         source={{ uri: useraccount.Image}}
         style={{width: 200, height: 200, borderRadius: 200,}}
@@ -50,7 +50,7 @@ const AccountTab = ()=> {
          </View>
     </View>
      <Text style={{ fontSize: 25, color:  colorScheme ? White : Black, fontFamily: 'Nexa-Heavy', width: '90%', textAlign: 'left'}}>About</Text>
-    <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row', margin: 5, width: '95%', height: 90, borderTopWidth: 0.5, borderColor: LightBlue}}>
+    <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row', margin: 5, width: '95%', height: 90, borderTopWidth: 0.5, borderColor: colorScheme ? LightBlue : DarkYellow}}>
     <View style={{alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', width: '90%', height: 90}}>
         <View style = {{alignItems: 'center', justifyContent: 'center', width: '30%',height: '100%'}}>
         <FontAwesome size={25} name = 'star-o' color = {LightYellow}  style = {{ position: 'absolute', bottom: 40}}/>
@@ -66,7 +66,7 @@ const AccountTab = ()=> {
         </View>
          </View>
          </View>
-    <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row', width: '95%', height: 90, borderBottomWidth: 0.5, borderColor: LightBlue, marginBottom: 20, margin: 5,}}>
+    <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row', width: '95%', height: 90, borderBottomWidth: 0.5, borderColor: colorScheme ? LightBlue : DarkYellow, marginBottom: 20, margin: 5,}}>
       <View style={{alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', width: '90%', height: 90}}>
         <View style = {{alignItems: 'center', justifyContent: 'center', width: '30%', flexDirection: 'column', height: '100%'}}>
           <Icon

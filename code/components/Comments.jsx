@@ -2,7 +2,7 @@ import { View, Text, FlatList, Image, useColorScheme } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PouchDB from 'pouchdb-react-native' ; 'pouchdb-core';
-import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
+import { Black, DarkYellow, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
 import { Loginbox } from '../screens/loginPage';
 import uuid from 'react-native-uuid';
 import { Pressable } from 'react-native';
@@ -31,7 +31,8 @@ import { Switch } from 'react-native';
             tintColor = {props.tintColor}
             jumpValue = {props.jumpValue}
             imageSize={props.imageSize}
-            ratingColor= '#ffdd85'
+            ratingColor= {colorScheme ? LightYellow : DarkYellow}
+            ratingBackgroundColor=  {colorScheme ? Black : '#e2e2e2'}
             readonly = {props.readonly}
             />
             <Text style = {{color: LightYellow, fontFamily: 'Nexa-Heavy', fontSize: 25, marginLeft: 10, textAlign: 'center'}}>{props.result}</Text>
@@ -250,8 +251,8 @@ export default function Comments() {
       
       </Pressable>
       {data.length === 0 && 
-        <View style = {{width: '100%', height: '100%', backgroundColor: Black, justifyContent: 'center', alignItems: 'center',}}>
-      <Text style={{ color: White, fontFamily: 'cocogooese_semibold', fontSize: 16 }}>Be the first one to submit a review!</Text>
+        <View style = {{width: '100%', height: '100%', backgroundColor: colorScheme ? Black : White, justifyContent: 'center', alignItems: 'center',}}>
+      <Text style={{ color: colorScheme ? White : Black, fontFamily: 'cocogooese_semibold', fontSize: 16 }}>Be the first one to submit a review!</Text>
       </View>}
       <FlatList
         data={data}
@@ -279,35 +280,35 @@ export default function Comments() {
           <Text style = {{ fontSize: 30, color: colorScheme ? White: Black, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 10, marginTop: 20}}>SUBMIT A REVIEW</Text>
           <Text style = {{ fontSize: 20, color: colorScheme ? White: Black, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Amplifying PWD voices with inclusive reviews - every voice deserves to be heard.</Text>
           <Text style={{fontSize: 25, color: colorScheme ? White: Black, textAlign: 'left', alignSelf: 'flex-start', paddingLeft: 20, fontFamily: 'Nexa-Heavy'}}>Your overall rating</Text>
-          <Text style={{fontSize: 75, color: LightYellow, textAlign: 'left', alignSelf: 'flex-start', paddingLeft: 20, fontFamily: 'Nexa-Heavy'}}>{overallrating} ★</Text>
+          <Text style={{fontSize: 75, color: colorScheme ? LightYellow : DarkYellow, textAlign: 'left', alignSelf: 'flex-start', paddingLeft: 20, fontFamily: 'Nexa-Heavy'}}>{overallrating} ★</Text>
             
             <Ratings
             onFinishRating = {(newrating) => setEstablishment(newrating)}
             result = {establishment}
             title = 'Establishment'
             jumpValue = {0.5}
-            imageSize = {25}
+            imageSize = {35}
             tintColor = {colorScheme ? Black: White}
             />
             <Ratings
             onFinishRating = {(newrating) => setParking(newrating)}
             result = {parking}
             title = 'Parking'
-            imageSize = {25}
+            imageSize = {35}
             tintColor = {colorScheme ? Black: White}
             />
             <Ratings
             onFinishRating = {(newrating) => setRamp(newrating)}
             result = {ramp}
             title = 'Ramp'
-            imageSize = {25}
+            imageSize = {35}
             tintColor = {colorScheme ? Black: White}
             />
             <Ratings
             onFinishRating = {(newrating) => setTactiles(newrating)}
             result = {tactiles}
             title = 'Tactiles'
-            imageSize = {25}
+            imageSize = {35}
             tintColor = {colorScheme ? Black: White}
             />
             

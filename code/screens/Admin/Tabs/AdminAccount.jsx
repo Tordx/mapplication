@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Foundation'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CountryFlag from 'react-native-country-flag'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Black, LightBlue, LightYellow, White } from '../../../Assets/Colors/Colors'
+import { Black, DarkYellow, LightBlue, LightYellow, White } from '../../../Assets/Colors/Colors'
 import { useColorScheme } from 'react-native'
 
 
@@ -15,7 +15,7 @@ const AdminAccount = ()=> {
 
 
   const {useraccount} = useSelector((action) => action.user)
-  const colorScheme = useColorScheme()==='dark';
+  const colorScheme = useColorScheme() ==='dark';
   const navigation = useNavigation()
 
   const toedit = () => {
@@ -35,8 +35,8 @@ const AdminAccount = ()=> {
     <View style = {{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor:  colorScheme ? Black : White, paddingBottom: 100}}>
     <Text style = {{paddingLeft: 20, color:  colorScheme ? White : Black, fontSize: 30, fontFamily: 'Nexa-Heavy', top: 10, alignSelf: 'flex-start'}}>Admin Account</Text>
      <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 30}}>
-     <View style={{borderWidth: 1, borderStyle: 'dashed', borderColor: LightYellow, alignItems: 'center', justifyContent: 'center', width: 220, height: 220, borderRadius: 200, marginBottom: 20}}>
-     <View style={{borderWidth: 1, borderColor: LightBlue, alignItems: 'center', justifyContent: 'center', width: 210, height: 210, borderRadius: 200}}>
+     <View style={{borderWidth: 1, borderStyle: 'dashed', borderColor: colorScheme ? LightYellow : Black, alignItems: 'center', justifyContent: 'center', width: 220, height: 220, borderRadius: 200, marginBottom: 20}}>
+     <View style={{borderWidth: 1, borderColor: colorScheme ?  LightBlue : Black, alignItems: 'center', justifyContent: 'center', width: 210, height: 210, borderRadius: 200}}>
       <Image
         source={{ uri: useraccount.Image}}
         style={{width: 200, height: 200, borderRadius: 200,}}
