@@ -1,6 +1,6 @@
 
 import React, {useState} from 'react';
-import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView , Alert , Button , Platform , ScrollView } from 'react-native'
+import {View, Text, Image, TextInput, Pressable, KeyboardAvoidingView , Alert , Button , Platform , ScrollView, Modal } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { dbremoteAccounts } from '../../database/database';
@@ -15,6 +15,7 @@ import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
 import { StyleSheet } from 'react-native';
 import { Loginbox } from './loginPage';
 import { ToastAndroid } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const EditAccount = () => {
 
@@ -41,8 +42,8 @@ const EditAccount = () => {
   const [Profilephoto, setProfilePhoto] = React.useState(useraccount.Image);
   const [Idcardimage, setIdCardImage] = React.useState(useraccount.Idcardimage);
   const [CommentCount] = useState(useraccount.CommentCount)
+  const [loading, isloading] = useState(false);
   const navigation = useNavigation()
-  const id = uuid.v4()
 
   const handleProfilePhoto = async() => {
     launchImageLibrary({ noData: true }, async(response) => {
@@ -72,37 +73,10 @@ const EditAccount = () => {
     });
   };
 
-  const handleIDCardImage = async() => {
-    launchImageLibrary({ noData: true }, async(response) => {
-      // console.log(response);
-      if (response) {
-        const datapic = response
-        // setPhoto(response);
-        try {
-          const data = await RNFetchBlob.fs.readFile(datapic.assets[0].uri, 'base64');
-          const formData = new FormData();
-          formData.append('image', data);
-          const response = await fetch('https://api.imgur.com/3/image', {
-            method: 'POST',
-            headers: {
-              'Authorization': 'Bearer bd49a5b019e13ffe584a4c735069141287166b0c',
-            },
-            body: formData,
-          });
-          const result = await response.json();
-          const photolink = result.data.link
-          setIdCardImage(photolink)
-          console.log('photolink', photolink);
-        } catch (error) {
-          console.log('error', error);
-        }
-      }
-    });
-  };
-
   const setNewSuperAdmin = async () => {
-      
        try {
+        
+        isloading(true)
          var updateuser = {
              _id: ids,
              _rev: revs,
@@ -127,17 +101,13 @@ const EditAccount = () => {
              Status: "active",
              CommentCount: CommentCount,
          }
+         dbremoteAccounts.put(updateuser)
          dispatch(setUserAccount(updateuser));
-      dbremoteAccounts.put(updateuser)
-         .then((response) =>{
-           Alert.alert('Account details changed.')
-           console.log(response)
-          //  SyncSuperAdmin()
-           navigation.navigate('BottomTabs')
-
-         })
-         .catch(err=>console.log(err))
+         console.log(updateuser);
+         Alert.alert('Account details changed.')
+         navigation.navigate('BottomTabs')
          
+
        } catch (error) {
         console.log(error)
        }
@@ -240,12 +210,26 @@ const EditAccount = () => {
           
       </View>
           <Pressable style = {[styles.button]}
-       onPress={ () => {setNewSuperAdmin()}}
+       onPress={setNewSuperAdmin}
      >
        <Text style = {styles.buttontext}>UPDATE PROFILE</Text>
      </Pressable></View>
           }
-      
+     <Modal 
+
+      transparent
+      visible = {loading}
+      style={styles.container}
+      animationType='slide'
+
+      >
+      <View style = {{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#00000199'}}>
+        <View style={{width: 400, height: 150, backgroundColor: White, borderRadius: 20, justifyContent: 'center', alignItems: 'center',}}>
+        <Text style = {{textAlign: 'center', fontSize: 17, fontFamily: 'Nexa-Heavy', color: Black}}>Please wait, while we set things up</Text>
+        </View>
+        
+      </View>
+      </Modal>  
     </View>
     </ScrollView>
   </View>
