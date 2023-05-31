@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react'
 import Map from '../../maps/FullViewMap'
 import MapboxGL from '@rnmapbox/maps'
 import ItemViewMap from '../../maps/ItemViewMap'
-import { Black, LightBlue, LightYellow, White } from '../../Assets/Colors/Colors'
+import { Black, DarkYellow, LightBlue, LightYellow, White } from '../../Assets/Colors/Colors'
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import ItemView from '../../components/ItemView'
 import { FlatList } from 'react-native'
@@ -73,7 +73,7 @@ const CommentTab = () => {
 
   const renderItem = ({item}) => {
     return (
-      <Pressable style = {{width: '98%', height: 100, borderColor: colorScheme ? LightBlue: Black, borderWidth: colorScheme ? 2:1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center', marginVertical: 10, marginHorizontal: 10, borderRadius: 20}}
+      <Pressable style = {{width: '98%', height: 100, borderColor: colorScheme ? LightBlue: Black, borderWidth: colorScheme ? 2:1, justifyContent: 'center', alignSelf: 'center', alignItems: 'center', marginVertical: 2, marginHorizontal: 10, borderRadius: 10}}
         onPress={() => {
           dispatch(setItem(item));
           navigation.navigate('ItemViewPage')
@@ -85,7 +85,7 @@ const CommentTab = () => {
                   <Text style={{ fontSize: 16, color: colorScheme ? White: Black, fontFamily: 'Nexa-Heavy', textAlign: 'left', marginBottom: 5}}>{item.Establishment}</Text>
                   <Text style={{ fontSize: 15, color: colorScheme ? White: Black, fontFamily: 'Nexa-ExtraLight'}}>Review Count: {item.CommentsCount}</Text>
               </View>
-            <Text style={{position: 'absolute',right: 20, fontSize: 25, color: LightYellow, fontWeight: 'bold'}}>{item.Rating === 0 ? 0 : Math.min(item.Rating / item.RatingCount).toFixed(2)} ★</Text>
+            <Text style={{position: 'absolute',right: 20, fontSize: 25, color: colorScheme ? LightYellow : DarkYellow, fontWeight: 'bold'}}>{item.Rating === 0 ? 0 : Math.min(item.Rating / item.RatingCount).toFixed(2)} ★</Text>
             
             </View>
       </Pressable>
@@ -100,13 +100,13 @@ const CommentTab = () => {
       <Text style = {{paddingLeft: 20, color: colorScheme ? White: Black, fontSize: 30, fontFamily: 'Nexa-Heavy'}}>Establishments</Text>
       
       <ScrollView horizontal showsHorizontalScrollIndicator = {false} style = {{flexDirection: 'row'}}>
-      <Pressable  style = {selectedCategory === 'Government' ? styles.selectedCategory : styles.nonselectedCategory} onPress={() => setSelectedCategory('Government')}>
+      <Pressable  style = {selectedCategory === 'Government' ? [styles.selectedCategory, {backgroundColor: colorScheme ? LightYellow : DarkYellow}] : styles.nonselectedCategory} onPress={() => setSelectedCategory('Government')}>
         <Text style = {selectedCategory === 'Government' ? styles.selectedText : [styles.nonselectedText, {color: colorScheme ? White : Black}]}>Government</Text>
       </Pressable>
-      <Pressable  style = {selectedCategory === 'Corporate' ? styles.selectedCategory : styles.nonselectedCategory} onPress={() => setSelectedCategory('Corporate')}>
+      <Pressable  style = {selectedCategory === 'Corporate' ? [styles.selectedCategory, {backgroundColor: colorScheme ? LightYellow : DarkYellow}]  : styles.nonselectedCategory} onPress={() => setSelectedCategory('Corporate')}>
       <Text style = {selectedCategory === 'Corporate' ? styles.selectedText : [styles.nonselectedText, {color: colorScheme ? White : Black}]}>Corporate</Text>
       </Pressable>
-      <Pressable  style = {selectedCategory === 'Local' ? styles.selectedCategory : styles.nonselectedCategory} onPress={() => setSelectedCategory('Local')}>
+      <Pressable  style = {selectedCategory === 'Local' ?[styles.selectedCategory, {backgroundColor: colorScheme ? LightYellow : DarkYellow}]  : styles.nonselectedCategory} onPress={() => setSelectedCategory('Local')}>
       <Text style = {selectedCategory === 'Local' ? styles.selectedText : [styles.nonselectedText, {color: colorScheme ? White : Black}]}>Local</Text>
       </Pressable>
     </ScrollView>
