@@ -35,7 +35,7 @@ import { Switch } from 'react-native';
             ratingBackgroundColor=  {colorScheme ? Black : '#e2e2e2'}
             readonly = {props.readonly}
             />
-            <Text style = {{color: LightYellow, fontFamily: 'Nexa-Heavy', fontSize: 25, marginLeft: 10, textAlign: 'center'}}>{props.result}</Text>
+            <Text style = {{color: colorScheme ? LightYellow : DarkYellow, fontFamily: 'Nexa-Heavy', fontSize: 25, marginLeft: 10, textAlign: 'center'}}>{props.result}</Text>
             </View>
         </View>
   )
