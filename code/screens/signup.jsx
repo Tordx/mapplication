@@ -79,7 +79,7 @@ const Signup = () => {
         let filteredData = modifiedArr.filter(item => {
           return item.username === username
         });
-        const newFilterData = filteredData[0]?.username; // Use optional chaining to avoid errors if filteredData[0] is undefined
+        const newFilterData = filteredData[0]?.username;
         if (newFilterData === username) {
           Alert.alert('Wait up!',' username already exist.');
           return;
@@ -246,8 +246,10 @@ const Signup = () => {
       };
 
       const handlefirst = () => {
-        if ((username.length < 6) && (password.length < 6)) {
-          ToastAndroid.show('must contain at least 6 alphanumeric username and password', ToastAndroid.CENTER)
+        if (username.length < 6){
+          ToastAndroid.show('must contain at least 6 alphanumeric username', ToastAndroid.CENTER)
+        } else if (password.length < 6) {
+          ToastAndroid.show('must contain at least 6 alphanumeric password', ToastAndroid.CENTER)
         } else {
           checkusername()
         }
@@ -269,7 +271,7 @@ const Signup = () => {
         }
       }
   return (
-    <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundcolor: colorScheme ? Black : White}} >
+    <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}} >
     {showDatePicker && (
        <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
         <DatePicker
@@ -292,7 +294,7 @@ const Signup = () => {
         />
         </View>
       )}
-      <ScrollView style = {{width: '100%', height: '100%'}}>
+      <ScrollView style = {{width: '100%', height: '100%', backgroundColor: colorScheme ? Black : White}}>
       <KeyboardAvoidingView style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
        {opening && 
         <View style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
@@ -302,7 +304,7 @@ const Signup = () => {
         <Pressable style = {styles.button}
           onPress={ () => {setOpening(false); setFirst(true)}}
         >
-          <Text style = {styles.buttontext}>Continue</Text>
+          <Text style = {[styles.buttontext, {color: colorScheme ? White : Black}]}>Continue</Text>
         </Pressable>
         </View>}
       {first && <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
@@ -312,8 +314,7 @@ const Signup = () => {
         
         <Loginbox 
           placeholder = 'username' 
-          secureTextEntry = {false} name = '' 
-          onPress={() => console.log('usernamepressed')} 
+          secureTextEntry = {false} name = ''
           onChangeText={handleNoSpace}
           value={username}
         />
@@ -328,7 +329,7 @@ const Signup = () => {
         <Pressable style = {[styles.button]}
           onPress={handlefirst}
         >
-          <Text style = {styles.buttontext}>Next</Text>
+          <Text style = {[styles.buttontext, {color: colorScheme ? White : Black}]}>Next</Text>
         </Pressable>
         <Pressable style = {[styles.button, {width: 100, borderColor: 'red'}]}
           onPress={ () => {setOpening(true); setFirst(false);}}>
