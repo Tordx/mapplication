@@ -14,7 +14,6 @@ import { Black, DarkYellow, LightBlue, LightYellow, White } from '../../Assets/C
 
 const AccountTab = ()=> {
 
-  const dispatch = useDispatch();
   const {useraccount} = useSelector((action) => action.user)
   const navigation = useNavigation()
   const colorScheme =  useColorScheme() === 'dark';
