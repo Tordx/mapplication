@@ -11,17 +11,18 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setUserAccount } from '../config/AccountSlice';
-import { Black, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
+import { Black, DarkYellow, LightBlue, LightYellow, White } from '../Assets/Colors/Colors';
 import { StyleSheet } from 'react-native';
 import { Loginbox } from './loginPage';
 import { ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useColorScheme } from 'react-native';
 
 const EditAccount = () => {
 
- const {useraccount} = useSelector((action) => action.user)
- const dispatch = useDispatch();
-
+  const {useraccount} = useSelector((action) => action.user)
+  const dispatch = useDispatch();
+  const colorScheme = useColorScheme() === 'dark';
   const [show, setShow] = useState(false)
   const [ids, setID] = useState(useraccount._id)
   const [revs, setRev] = useState(useraccount._rev)
@@ -147,13 +148,13 @@ const EditAccount = () => {
       const [second, setSecond] = useState(false)
 
   return (
-    <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: Black}} behavior='padding'>
+    <View style  ={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: colorScheme ? Black : White}} behavior='padding'>
     <ScrollView style = {{width: '100%', height: '100%'}}>
     <View style = {{justifyContent: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
     {first && <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
     <Image source = {{uri: 'https://i.imgur.com/19s7qDu.png'}} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-      <Text style = {styles.headertagline}>Verify your account</Text>
-      <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Please enter your password to proceed.</Text>
+      <Text style = {[styles.headertagline, {color: colorScheme ? White : Black}]}>Verify your account</Text>
+      <Text style = {{ fontSize: 20, color: colorScheme ? White : Black, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Please enter your password to proceed.</Text>
       <Loginbox 
         placeholder = 'password' 
         secureTextEntry= {show} 
@@ -162,19 +163,19 @@ const EditAccount = () => {
         onChangeText={(value) => setPassword(value)}
         value={password}
       />
-      <Pressable style = {[styles.button]}
+      <Pressable style = {[styles.button,{borderColor: colorScheme ? LightYellow : Black}]}
         onPress={checkpassword}
       >
-        <Text style = {styles.buttontext}>Next</Text>
+        <Text style = {[styles.buttontext, {color: colorScheme ? LightYellow : Black}]}>Next</Text>
       </Pressable>
-      <Text style = {{ fontSize: 15, color: LightYellow, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginTop: 20}}>If you forgot your password, you may visit the Alaminos city Hall or contact the moderators for a password reset request</Text>
+      <Text style = {{ fontSize: 15, color: colorScheme ? LightYellow : Black, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginTop: 20, paddingHorizontal: 20}}>If you forgot your password, you may visit the Alaminos city Hall or contact the moderators for a password reset request</Text>
         
         </View>}
         {second && 
         <View style = {{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', alignSelf: 'center'}}>
        <Image source = {{uri: 'https://i.imgur.com/19s7qDu.png'}} style = {{width: 1000, height: 300}} resizeMode = 'contain' />
-            <Text style = {styles.headertagline}>Edit Information</Text>
-            <Text style = {{ fontSize: 20, color: White, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Ensure that all provided information is true, accurate, complete, and up-to-date to avoid negative consequences. False or misleading information can have serious legal and ethical implications.</Text>
+            <Text style = {[styles.headertagline, {color: colorScheme ? White : Black}]}>Edit Information</Text>
+            <Text style = {{ fontSize: 20, color: colorScheme ? LightYellow : Black, fontFamily: 'Nexa-ExtraLight', textAlign: 'center', marginBottom: 20}}>Ensure that all provided information is true, accurate, complete, and up-to-date to avoid negative consequences. False or misleading information can have serious legal and ethical implications.</Text>
       <Loginbox 
         placeholder = 'FirstName' 
         onChangeText={(value) => setFirstName(value)}
@@ -209,10 +210,10 @@ const EditAccount = () => {
             <View style={{flexDirection: "row",alignItems: 'center', justifyContent: 'space-between', width: '50%'}}>
           
       </View>
-          <Pressable style = {[styles.button]}
+          <Pressable style = {[styles.button, { borderColor: colorScheme ? LightYellow : Black}]}
        onPress={setNewSuperAdmin}
      >
-       <Text style = {styles.buttontext}>UPDATE PROFILE</Text>
+       <Text style = {[styles.buttontext, {color: colorScheme ? LightYellow : Black}]}>UPDATE PROFILE</Text>
      </Pressable></View>
           }
      <Modal 
