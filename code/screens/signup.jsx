@@ -14,6 +14,7 @@ import { StyleSheet } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { Picker } from '@react-native-picker/picker';
 import {countries} from '../Assets/Countries'
+import { generalProhibitedUsernames } from '../Assets/usernames';
 
 
 const Signup = () => {
@@ -79,13 +80,18 @@ const Signup = () => {
         let filteredData = modifiedArr.filter(item => {
           return item.username === username
         });
-        const newFilterData = filteredData[0]?.username;
-        if (newFilterData === username) {
-          Alert.alert('Wait up!',' username already exist.');
+        const lowercaseNewFilterData = filteredData?.username?.toLowerCase();
+        const lowercaseUsername = username?.toLowerCase();
+        const regex = new RegExp(generalProhibitedUsernames.join('|'), 'i');
+        
+        if (lowercaseNewFilterData === lowercaseUsername) {
+          Alert.alert('Wait up!', 'Username already exists.');
           return;
+        } else if (regex.test(lowercaseUsername)) {
+          Alert.alert('Wait up!', 'Prohibited username, Please choose a different one.');
         } else {
           setFirst(false);
-          setSecond(true) 
+          setSecond(true);
         }
       }
     }catch (err) {
